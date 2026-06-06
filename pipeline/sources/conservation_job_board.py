@@ -15,6 +15,7 @@ from . import geo
 
 QUELLE = "conservation-job-board"
 _BASIS = "https://www.conservationjobboard.com"
+_MAX_SEITEN_PRO_KATEGORIE = 3
 
 # Kategorieseite -> Standard-Tätigkeitsfeld (robust, ohne den Mehrfach-Attribut-Slug zu zerlegen)
 KATEGORIEN: dict[str, str] = {
@@ -51,18 +52,23 @@ def fetch() -> list[dict]:
     gesehen: set[str] = set()
     treffer: list[dict] = []
     for slug, feld in KATEGORIEN.items():
-        url = f"{_BASIS}/category/{slug}"
-        try:
-            html = hole(url)
-        except Exception as exc:  # noqa: BLE001 - einzelne Kategorie darf ausfallen
-            print(f"  [skip] {QUELLE}/{slug}: {exc}")
-            continue
-        for roh in _parse(html, feld, slug):
-            schluessel = roh.get("quell_id") or roh.get("quell_url")
-            if schluessel in gesehen:
-                continue
-            gesehen.add(schluessel)
-            treffer.append(roh)
+        for seite in range(1, _MAX_SEITEN_PRO_KATEGORIE + 1):
+            url = f"{_BASIS}/category/{slug}" if seite == 1 else f"{_BASIS}/category/{slug}/{seite}"
+            try:
+                html = hole(url)
+            except Exception as exc:  # noqa: BLE001 - einzelne Kategorie darf ausfallen
+                print(f"  [skip] {QUELLE}/{slug} S{seite}: {exc}")
+                break
+            neu = 0
+            for roh in _parse(html, feld, slug):
+                schluessel = roh.get("quell_id") or roh.get("quell_url")
+                if schluessel in gesehen:
+                    continue
+                gesehen.add(schluessel)
+                treffer.append(roh)
+                neu += 1
+            if neu == 0:
+                break
     return treffer
 
 
@@ -118,6 +124,10 @@ def _parse(html: str, feld: str, kategorie: str) -> list[dict]:
         land, region, kontinent = geo.aufloesen(ort_text)
         if not land and location_slug:
             land, region, kontinent = geo.aufloesen(location_slug)
+        if not land:
+            titel_land, titel_region, titel_kontinent = geo.aufloesen(titel)
+            if titel_land:
+                land, region, kontinent = titel_land, titel_region, titel_kontinent
 
         intro = _intro_felder(art)
         verguetung = intro.get("Salary")

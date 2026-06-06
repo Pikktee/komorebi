@@ -52,3 +52,8 @@ def test_harter_negativ_titel_schlaegt_positiven_jobtyp():
     # befristete Leitungsstelle: "Manager" verwirft trotz positivem job_type
     status, _ = eignung.bewerten({"titel": "Nature Project Manager", "_job_type": "temporary"})
     assert status == "ungeeignet"
+
+
+def test_online_zertifikat_wird_verworfen():
+    status, _ = eignung.bewerten({"titel": "GIS Graduate Certificate Online", "_job_type": ""})
+    assert status == "ungeeignet"

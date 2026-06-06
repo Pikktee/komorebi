@@ -40,6 +40,16 @@ def test_galapagos_zaehlt_zu_ecuador():
     assert geo.aufloesen("Galápagos")[0] == "Ecuador"
 
 
+def test_bolivian_und_singapore():
+    assert geo.aufloesen("Bolivian Amazon")[0] == "Bolivien"
+    assert geo.aufloesen("Singapore")[0] == "Singapur"
+
+
+def test_unscharfe_aliase_sind_nicht_zu_gierig():
+    assert geo.aufloesen("Costa Rica, Central America")[0] == "Costa Rica"
+    assert geo.aufloesen("North Vancouver Island")[0] == ""
+
+
 def test_platzhalter_liefern_kein_land():
     for p in ("Remote", "Various Locations", "Worldwide", "", "  "):
         assert geo.aufloesen(p) == ("", None, "")

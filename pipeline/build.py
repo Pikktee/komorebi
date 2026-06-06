@@ -36,6 +36,19 @@ AUSGABEN = [
     PROJEKT / "web" / "public" / "datensatz.json",
 ]
 
+GENERISCHE_QUELL_URLS = {
+    "https://programmes.eurodesk.eu/volunteering",
+    "https://www.volunteer.sci.ngo",
+    "https://www.conservationjobboard.com",
+    "https://www.conservation-careers.com/conservation-jobs",
+    "https://www.weltwaerts.de",
+    "https://oeko-freiwillig.de/freiwilligendienst-im-ausland",
+    "https://www.nabu.de",
+    "https://careers.conbio.org",
+    "https://www.goeco.org",
+    "https://www.volunteerhq.org",
+}
+
 
 def _lade_env() -> None:
     """Lädt ``.env`` (Projektwurzel oder pipeline/) ohne externe Abhängigkeit.
@@ -58,10 +71,10 @@ def _lade_env() -> None:
 
 
 def sammle_live() -> list[dict]:
-    from sources import conservation_job_board, tamu_jobs
+    from sources import conservation_job_board, goodwork, tamu_jobs
 
     records: list[dict] = []
-    for modul in (conservation_job_board, tamu_jobs):
+    for modul in (conservation_job_board, tamu_jobs, goodwork):
         try:
             gefunden = modul.fetch()
         except Exception as exc:  # noqa: BLE001 - eine Quelle darf den Build nicht kippen
@@ -70,6 +83,12 @@ def sammle_live() -> list[dict]:
         print(f"  {modul.QUELLE}: {len(gefunden)} Roh-Treffer")
         records.extend(gefunden)
     return records
+
+
+def ist_generische_quell_url(raw: dict) -> bool:
+    """True für Seed-/Fallback-URLs, die nur auf Start- oder Suchseiten zeigen."""
+    url = (raw.get("quell_url") or "").strip().rstrip("/")
+    return url in GENERISCHE_QUELL_URLS
 
 
 def pruefe_eignung(live: list[dict], nutze_llm: bool) -> tuple[list[dict], dict]:
@@ -168,6 +187,12 @@ def main() -> int:
 
     if live_an:
         live = sammle_live()
+        if live:
+            vorher_seed = len(roh)
+            roh = [r for r in roh if not ist_generische_quell_url(r)]
+            entfernt = vorher_seed - len(roh)
+            if entfernt:
+                print(f"Seed: {entfernt} Einträge mit generischer Quell-URL im Live-Lauf ausgeblendet")
         behalten, stat = pruefe_eignung(live, nutze_llm=nutze_llm)
         print(
             f"Eignung: {stat['live_roh']} roh -> "

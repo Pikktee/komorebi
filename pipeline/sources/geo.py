@@ -149,6 +149,7 @@ _LAENDER_ROH: list[tuple[str, str, list[str]]] = [
     ("Israel", "Asien", ["israel"]),
     ("Jordanien", "Asien", ["jordan", "jordanien"]),
     ("Türkei", "Asien", ["turkey", "tuerkei", "turkei", "tuerkiye"]),
+    ("Singapur", "Asien", ["singapore", "singapur"]),
     # Nordamerika (inkl. Mittelamerika & Karibik)
     ("USA", "Nordamerika", ["usa", "united states", "united states of america",
         "u s a", "us", "america"]),
@@ -173,7 +174,7 @@ _LAENDER_ROH: list[tuple[str, str, list[str]]] = [
     ("Peru", "Südamerika", ["peru"]),
     ("Ecuador", "Südamerika", ["ecuador", "galapagos", "galápagos"]),
     ("Kolumbien", "Südamerika", ["colombia", "kolumbien"]),
-    ("Bolivien", "Südamerika", ["bolivia", "bolivien"]),
+    ("Bolivien", "Südamerika", ["bolivia", "bolivien", "bolivian"]),
     ("Paraguay", "Südamerika", ["paraguay"]),
     ("Uruguay", "Südamerika", ["uruguay"]),
     ("Venezuela", "Südamerika", ["venezuela"]),
@@ -228,6 +229,11 @@ def _land_aus_token(token: str) -> tuple[str, str] | None:
         return ("Vereinigtes Königreich", "Europa")
     if n in _LAND_INDEX:
         return _LAND_INDEX[n]
+    for alias, treffer in _LAND_INDEX.items():
+        if alias in {"america", "island"}:
+            continue
+        if len(alias) > 4 and re.search(rf"\b{re.escape(alias)}\b", n):
+            return treffer
     return None
 
 

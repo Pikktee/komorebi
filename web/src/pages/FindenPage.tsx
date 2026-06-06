@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Alert,
+  Badge,
   Box,
   Button,
   Container,
@@ -15,7 +16,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconAdjustmentsHorizontal, IconAlertCircle } from '@tabler/icons-react';
+import { IconAdjustmentsHorizontal, IconAlertCircle, IconCalendarStats, IconFilter } from '@tabler/icons-react';
 import { useStellen } from '../lib/useStellen';
 import { KomorebiMark } from '../components/Logo';
 import {
@@ -29,6 +30,7 @@ import {
 import { datumText } from '../lib/labels';
 import { FilterPanel } from '../components/FilterPanel';
 import { StelleCard } from '../components/StelleCard';
+import { InfoTooltip } from '../components/InfoTooltip';
 
 export function FindenPage() {
   const { stellen, loading, error, generiertAm } = useStellen();
@@ -39,7 +41,7 @@ export function FindenPage() {
   const setFilter = (f: Filter) => setParams(filterToParams(f), { replace: true });
 
   const laenderOptions = useMemo(
-    () => Array.from(new Set(stellen.map((s) => s.land))).sort((a, b) => a.localeCompare(b, 'de')),
+    () => Array.from(new Set(stellen.map((s) => s.land).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'de')),
     [stellen],
   );
 
@@ -48,20 +50,34 @@ export function FindenPage() {
 
   return (
     <Container size="lg" py={{ base: 'lg', md: 'xl' }}>
-      <Stack gap={4} mb="xl">
-        <Title order={1} fz={{ base: 32, md: 40 }}>
-          Stellen finden
-        </Title>
-        <Text c="dimmed" maw={620}>
-          Durchsuche ökologische Freiwilligendienste weltweit. Setze Filter – deine Auswahl steht
-          direkt in der Adresszeile und lässt sich teilen.
-        </Text>
-        {generiertAm && (
-          <Text size="xs" c="dimmed">
-            Zuletzt aktualisiert am {datumText(generiertAm)}
+      <Box className="nz-finder-head" mb="xl">
+        <Group justify="space-between" align="flex-end" gap="lg">
+          <Stack gap={6}>
+            <Group gap={6}>
+              <Title order={1} fz={{ base: 32, md: 42 }}>
+                Stellen finden
+              </Title>
+              <InfoTooltip label="Deine Filter werden in der URL gespeichert. Du kannst die Suche also direkt teilen oder später wieder öffnen." />
+            </Group>
+            <Group gap="xs">
+              <Badge variant="light" color="wald" radius="sm" leftSection={<IconFilter size={13} />}>
+                {aktiv} aktiv
+              </Badge>
+              <Badge variant="light" color="himmel" radius="sm">
+                {loading ? 'Lade …' : `${gefiltert.length} Treffer`}
+              </Badge>
+              {generiertAm && (
+                <Badge variant="outline" color="gray" radius="sm" leftSection={<IconCalendarStats size={13} />}>
+                  {datumText(generiertAm)}
+                </Badge>
+              )}
+            </Group>
+          </Stack>
+          <Text c="dimmed" maw={420} visibleFrom="md">
+            Ökologische Freiwilligen-, Praxis- und Feldstellen aus geprüften Quellen.
           </Text>
-        )}
-      </Stack>
+        </Group>
+      </Box>
 
       <Group align="flex-start" gap="xl" wrap="nowrap">
         <Box
@@ -69,7 +85,7 @@ export function FindenPage() {
           visibleFrom="md"
           style={{ position: 'sticky', top: 84, flexShrink: 0 }}
         >
-          <Box className="nz-panel" p="lg" style={{ borderRadius: 18 }}>
+          <Box className="nz-panel" p="lg" style={{ borderRadius: 8 }}>
             <Text fw={600} className="nz-display" fz="lg" mb="md">
               Filter
             </Text>
@@ -103,7 +119,7 @@ export function FindenPage() {
           {loading && (
             <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} height={260} radius="lg" />
+                <Skeleton key={i} height={260} radius="md" />
               ))}
             </SimpleGrid>
           )}
@@ -127,7 +143,7 @@ export function FindenPage() {
           {!loading && !error && gefiltert.length > 0 && (
             <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
               {gefiltert.map((s) => (
-                <StelleCard key={s.id} stelle={s} />
+                <StelleCard key={s.id} stelle={s} showAddedDate={filter.sort === 'neu'} />
               ))}
             </SimpleGrid>
           )}
@@ -139,8 +155,13 @@ export function FindenPage() {
         onClose={close}
         title="Filter"
         position="bottom"
-        size="92%"
+        size="90dvh"
         padding="lg"
+        styles={{
+          content: { backgroundColor: 'var(--nz-cream)' },
+          header: { backgroundColor: 'var(--nz-cream)' },
+          body: { paddingBottom: 24 },
+        }}
       >
         <FilterPanel filter={filter} onChange={setFilter} laenderOptions={laenderOptions} />
         <Button fullWidth mt="lg" color="wald" onClick={close}>

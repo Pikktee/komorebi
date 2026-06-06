@@ -9,76 +9,148 @@ import {
   Stack,
   Text,
   Title,
+  Tooltip,
 } from '@mantine/core';
 import {
   IconArrowRight,
-  IconSeeding,
-  IconWorldSearch,
-  IconHeartHandshake,
+  IconBinoculars,
   IconBook2,
+  IconCalendarPlus,
+  IconHeartHandshake,
+  IconLeaf,
+  IconMap2,
+  IconSearch,
+  IconShieldCheck,
+  IconWorldSearch,
 } from '@tabler/icons-react';
 import { useStellen } from '../lib/useStellen';
 import { StelleCard } from '../components/StelleCard';
 import { feldFarbe } from '../components/TaetigkeitsPills';
 import { KomorebiMark } from '../components/Logo';
+import { quelleLabel } from '../lib/labels';
+import type { Stelle } from '../types';
 
 const SCHNELL_FELDER = [
-  'Naturschutz',
-  'Artenschutz/Tiere',
-  'Meeresschutz',
-  'Forschung/Feldassistenz',
-  'Wald/Forst',
+  { feld: 'Naturschutz', icon: <IconLeaf size={17} /> },
+  { feld: 'Artenschutz/Tiere', icon: <IconBinoculars size={17} /> },
+  { feld: 'Meeresschutz', icon: <IconWorldSearch size={17} /> },
+  { feld: 'Forschung/Feldassistenz', icon: <IconSearch size={17} /> },
+  { feld: 'Wald/Forst', icon: <IconMap2 size={17} /> },
 ];
 
-/** Dekoratives Lichtspiel: goldene Lichtflecken & schwebende Blätter im Hero. */
-function Lichtspiel() {
-  const blatt = 'M0 16C-1 6 7 -1 18 -1C16 9 9 16 0 16Z';
+function HeroCanopy() {
   return (
-    <svg
-      className="nz-flightpath"
-      viewBox="0 0 1200 500"
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-    >
-      {/* weiche Lichtflecken */}
-      {[
-        { x: 250, y: 120, r: 60, o: 0.10 },
-        { x: 980, y: 80, r: 120, o: 0.16 },
-        { x: 700, y: 300, r: 40, o: 0.12 },
-        { x: 1080, y: 320, r: 70, o: 0.10 },
-        { x: 120, y: 360, r: 30, o: 0.12 },
-      ].map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={d.r} fill="#f3bb43" opacity={d.o} />
+    <Box className="nz-canopy" aria-hidden="true">
+      {Array.from({ length: 12 }).map((_, i) => (
+        <span key={i} className="nz-canopy__leaf" />
       ))}
-      {/* schwebende Blätter */}
-      {[
-        { x: 230, y: 330, s: 2.0, rot: -18 },
-        { x: 900, y: 250, s: 2.8, rot: 22 },
-        { x: 1050, y: 120, s: 1.6, rot: 8 },
-      ].map((d, i) => (
-        <g
-          key={i}
-          className="nz-bird"
-          transform={`translate(${d.x} ${d.y}) rotate(${d.rot}) scale(${d.s})`}
-          opacity="0.5"
-        >
-          <path d={blatt} fill="#9fd3b3" />
-        </g>
-      ))}
-    </svg>
+    </Box>
   );
 }
 
-function Stat({ wert, label }: { wert: string | number; label: string }) {
+function Stat({ wert, label, icon }: { wert: string | number; label: string; icon: ReactNode }) {
   return (
-    <Stack gap={2}>
-      <Text className="nz-display" fz={{ base: 30, md: 40 }} fw={600} lh={1} c="sonne.3">
-        {wert}
-      </Text>
-      <Text size="sm" c="rgba(234,245,238,0.78)">
+    <Group gap="sm" wrap="nowrap" className="nz-hero-stat">
+      <Box className="nz-hero-stat__icon">{icon}</Box>
+      <Stack gap={1}>
+        <Text className="nz-display" fz={{ base: 26, md: 34 }} fw={650} lh={1} c="sonne.3">
+          {wert}
+        </Text>
+        <Text size="xs" c="rgba(234,245,238,0.76)">
+          {label}
+        </Text>
+      </Stack>
+    </Group>
+  );
+}
+
+function topEintraege(stellen: Stelle[], key: (s: Stelle) => string, limit = 4) {
+  const counts = new Map<string, number>();
+  for (const stelle of stellen) {
+    const wert = key(stelle);
+    if (!wert) continue;
+    counts.set(wert, (counts.get(wert) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'de'))
+    .slice(0, limit);
+}
+
+function DatenRadar({ stellen }: { stellen: Stelle[] }) {
+  const quellen = topEintraege(stellen, (s) => quelleLabel(s.quelle), 3);
+  const quellenGesamt = topEintraege(stellen, (s) => quelleLabel(s.quelle), 20).length;
+  const regionen = topEintraege(stellen, (s) => s.kontinent, 4);
+  const doppelteUrls = Math.max(0, stellen.length - new Set(stellen.map((s) => s.quell_url)).size);
+  const maxQuelle = Math.max(1, ...quellen.map(([, count]) => count));
+  const maxRegion = Math.max(1, ...regionen.map(([, count]) => count));
+
+  return (
+    <Box className="nz-data-band">
+      <Container size="lg" py={{ base: 34, md: 46 }}>
+        <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
+          <RadarBlock titel="Quellenmix" icon={<IconWorldSearch size={20} />}>
+            {quellen.map(([label, count]) => (
+              <RadarBar key={label} label={label} count={count} max={maxQuelle} />
+            ))}
+          </RadarBlock>
+          <RadarBlock titel="Regionen" icon={<IconMap2 size={20} />}>
+            {regionen.map(([label, count]) => (
+              <RadarBar key={label} label={label} count={count} max={maxRegion} />
+            ))}
+          </RadarBlock>
+          <RadarBlock titel="Qualität" icon={<IconShieldCheck size={20} />}>
+            <QualityLine label="Konkrete Angebotslinks" value="100 %" />
+            <QualityLine label="Doppelte URLs" value={String(doppelteUrls)} />
+            <QualityLine label="Aktive Quellen" value={String(quellenGesamt)} />
+          </RadarBlock>
+        </SimpleGrid>
+      </Container>
+    </Box>
+  );
+}
+
+function RadarBlock({ titel, icon, children }: { titel: string; icon: ReactNode; children: ReactNode }) {
+  return (
+    <Stack gap="sm">
+      <Group gap="xs">
+        <Box className="nz-data-icon">{icon}</Box>
+        <Title order={3} fz="lg">
+          {titel}
+        </Title>
+      </Group>
+      {children}
+    </Stack>
+  );
+}
+
+function RadarBar({ label, count, max }: { label: string; count: number; max: number }) {
+  return (
+    <Stack gap={5}>
+      <Group justify="space-between" gap="md" wrap="nowrap">
+        <Text size="sm" fw={600} lineClamp={1}>
+          {label}
+        </Text>
+        <Text size="sm" c="dimmed" fw={600}>
+          {count}
+        </Text>
+      </Group>
+      <Box className="nz-meter" aria-hidden="true">
+        <span style={{ width: `${Math.max(8, (count / max) * 100)}%` }} />
+      </Box>
+    </Stack>
+  );
+}
+
+function QualityLine({ label, value }: { label: string; value: string }) {
+  return (
+    <Group justify="space-between" className="nz-quality-line" wrap="nowrap">
+      <Text size="sm" fw={600}>
         {label}
       </Text>
-    </Stack>
+      <Text className="nz-display" fw={650} c="wald.8">
+        {value}
+      </Text>
+    </Group>
   );
 }
 
@@ -86,6 +158,9 @@ export function StartPage() {
   const { stellen } = useStellen();
   const laender = new Set(stellen.map((s) => s.land).filter(Boolean)).size;
   const kostenlos = stellen.filter((s) => s.kost_unterkunft_frei && !s.kostenpflichtig).length;
+  const neueste = [...stellen]
+    .sort((a, b) => b.erstmals_gesehen.localeCompare(a.erstmals_gesehen))
+    .slice(0, 3);
   const featured = stellen
     .filter((s) => s.kost_unterkunft_frei && !s.kostenpflichtig)
     .slice(0, 3);
@@ -93,28 +168,25 @@ export function StartPage() {
   return (
     <>
       <Box className="nz-hero">
-        <Lichtspiel />
-        <Container size="lg" py={{ base: 60, md: 96 }} pb={{ base: 80, md: 120 }}>
-          <Stack gap="xl" maw={800} className="nz-rise">
+        <HeroCanopy />
+        <Container size="lg" py={{ base: 58, md: 92 }}>
+          <Stack gap="xl" maw={790} className="nz-rise">
             <Group gap={10} c="rgba(234,245,238,0.85)">
               <KomorebiMark size={24} ton="hell" />
-              <Text fz="sm" fw={600} tt="uppercase" lts={1.5}>
-                ökologische Freiwilligendienste weltweit
+              <Text fz="sm" fw={700} tt="uppercase" lts={1.4}>
+                ökologische Stellen weltweit
               </Text>
             </Group>
-            <Title className="nz-display" order={1} fz={{ base: 42, md: 68 }} lh={1.04} fw={600}>
-              Finde deinen Platz in der{' '}
-              <Text span inherit c="sonne.4">
-                Natur
+            <Stack gap="md">
+              <Title className="nz-display" order={1} fz={{ base: 46, md: 74 }} lh={1.02} fw={650}>
+                Komorebi
+              </Title>
+              <Text fz={{ base: 19, md: 23 }} c="rgba(234,245,238,0.9)" maw={650}>
+                Freiwilligen-, Praxis- und Feldstellen für Naturschutz, Artenschutz,
+                Meeresschutz und ökologische Forschung.
               </Text>
-              .
-            </Title>
-            <Text fz={{ base: 17, md: 20 }} c="rgba(234,245,238,0.9)" maw={660}>
-              Naturschutz, Artenschutz und Feldforschung – weltweit an einem Ort. Filtere nach
-              Land, Dauer und Tätigkeit, finde Plätze mit freier Kost und Unterkunft. Feste
-              Karrierejobs sortieren wir für dich aus.
-            </Text>
-            <Group gap="md">
+            </Stack>
+            <Group gap="sm">
               <Button
                 component={Link}
                 to="/finden"
@@ -133,65 +205,100 @@ export function StartPage() {
                 radius="md"
                 variant="outline"
                 leftSection={<IconBook2 size={18} />}
-                styles={{ root: { borderColor: 'rgba(234,245,238,0.4)', color: '#eaf5ee' } }}
+                styles={{ root: { borderColor: 'rgba(234,245,238,0.42)', color: '#eaf5ee' } }}
               >
-                Gut zu wissen
+                Gut vorbereitet
               </Button>
             </Group>
-            <Group gap={48} mt="md">
-              <Stat wert={stellen.length || '—'} label="offene Stellen" />
-              <Stat wert={laender || '—'} label="Länder" />
-              <Stat wert={kostenlos || '—'} label="mit freier Kost & Logis" />
-            </Group>
-            <Text fz="xs" c="rgba(234,245,238,0.6)" fs="italic" mt={4}>
-              Komorebi · 木漏れ日 – japanisch für das Sonnenlicht, das durch Blätter fällt.
-            </Text>
+            <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="sm" maw={670}>
+              <Stat wert={stellen.length || '—'} label="offene Stellen" icon={<IconSearch size={17} />} />
+              <Stat wert={laender || '—'} label="Länder" icon={<IconMap2 size={17} />} />
+              <Stat
+                wert={kostenlos || '—'}
+                label="mit freier Kost & Logis"
+                icon={<IconHeartHandshake size={17} />}
+              />
+            </SimpleGrid>
           </Stack>
         </Container>
-        <svg
-          viewBox="0 0 1440 90"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-          style={{ position: 'absolute', bottom: -1, left: 0, width: '100%', height: 70, display: 'block' }}
-        >
-          <path d="M0 90V44c180 34 420 40 720 8s540-34 720-2v40z" fill="var(--nz-cream)" />
-        </svg>
       </Box>
 
-      <Container size="lg" py={{ base: 40, md: 64 }}>
-        <Stack gap="xs" mb="lg">
-          <Text fw={600} c="wald.8" tt="uppercase" fz="sm" lts={1}>
-            Worauf hast du Lust?
+      <Container size="lg" py={{ base: 38, md: 56 }}>
+        <Stack gap="xs" mb="md">
+          <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+            Schneller Einstieg
           </Text>
           <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
-            Direkt zum Tätigkeitsfeld
+            Wähle ein Tätigkeitsfeld
           </Title>
         </Stack>
         <Group gap="sm">
-          {SCHNELL_FELDER.map((f) => (
-            <Button
-              key={f}
-              component={Link}
-              to={`/finden?feld=${encodeURIComponent(f)}`}
-              variant="light"
-              radius="xl"
-              styles={{
-                root: {
-                  backgroundColor: `var(--mantine-color-${feldFarbe(f)}-1)`,
-                  color: `var(--mantine-color-${feldFarbe(f)}-9)`,
-                },
-              }}
+          {SCHNELL_FELDER.map(({ feld, icon }) => (
+            <Tooltip
+              key={feld}
+              label={`Zeigt Stellen im Bereich ${feld}.`}
+              withArrow
+              events={{ hover: true, focus: true, touch: true }}
             >
-              {f}
-            </Button>
+              <Button
+                component={Link}
+                to={`/finden?feld=${encodeURIComponent(feld)}`}
+                variant="light"
+                radius="md"
+                color={feldFarbe(feld)}
+                leftSection={icon}
+                className="nz-quick-field"
+              >
+                {feld}
+              </Button>
+            </Tooltip>
           ))}
         </Group>
+      </Container>
+
+      <DatenRadar stellen={stellen} />
+
+      <Container size="lg" py={{ base: 42, md: 64 }}>
+        {neueste.length > 0 && (
+          <>
+            <Group justify="space-between" align="flex-end" mb="lg">
+              <Stack gap="xs">
+                <Group gap={8}>
+                  <Box className="nz-section-icon" aria-hidden="true">
+                    <IconCalendarPlus size={18} />
+                  </Box>
+                  <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+                    Neu hinzugekommen
+                  </Text>
+                </Group>
+                <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
+                  Frisch eingetragene Angebote
+                </Title>
+              </Stack>
+              <Button
+                component={Link}
+                to="/finden?sort=neu"
+                variant="subtle"
+                color="wald"
+                rightSection={<IconArrowRight size={16} />}
+                visibleFrom="sm"
+              >
+                Alle neuen ansehen
+              </Button>
+            </Group>
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg" mb={{ base: 44, md: 62 }}>
+              {neueste.map((s) => (
+                <StelleCard key={s.id} stelle={s} showAddedDate />
+              ))}
+            </SimpleGrid>
+          </>
+        )}
 
         {featured.length > 0 && (
           <>
-            <Group justify="space-between" align="flex-end" mt={56} mb="lg">
+            <Group justify="space-between" align="flex-end" mb="lg">
               <Stack gap="xs">
-                <Text fw={600} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+                <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
                   Reinschnuppern
                 </Text>
                 <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
@@ -216,51 +323,7 @@ export function StartPage() {
             </SimpleGrid>
           </>
         )}
-
-        <Box mt={72} p={{ base: 'lg', md: 40 }} className="nz-panel" style={{ borderRadius: 24 }}>
-          <SimpleGrid cols={{ base: 1, md: 3 }} spacing={{ base: 'xl', md: 'xl' }}>
-            <SchrittKarte
-              icon={<IconWorldSearch size={26} />}
-              titel="Alles an einem Ort"
-              text="Wir sammeln ökologische Freiwilligendienste aus vielen Quellen und machen sie gemeinsam durchsuchbar – täglich automatisch aktualisiert."
-            />
-            <SchrittKarte
-              icon={<IconSeeding size={26} />}
-              titel="Nur passende Stellen"
-              text="Feste Karrierejobs und kostenpflichtige Voluntourism-Angebote filtern wir aus – damit du echte Freiwilligen- und Feldplätze findest."
-            />
-            <SchrittKarte
-              icon={<IconHeartHandshake size={26} />}
-              titel="Direkt zur Quelle"
-              text="Jede Stelle verlinkt zur Organisation. Du bewirbst dich dort – wir verdienen nichts daran, das hier ist nicht-kommerziell."
-            />
-          </SimpleGrid>
-        </Box>
       </Container>
     </>
-  );
-}
-
-function SchrittKarte({ icon, titel, text }: { icon: ReactNode; titel: string; text: string }) {
-  return (
-    <Stack gap="sm">
-      <Box
-        style={{
-          width: 52,
-          height: 52,
-          borderRadius: 16,
-          display: 'grid',
-          placeItems: 'center',
-          backgroundColor: 'var(--mantine-color-wald-1)',
-          color: 'var(--mantine-color-wald-8)',
-        }}
-      >
-        {icon}
-      </Box>
-      <Title order={3} fz="xl">
-        {titel}
-      </Title>
-      <Text c="dimmed">{text}</Text>
-    </Stack>
   );
 }

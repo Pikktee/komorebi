@@ -51,6 +51,12 @@ def test_parse_liest_kernfelder():
     assert "Vergütung: $18 per hour" in a["beschreibung"]
 
 
+def test_parse_kennt_paginierte_kategorie_url():
+    # Die fetch()-Funktion ruft diese Form ab; _parse muss unabhängig von der Seite bleiben.
+    ergebnis = cjb._parse(FIXTURE, "Artenschutz/Tiere", "wildlife-jobs")
+    assert ergebnis[0]["quell_url"] == "https://www.conservationjobboard.com/job-listing-x/123"
+
+
 def test_parse_traegt_helfer_fuer_eignung():
     ergebnis = cjb._parse(FIXTURE, "Artenschutz/Tiere", "wildlife-jobs")
     permanent = ergebnis[1]

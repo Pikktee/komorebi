@@ -62,7 +62,7 @@ export const theme = createTheme({
   colors: { wald, terra, himmel, sonne },
   white: '#ffffff',
   black: '#16241d',
-  defaultRadius: 'lg',
+  defaultRadius: 'md',
   fontFamily:
     "'Hanken Grotesk', system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
   fontFamilyMonospace: "'Hanken Grotesk', ui-monospace, monospace",

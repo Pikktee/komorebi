@@ -30,7 +30,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
   return (
     <Stack gap="md">
       <TextInput
-        label="Suche"
+        label={<FilterLabel text="Suche" tip="Durchsucht Titel, Organisation, Land, Tätigkeitsfelder und Beschreibung." />}
         placeholder="z. B. Schildkröten, Wald, Schweden …"
         leftSection={<IconSearch size={16} />}
         value={filter.q}
@@ -39,7 +39,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
       />
 
       <MultiSelect
-        label="Land"
+        label={<FilterLabel text="Land" tip="Nur Länder aus dem aktuellen Datensatz werden angezeigt." />}
         placeholder={filter.laender.length ? undefined : 'Alle Länder'}
         data={laenderOptions}
         value={filter.laender}
@@ -51,7 +51,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
       />
 
       <MultiSelect
-        label="Tätigkeitsfeld"
+        label={<FilterLabel text="Tätigkeitsfeld" tip="Die Felder werden aus Quelle, Text und LLM-Prüfung abgeleitet." />}
         placeholder={filter.felder.length ? undefined : 'Alle Bereiche'}
         data={TAETIGKEITSFELDER}
         value={filter.felder}
@@ -61,7 +61,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
       />
 
       <MultiSelect
-        label="Kontinent"
+        label={<FilterLabel text="Kontinent" tip="Praktisch, wenn du erst einmal nach Weltregion suchen möchtest." />}
         placeholder={filter.kontinente.length ? undefined : 'Weltweit'}
         data={KONTINENTE}
         value={filter.kontinente}
@@ -71,7 +71,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
       />
 
       <MultiSelect
-        label="Förderung"
+        label={<FilterLabel text="Förderung" tip="Geförderte Programme übernehmen meist mehr Leistungen, dauern aber oft länger." />}
         placeholder={filter.programme.length ? undefined : 'Alle'}
         data={PROGRAMM_OPTIONS}
         value={filter.programme}
@@ -81,7 +81,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
       />
 
       <Select
-        label="Dauer"
+        label={<FilterLabel text="Dauer" tip="Filtert nach der maximal angegebenen Dauer. Flexible Stellen bleiben sichtbar." />}
         data={DAUER_OPTIONS}
         value={filter.dauerMax == null ? '' : String(filter.dauerMax)}
         onChange={(v) => set({ dauerMax: v ? Number(v) : null })}
@@ -125,9 +125,7 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
 function SortAuswahl({ value, onChange }: { value: SortKey; onChange: (s: SortKey) => void }) {
   return (
     <div>
-      <Text size="sm" fw={500} mb={4}>
-        Sortierung
-      </Text>
+      <FilterLabel text="Sortierung" tip="Die Sortierung verändert nur die Reihenfolge, nicht deine Filter." mb={4} />
       <Select
         data={[
           { value: 'land', label: 'Land (A–Z)' },
@@ -141,5 +139,16 @@ function SortAuswahl({ value, onChange }: { value: SortKey; onChange: (s: SortKe
         radius="md"
       />
     </div>
+  );
+}
+
+function FilterLabel({ text, tip, mb }: { text: string; tip: string; mb?: number }) {
+  return (
+    <Group gap={4} wrap="nowrap" mb={mb}>
+      <Text size="sm" fw={500}>
+        {text}
+      </Text>
+      <InfoTooltip label={tip} />
+    </Group>
   );
 }

@@ -69,4 +69,15 @@ describe('StelleCard', () => {
     renderCard();
     expect(screen.getByText('Kost & Unterkunft frei')).toBeInTheDocument();
   });
+
+  it('zeigt optional das Hinzufügedatum', () => {
+    render(
+      <MantineProvider theme={theme}>
+        <MemoryRouter>
+          <StelleCard stelle={beispiel} showAddedDate />
+        </MemoryRouter>
+      </MantineProvider>,
+    );
+    expect(screen.getByText('Hinzugefügt am 5. Juni 2026')).toBeInTheDocument();
+  });
 });

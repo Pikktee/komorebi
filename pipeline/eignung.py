@@ -40,9 +40,15 @@ _TITEL_HART_UNGEEIGNET = (
     "superintendent", "supervisor", "principal", "professor", "lecturer",
     "leadership", "executive", " ceo", "cfo", "coo", "dean", "faculty", "tenure",
     "endowed", "provost", "secretary", "officer iii", "officer iv",
+    "graduate research assistantship", "graduate assistantship", "graduate certificate",
+    "certificate online", "online certificate", "degree program", "phd", "ph.d",
+    "m.s. graduate", "ms research assistant", "graduate position",
 )
 # „Weiche" Negativ-Titel: verwerfen nur, wenn KEIN positives Signal vorliegt.
-_TITEL_WEICH_UNGEEIGNET = ("senior ", "sr.", "administrator")
+_TITEL_WEICH_UNGEEIGNET = (
+    "senior ", "sr.", "administrator", "coordinator", "specialist",
+    "biologist ii", "biologist iii", "ecologist iii", "project officer",
+)
 
 # Erfahrungsstufen, die auf gestandene Profis zielen
 _ERFAHRUNG_UNGEEIGNET = {"high-level", "senior", "executive", "director"}

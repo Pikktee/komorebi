@@ -54,6 +54,7 @@ export const QUELLE_LABEL: Record<string, string> = {
   'sci-workcamps': 'SCI Workcamps',
   'conservation-job-board': 'Conservation Job Board',
   'tamu-nr-jobs': 'Texas A&M Natural Resources Job Board',
+  goodwork: 'GoodWork.ca',
   'conservation-careers': 'Conservation Careers',
   scb: 'Society for Conservation Biology',
   weltwaerts: 'weltwärts',

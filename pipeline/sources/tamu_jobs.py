@@ -19,7 +19,7 @@ from .base import feld_aus_text
 
 QUELLE = "tamu-nr-jobs"
 _BASIS = "https://jobs.rwfm.tamu.edu"
-_SEITEN = 8  # je ~10 Stellen; Paginierung über ?pagenum=N
+_SEITEN = 20  # je ~10 Stellen; Paginierung über ?pagenum=N
 
 
 def fetch() -> list[dict]:
@@ -94,6 +94,10 @@ def _parse(html: str) -> list[dict]:
 
         ort = _ort(felder.get("Location", ""))
         land, region, kont = geo.aufloesen(ort)
+        if not land:
+            titel_land, titel_region, titel_kont = geo.aufloesen(titel)
+            if titel_land:
+                land, region, kont = titel_land, titel_region, titel_kont
 
         teile = [f"{titel} bei {organisation}."]
         if felder.get("Salary"):

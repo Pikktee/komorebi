@@ -18,12 +18,11 @@ body {
 body {
   background-color: var(--nz-cream);
   color: var(--nz-ink);
-  /* organische Textur: zarte Punktraster + warme Lichtflächen */
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(21, 107, 65, 0.045) 1px, transparent 0),
-    radial-gradient(1100px 560px at 100% -10%, rgba(219, 109, 48, 0.06), transparent 60%),
-    radial-gradient(900px 480px at -10% 0%, rgba(29, 108, 111, 0.06), transparent 55%);
-  background-size: 24px 24px, 100% 100%, 100% 100%;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0) 300px),
+    repeating-linear-gradient(90deg, rgba(21, 107, 65, 0.032) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(21, 107, 65, 0.026) 0 1px, transparent 1px 34px);
+  background-size: 100% 100%, 34px 34px, 34px 34px;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -43,65 +42,119 @@ a {
 .nz-hero {
   position: relative;
   overflow: hidden;
+  min-height: min(680px, calc(100vh - 132px));
+  display: flex;
+  align-items: center;
   background:
-    radial-gradient(55% 75% at 84% -12%, rgba(243, 187, 67, 0.34), transparent 62%),
-    radial-gradient(110% 130% at 12% 0%, #226a47 0%, #154430 52%, #0d2f1f 100%);
+    linear-gradient(125deg, rgba(13, 47, 31, 0.92), rgba(21, 68, 48, 0.92) 48%, rgba(29, 108, 111, 0.72)),
+    linear-gradient(180deg, #194c36, #0d2f1f);
   color: #eaf5ee;
   isolation: isolate;
 }
 
-/* feines Sternen-/Punktraster im Hero */
+.nz-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(255, 224, 150, 0.17) 24%, transparent 38% 100%),
+    linear-gradient(100deg, transparent 0 42%, rgba(255, 224, 150, 0.11) 48%, transparent 63% 100%);
+  background-size: 150% 100%, 180% 100%;
+  animation: nz-light-sweep 18s ease-in-out infinite alternate;
+  z-index: -1;
+  opacity: 0.95;
+}
+
 .nz-hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
-  background-size: 22px 22px;
+  background-image:
+    repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 26px);
   z-index: -1;
-  mask-image: linear-gradient(180deg, black, transparent 78%);
+  mask-image: linear-gradient(180deg, black, transparent 86%);
 }
 
-/* dekorative Flugroute im Hero */
-.nz-flightpath {
+.nz-canopy {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+  overflow: hidden;
   pointer-events: none;
-  opacity: 0.5;
+  z-index: -1;
 }
 
-.nz-flightpath path {
-  stroke-dasharray: 3 9;
-  animation: nz-drift 14s linear infinite;
+.nz-canopy::before {
+  content: '';
+  position: absolute;
+  inset: -12% -8% auto -8%;
+  height: 42%;
+  background:
+    repeating-linear-gradient(125deg, rgba(9, 38, 24, 0.55) 0 18px, transparent 18px 42px),
+    repeating-linear-gradient(72deg, rgba(48, 123, 81, 0.36) 0 14px, transparent 14px 36px);
+  filter: blur(1px);
+  transform: rotate(-2deg);
+  opacity: 0.8;
+  animation: nz-canopy-shift 16s ease-in-out infinite alternate;
 }
 
-@keyframes nz-drift {
-  to {
-    stroke-dashoffset: -240;
-  }
+.nz-canopy__leaf {
+  position: absolute;
+  top: -70px;
+  width: 32px;
+  height: 15px;
+  border-radius: 100% 0 100% 0;
+  background: rgba(159, 211, 179, 0.34);
+  transform: rotate(28deg);
+  animation: nz-leaf-fall 22s linear infinite;
 }
 
-.nz-bird {
-  animation: nz-bob 5s ease-in-out infinite;
-  transform-origin: center;
+.nz-canopy__leaf:nth-child(1) { left: 7%; animation-delay: -4s; }
+.nz-canopy__leaf:nth-child(2) { left: 16%; animation-delay: -12s; transform: rotate(-24deg); }
+.nz-canopy__leaf:nth-child(3) { left: 24%; animation-delay: -8s; width: 24px; }
+.nz-canopy__leaf:nth-child(4) { left: 36%; animation-delay: -17s; transform: rotate(42deg); }
+.nz-canopy__leaf:nth-child(5) { left: 43%; animation-delay: -2s; width: 26px; }
+.nz-canopy__leaf:nth-child(6) { left: 52%; animation-delay: -14s; transform: rotate(-18deg); }
+.nz-canopy__leaf:nth-child(7) { left: 61%; animation-delay: -6s; width: 22px; }
+.nz-canopy__leaf:nth-child(8) { left: 68%; animation-delay: -20s; transform: rotate(34deg); }
+.nz-canopy__leaf:nth-child(9) { left: 76%; animation-delay: -9s; }
+.nz-canopy__leaf:nth-child(10) { left: 84%; animation-delay: -15s; transform: rotate(-38deg); }
+.nz-canopy__leaf:nth-child(11) { left: 91%; animation-delay: -5s; width: 25px; }
+.nz-canopy__leaf:nth-child(12) { left: 98%; animation-delay: -18s; transform: rotate(16deg); }
+
+@keyframes nz-light-sweep {
+  from { background-position: 0 0, 100% 0; }
+  to { background-position: 100% 0, 0 0; }
 }
 
-.nz-bird:nth-child(2) {
-  animation-delay: -1.6s;
-}
-.nz-bird:nth-child(3) {
-  animation-delay: -3.1s;
+@keyframes nz-canopy-shift {
+  from { transform: translateX(-18px) rotate(-2deg); }
+  to { transform: translateX(18px) rotate(-1deg); }
 }
 
-@keyframes nz-bob {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
+@keyframes nz-leaf-fall {
+  from { translate: 0 -10vh; opacity: 0; }
+  8% { opacity: 0.85; }
+  88% { opacity: 0.7; }
+  to { translate: -46px 92vh; opacity: 0; }
+}
+
+.nz-hero-stat {
+  min-height: 74px;
+  padding: 12px 14px;
+  border: 1px solid rgba(234, 245, 238, 0.18);
+  border-radius: 8px;
+  background: rgba(13, 47, 31, 0.34);
+}
+
+.nz-hero-stat__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--mantine-color-sonne-3);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ------------------------------------------------------------- Animation */
@@ -123,8 +176,9 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .nz-rise,
-  .nz-bird,
-  .nz-flightpath path {
+  .nz-canopy::before,
+  .nz-canopy__leaf,
+  .nz-hero::before {
     animation: none;
   }
 }
@@ -133,6 +187,11 @@ a {
 
 .nz-card {
   position: relative;
+  overflow: hidden;
+  min-height: 292px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(252, 249, 241, 0.96)),
+    var(--mantine-color-white);
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
@@ -140,12 +199,42 @@ a {
 }
 
 .nz-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px -22px rgba(15, 47, 31, 0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px -24px rgba(15, 47, 31, 0.58);
   border-color: var(--mantine-color-wald-3) !important;
 }
 
-/* farbiger Akzentstreifen oben auf der Karte (über CSS-Variable gesteuert) */
+.nz-card__terrain {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 56px;
+  opacity: 0.42;
+  background:
+    linear-gradient(160deg, transparent 0 18%, color-mix(in srgb, var(--nz-accent) 42%, transparent) 18% 20%, transparent 20% 100%),
+    linear-gradient(150deg, transparent 0 46%, rgba(21, 107, 65, 0.18) 46% 48%, transparent 48% 100%),
+    linear-gradient(180deg, rgba(21, 107, 65, 0.12), transparent);
+}
+
+.nz-card__arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--mantine-color-wald-8);
+  background: var(--mantine-color-wald-0);
+  border: 1px solid var(--mantine-color-wald-2);
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.nz-card:hover .nz-card__arrow {
+  transform: translate(2px, -2px);
+  background: var(--mantine-color-wald-1);
+}
+
 .nz-accent::before {
   content: '';
   position: absolute;
@@ -153,13 +242,126 @@ a {
   left: 0;
   right: 0;
   height: 4px;
-  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+  border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
   background: var(--nz-accent, var(--mantine-color-wald-5));
 }
 
-/* dezenter „Glas“-Effekt für Panels */
 .nz-panel {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--nz-line);
+}
+
+.nz-detail-aside {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.nz-program-note {
+  border: 1px solid var(--mantine-color-wald-2);
+  background:
+    linear-gradient(135deg, rgba(238, 247, 241, 0.92), rgba(238, 246, 246, 0.74));
+}
+
+.nz-field-pill {
+  border: 1px solid var(--mantine-color-wald-2);
+  background: rgba(238, 247, 241, 0.78);
+  color: var(--mantine-color-wald-9);
+  font-weight: 650;
+}
+
+.nz-field-pill__dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--nz-pill-dot, var(--mantine-color-wald-6));
+}
+
+.nz-badge-soft {
+  box-shadow: none;
+}
+
+.nz-quick-field {
+  border: 1px solid var(--mantine-color-wald-2);
+}
+
+.nz-data-band {
+  border-block: 1px solid var(--nz-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(241, 236, 224, 0.74)),
+    linear-gradient(115deg, rgba(29, 108, 111, 0.09), transparent 58%);
+}
+
+.nz-data-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--mantine-color-wald-8);
+  background: var(--mantine-color-wald-0);
+  border: 1px solid var(--mantine-color-wald-2);
+}
+
+.nz-meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(21, 107, 65, 0.1);
+}
+
+.nz-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--mantine-color-wald-6), var(--mantine-color-himmel-6));
+}
+
+.nz-quality-line {
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(21, 107, 65, 0.09);
+}
+
+.nz-finder-head {
+  padding: 16px 0 20px;
+  border-bottom: 1px solid var(--nz-line);
+}
+
+.nz-section-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--mantine-color-wald-8);
+  background: var(--mantine-color-wald-0);
+  border: 1px solid var(--mantine-color-wald-2);
+}
+
+.nz-detail-facts {
+  margin-top: 6px;
+}
+
+.nz-detail-fact {
+  min-height: 74px;
+  padding: 12px;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(238, 247, 241, 0.62));
+  border: 1px solid var(--nz-line);
+}
+
+.nz-detail-fact__icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--mantine-color-wald-8);
+  background: var(--mantine-color-wald-0);
+  border: 1px solid var(--mantine-color-wald-2);
 }

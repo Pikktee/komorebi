@@ -1,6 +1,12 @@
 import type { CSSProperties } from 'react';
-import { Badge, Card, Group, Stack, Text, Title } from '@mantine/core';
-import { IconMapPin, IconClock, IconCalendarEvent } from '@tabler/icons-react';
+import { Badge, Box, Card, Group, Stack, Text, Title } from '@mantine/core';
+import {
+  IconMapPin,
+  IconClock,
+  IconCalendarEvent,
+  IconArrowUpRight,
+  IconCalendarPlus,
+} from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import type { Stelle } from '../types';
 import { LeistungsBadges } from './LeistungsBadges';
@@ -10,11 +16,18 @@ import { TaetigkeitsPills, feldFarbe } from './TaetigkeitsPills';
 function programmFarbe(stelle: Stelle): { color: string; variant: 'filled' | 'light' } {
   return stelle.programm === 'keins'
     ? { color: 'gray', variant: 'light' }
-    : { color: 'wald', variant: 'filled' };
+    : { color: 'himmel', variant: 'filled' };
 }
 
-export function StelleCard({ stelle }: { stelle: Stelle }) {
+function ortText(stelle: Stelle): string {
+  if (stelle.land) return `${stelle.land}${stelle.region ? ` · ${stelle.region}` : ''}`;
+  if (stelle.region) return stelle.region;
+  return 'Ort offen';
+}
+
+export function StelleCard({ stelle, showAddedDate = false }: { stelle: Stelle; showAddedDate?: boolean }) {
   const frist = datumText(stelle.bewerbungsfrist);
+  const hinzugefuegt = datumText(stelle.erstmals_gesehen);
   const pf = programmFarbe(stelle);
   const akzent = feldFarbe(stelle.taetigkeitsfeld[0] ?? 'Sonstiges');
 
@@ -30,35 +43,35 @@ export function StelleCard({ stelle }: { stelle: Stelle }) {
       component={Link}
       to={`/stelle/${stelle.id}`}
       withBorder
-      radius="lg"
+      radius="md"
       padding="lg"
-      pt="xl"
-      className="nz-card nz-accent"
+      className="nz-card"
       style={style}
     >
-      <Stack gap="sm" h="100%">
+      <Box className="nz-card__terrain" aria-hidden="true" />
+      <Stack gap="sm" h="100%" style={{ position: 'relative' }}>
         <Group justify="space-between" align="flex-start" wrap="nowrap" gap="xs">
           <Group gap={5} c="wald.8" wrap="nowrap">
             <IconMapPin size={16} />
             <Text fw={600} size="sm" lineClamp={1}>
-              {stelle.land || 'Ortsunabhängig'}
-              {stelle.region ? (
-                <Text span c="dimmed" fw={400}>
-                  {' '}
-                  · {stelle.region}
-                </Text>
-              ) : null}
+              {ortText(stelle)}
             </Text>
           </Group>
-          <Badge variant={pf.variant} color={pf.color} radius="sm" style={{ textTransform: 'none', flexShrink: 0 }}>
+          <Badge
+            variant={pf.variant}
+            color={pf.color}
+            radius="sm"
+            className="nz-badge-soft"
+            style={{ textTransform: 'none', flexShrink: 0 }}
+          >
             {PROGRAMM_LABEL[stelle.programm]}
           </Badge>
         </Group>
 
-        <Title order={3} fz="h4" lh={1.15} style={{ fontWeight: 600 }} lineClamp={2}>
+        <Title order={3} fz="h4" lh={1.16} style={{ fontWeight: 650 }} lineClamp={2}>
           {stelle.titel}
         </Title>
-        <Text size="sm" c="dimmed" mt={-6} lineClamp={1}>
+        <Text size="sm" c="dimmed" mt={-4} lineClamp={1}>
           {stelle.organisation}
         </Text>
 
@@ -70,17 +83,28 @@ export function StelleCard({ stelle }: { stelle: Stelle }) {
           </Text>
         )}
 
-        <Group gap="lg" mt="auto" pt={4}>
-          <Group gap={5} c="dark.3">
-            <IconClock size={15} />
-            <Text size="xs">{dauerText(stelle.dauer_monate_min, stelle.dauer_monate_max)}</Text>
-          </Group>
-          {frist && (
+        <Group justify="space-between" align="flex-end" gap="md" mt="auto" pt={6}>
+          <Stack gap={6}>
             <Group gap={5} c="dark.3">
-              <IconCalendarEvent size={15} />
-              <Text size="xs">Bewerbung bis {frist}</Text>
+              <IconClock size={15} />
+              <Text size="xs">{dauerText(stelle.dauer_monate_min, stelle.dauer_monate_max)}</Text>
             </Group>
-          )}
+            {frist && (
+              <Group gap={5} c="dark.3">
+                <IconCalendarEvent size={15} />
+                <Text size="xs">Bewerbung bis {frist}</Text>
+              </Group>
+            )}
+            {showAddedDate && hinzugefuegt && (
+              <Group gap={5} c="wald.7">
+                <IconCalendarPlus size={15} />
+                <Text size="xs">Hinzugefügt am {hinzugefuegt}</Text>
+              </Group>
+            )}
+          </Stack>
+          <Box className="nz-card__arrow" aria-hidden="true">
+            <IconArrowUpRight size={18} />
+          </Box>
         </Group>
 
         <LeistungsBadges stelle={stelle} />

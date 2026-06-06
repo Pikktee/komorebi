@@ -1,14 +1,15 @@
-import { Group, Pill } from '@mantine/core';
+import type { CSSProperties } from 'react';
+import { Box, Group, Pill } from '@mantine/core';
 
 const FELD_FARBE: Record<string, string> = {
   Naturschutz: 'wald',
-  'Artenschutz/Tiere': 'terra',
-  Meeresschutz: 'cyan',
-  'Forschung/Feldassistenz': 'grape',
-  'Landwirtschaft/Permakultur': 'lime',
-  'Wald/Forst': 'teal',
-  Umweltbildung: 'blue',
-  'Klima/Nachhaltigkeit': 'orange',
+  'Artenschutz/Tiere': 'wald',
+  Meeresschutz: 'himmel',
+  'Forschung/Feldassistenz': 'himmel',
+  'Landwirtschaft/Permakultur': 'sonne',
+  'Wald/Forst': 'wald',
+  Umweltbildung: 'himmel',
+  'Klima/Nachhaltigkeit': 'terra',
   Sonstiges: 'gray',
 };
 
@@ -25,13 +26,15 @@ export function TaetigkeitsPills({ felder, max }: { felder: string[]; max?: numb
         <Pill
           key={f}
           size="sm"
+          className="nz-field-pill"
           style={{
-            backgroundColor: `var(--mantine-color-${feldFarbe(f)}-1)`,
-            color: `var(--mantine-color-${feldFarbe(f)}-9)`,
-            fontWeight: 600,
-          }}
+            '--nz-pill-dot': `var(--mantine-color-${feldFarbe(f)}-6)`,
+          } as CSSProperties}
         >
-          {f}
+          <Group gap={6} wrap="nowrap">
+            <Box className="nz-field-pill__dot" aria-hidden="true" />
+            <span>{f}</span>
+          </Group>
         </Pill>
       ))}
       {rest > 0 && (

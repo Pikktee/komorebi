@@ -59,3 +59,15 @@ def test_parse_geo_city_prov():
     out = tamu._parse(FIXTURE)
     assert out[1]["land"] == "Kanada"
     assert out[1]["region"] == "Ottawa"
+
+
+def test_parse_setzt_titel_nicht_als_region_wenn_ort_fehlt():
+    html = """
+    <a class="list-group-item" id="job-1-result">
+      <h6>Seasonal Field Technician</h6>
+      <p>Field Station</p>
+    </a>
+    """
+    out = tamu._parse(html)
+    assert out[0]["land"] == ""
+    assert out[0]["region"] is None

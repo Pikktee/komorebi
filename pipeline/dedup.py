@@ -1,7 +1,9 @@
 """Deduplizierung/Zusammenführung gleicher Stellen aus mehreren Quellen.
 
-Schlüssel = (Organisation, Land, Titel), jeweils vereinheitlicht. Bei Duplikaten werden
-die Quell-URLs gesammelt und das früheste ``erstmals_gesehen`` übernommen.
+Primärer Schlüssel = (Organisation, Land, Titel), jeweils vereinheitlicht. Zusätzlich werden
+identische konkrete Quell-URLs zusammengeführt, falls eine Quelle denselben Detail-Link mit
+leicht abweichendem Titel-/Organisationstext liefert. Bei Duplikaten werden die Quell-URLs
+gesammelt und das früheste ``erstmals_gesehen`` übernommen.
 """
 from __future__ import annotations
 
@@ -14,6 +16,14 @@ def dedup_key(rec: dict) -> str:
         slug(rec.get("land", "")),
         slug(rec.get("titel", "")),
     ])
+
+
+def url_key(rec: dict) -> str | None:
+    """Normalisiert konkrete Quell-URLs für einen zusätzlichen Duplikat-Abgleich."""
+    url = (rec.get("quell_url") or "").strip().rstrip("/")
+    if not url:
+        return None
+    return f"url|{url.lower()}"
 
 
 def _merge_two(basis: dict, weitere: dict) -> dict:
@@ -41,12 +51,21 @@ def _merge_two(basis: dict, weitere: dict) -> dict:
 def merge(records: list[dict]) -> list[dict]:
     """Fasst Datensätze mit gleichem ``dedup_key`` zusammen, Reihenfolge bleibt stabil."""
     zusammengefasst: dict[str, dict] = {}
+    key_index: dict[str, str] = {}
+    url_index: dict[str, str] = {}
     reihenfolge: list[str] = []
     for rec in records:
-        key = dedup_key(rec)
+        roh_key = dedup_key(rec)
+        key = key_index.get(roh_key, roh_key)
+        ukey = url_key(rec)
+        if ukey and ukey in url_index:
+            key = url_index[ukey]
         if key in zusammengefasst:
             zusammengefasst[key] = _merge_two(zusammengefasst[key], rec)
         else:
             zusammengefasst[key] = dict(rec)
             reihenfolge.append(key)
+        key_index[roh_key] = key
+        if ukey:
+            url_index[ukey] = key
     return [zusammengefasst[k] for k in reihenfolge]

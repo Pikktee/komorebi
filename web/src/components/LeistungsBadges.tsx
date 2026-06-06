@@ -75,6 +75,8 @@ export function leistungsListe(stelle: Stelle): BadgeInfo[] {
 
 export function LeistungsBadges({ stelle }: { stelle: Stelle }) {
   const items = leistungsListe(stelle);
+  if (items.length === 0) return null;
+
   return (
     <Group gap={6}>
       {items.map((b) => (

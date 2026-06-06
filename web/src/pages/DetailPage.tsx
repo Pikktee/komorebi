@@ -11,6 +11,7 @@ import {
   Flex,
   Group,
   List,
+  SimpleGrid,
   Stack,
   Text,
   Title,
@@ -19,14 +20,17 @@ import {
   IconArrowLeft,
   IconArrowUpRight,
   IconCalendar,
+  IconCalendarPlus,
   IconClock,
-  IconMapPin,
   IconExternalLink,
+  IconLink,
+  IconMapPin,
+  IconWallet,
 } from '@tabler/icons-react';
 import { useStellen } from '../lib/useStellen';
 import { dauerText, datumText, PROGRAMM_LABEL, PROGRAMM_TOOLTIP, quelleLabel } from '../lib/labels';
 import { TaetigkeitsPills, feldFarbe } from '../components/TaetigkeitsPills';
-import { LeistungsBadges } from '../components/LeistungsBadges';
+import { LeistungsBadges, leistungsListe } from '../components/LeistungsBadges';
 import { InfoTooltip } from '../components/InfoTooltip';
 import type { CSSProperties } from 'react';
 
@@ -44,6 +48,46 @@ function FactRow({ icon, label, value }: { icon: ReactNode; label: string; value
       </div>
     </Group>
   );
+}
+
+function DetailFact({ icon, label, value }: { icon: ReactNode; label: string; value: ReactNode }) {
+  return (
+    <Group gap="sm" wrap="nowrap" align="flex-start" className="nz-detail-fact">
+      <Box className="nz-detail-fact__icon" aria-hidden="true">
+        {icon}
+      </Box>
+      <Stack gap={2}>
+        <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} fw={700}>
+          {label}
+        </Text>
+        <Text fw={650}>{value}</Text>
+      </Stack>
+    </Group>
+  );
+}
+
+function ortText(land: string, region: string | null): string {
+  if (land) return `${land}${region ? ` · ${region}` : ''}`;
+  if (region) return region;
+  return 'Ort offen';
+}
+
+function kostenKurz(stelle: { kostenpflichtig: boolean; teilnahmegebuehr_eur: number | null; kost_unterkunft_frei: boolean }) {
+  if (stelle.kostenpflichtig) {
+    return stelle.teilnahmegebuehr_eur != null
+      ? `Gebühr ${stelle.teilnahmegebuehr_eur.toLocaleString('de-DE')} €`
+      : 'Kostenpflichtig';
+  }
+  if (stelle.kost_unterkunft_frei) return 'Kost & Unterkunft frei';
+  return 'Keine Gebühr markiert';
+}
+
+function hostAusUrl(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
 }
 
 export function DetailPage() {
@@ -89,6 +133,9 @@ export function DetailPage() {
       : [datumText(stelle.zeitraum_von), datumText(stelle.zeitraum_bis)].filter(Boolean).join(' – ') || null;
 
   const alleLinks = [stelle.quell_url, ...stelle.weitere_quell_urls].filter(Boolean);
+  const leistungen = leistungsListe(stelle);
+  const hinzugefuegt = datumText(stelle.erstmals_gesehen);
+  const quellenText = `${alleLinks.length} ${alleLinks.length === 1 ? 'Quelle' : 'Quellen'}`;
 
   return (
     <Container size="lg" py={{ base: 'lg', md: 'xl' }}>
@@ -110,7 +157,7 @@ export function DetailPage() {
             <Group gap="sm">
               <Badge
                 variant={stelle.programm === 'keins' ? 'light' : 'filled'}
-                color={stelle.programm === 'keins' ? 'gray' : 'wald'}
+                color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
                 radius="sm"
                 style={{ textTransform: 'none' }}
               >
@@ -119,8 +166,7 @@ export function DetailPage() {
               <Group gap={4} c="wald.8">
                 <IconMapPin size={16} />
                 <Text fw={600}>
-                  {stelle.land || 'Ortsunabhängig'}
-                  {stelle.region ? ` · ${stelle.region}` : ''}
+                  {ortText(stelle.land, stelle.region)}
                 </Text>
                 {stelle.kontinent && <Text c="dimmed">({stelle.kontinent})</Text>}
               </Group>
@@ -134,6 +180,35 @@ export function DetailPage() {
             </Text>
 
             <TaetigkeitsPills felder={stelle.taetigkeitsfeld} />
+
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="sm" className="nz-detail-facts">
+              <DetailFact
+                icon={<IconMapPin size={18} />}
+                label="Ort"
+                value={`${ortText(stelle.land, stelle.region)}${stelle.kontinent ? ` (${stelle.kontinent})` : ''}`}
+              />
+              <DetailFact
+                icon={<IconClock size={18} />}
+                label="Dauer"
+                value={dauerText(stelle.dauer_monate_min, stelle.dauer_monate_max)}
+              />
+              <DetailFact
+                icon={<IconCalendar size={18} />}
+                label="Bewerbungsfrist"
+                value={datumText(stelle.bewerbungsfrist) ?? 'Keine Frist genannt'}
+              />
+              <DetailFact
+                icon={<IconWallet size={18} />}
+                label="Kosten & Leistungen"
+                value={kostenKurz(stelle)}
+              />
+              <DetailFact
+                icon={<IconCalendarPlus size={18} />}
+                label="Hinzugefügt"
+                value={hinzugefuegt ?? 'Datum unbekannt'}
+              />
+              <DetailFact icon={<IconLink size={18} />} label="Quellen" value={quellenText} />
+            </SimpleGrid>
 
             <Text fz="md" lh={1.7} mt="xs">
               {stelle.beschreibung}
@@ -156,19 +231,25 @@ export function DetailPage() {
             <Box
               mt="sm"
               p="md"
+              className="nz-program-note"
               style={{
-                backgroundColor: 'var(--mantine-color-wald-0)',
-                borderRadius: 14,
-                border: '1px solid var(--mantine-color-wald-2)',
+                borderRadius: 8,
               }}
             >
-              <Group gap={6} mb={4}>
-                <Text fw={600}>{PROGRAMM_LABEL[stelle.programm]}</Text>
-                <InfoTooltip label={PROGRAMM_TOOLTIP[stelle.programm]} />
+              <Group gap={6} justify="space-between">
+                <Group gap={6}>
+                  <Text fw={600}>Förderung</Text>
+                  <InfoTooltip label={PROGRAMM_TOOLTIP[stelle.programm]} />
+                </Group>
+                <Badge
+                  variant={stelle.programm === 'keins' ? 'light' : 'filled'}
+                  color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
+                  radius="sm"
+                  style={{ textTransform: 'none' }}
+                >
+                  {PROGRAMM_LABEL[stelle.programm]}
+                </Badge>
               </Group>
-              <Text size="sm" c="dark.4">
-                {PROGRAMM_TOOLTIP[stelle.programm]}
-              </Text>
             </Box>
           </Stack>
         </Box>
@@ -176,10 +257,10 @@ export function DetailPage() {
         <Box w={{ base: '100%', md: 360 }} style={{ flexShrink: 0 }}>
           <Card
             withBorder
-            radius="lg"
+            radius="md"
             padding="lg"
             pt="xl"
-            className="nz-accent"
+            className="nz-accent nz-detail-aside"
             style={{
               position: 'sticky',
               top: 84,
@@ -208,14 +289,17 @@ export function DetailPage() {
                 />
               )}
 
-              <Divider />
-
-              <div>
-                <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} mb={8}>
-                  Leistungen
-                </Text>
-                <LeistungsBadges stelle={stelle} />
-              </div>
+              {leistungen.length > 0 && (
+                <>
+                  <Divider />
+                  <div>
+                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} mb={8}>
+                      Leistungen
+                    </Text>
+                    <LeistungsBadges stelle={stelle} />
+                  </div>
+                </>
+              )}
 
               <Divider />
 
@@ -227,7 +311,7 @@ export function DetailPage() {
                   <Anchor key={url} href={url} target="_blank" rel="noopener noreferrer" size="sm">
                     <Group gap={4} wrap="nowrap">
                       <IconExternalLink size={14} />
-                      <span>{quelleLabel(stelle.quelle)}</span>
+                      <span>{url === stelle.quell_url ? quelleLabel(stelle.quelle) : hostAusUrl(url)}</span>
                     </Group>
                   </Anchor>
                 ))}

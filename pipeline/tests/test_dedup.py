@@ -27,6 +27,16 @@ def test_gleiche_stelle_wird_zusammengefuehrt():
     assert ergebnis[0]["erstmals_gesehen"] == "2026-05-01"
 
 
+def test_gleiche_url_wird_auch_bei_abweichendem_text_zusammengefuehrt():
+    a = _rec("quelle-a", "https://example.org/angebot/123", titel="Sea Turtle Volunteer", org="ARCHELON")
+    b = _rec("quelle-b", "https://example.org/angebot/123/", titel="Schildkröten-Workcamp", org="SCI")
+    c = _rec("quelle-c", "https://example.org/angebot/456", titel="Schildkröten-Workcamp", org="SCI")
+    ergebnis = dedup.merge([a, b, c])
+    assert len(ergebnis) == 1
+    assert ergebnis[0]["titel"] == "Sea Turtle Volunteer"
+    assert "https://example.org/angebot/456" in ergebnis[0]["weitere_quell_urls"]
+
+
 def test_unterschiedliche_titel_bleiben_getrennt():
     a = _rec("sci-workcamps", "https://a.example/1", titel="Schildkrötenschutz")
     b = _rec("sci-workcamps", "https://a.example/2", titel="Wolfsmonitoring")
