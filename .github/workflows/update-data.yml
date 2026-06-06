@@ -1,0 +1,44 @@
+name: Daten aktualisieren
+
+# Läuft täglich, scrapt die freigegebenen Quellen und committet den neuen Datenstand.
+on:
+  schedule:
+    - cron: '0 4 * * *' # täglich 04:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Pipeline ausführen (Seed + Live-Scraper + LLM-Filter)
+        working-directory: pipeline
+        env:
+          # ERFORDERLICH: als Repository-Secret hinterlegen (Settings → Secrets → Actions).
+          # Befüllen läuft bewusst IMMER mit LLM – ohne gültigen Key bricht der Lauf ab,
+          # damit keine unrelevanten Stellen ins System gelangen.
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: python build.py --live --llm
+
+      - name: Neuen Datenstand committen
+        run: |
+          git config user.name "komorebi-bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pipeline/data/datensatz.json web/public/datensatz.json
+          if git diff --staged --quiet; then
+            echo "Keine Änderungen am Datenstand."
+          else
+            git commit -m "data: Datenstand $(date -u +%F)"
+            git push
+          fi
