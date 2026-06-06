@@ -56,8 +56,15 @@ und `web/public/datensatz.json` (die das Frontend lädt). Beide sind **eingechec
 Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via stabiler `id` erhalten.
 
 - **Quellen** (`sources/*.py`): Jede liefert `fetch() -> list[dict]` und ein `QUELLE`-Label.
-  - `seed.py` = kuratierter Grundbestand (App ist nie leer; gilt als „geeignet").
-  - `conservation_job_board.py`, `tamu_jobs.py` = echte Live-Scraper (server-gerendert).
+  - `seed.py` = kuratierter Grundbestand (App ist nie leer; gilt als „geeignet"). **Achtung:**
+    Im Live-Lauf werden Seed-Einträge mit generischer Quell-URL ausgeblendet
+    (`build.GENERISCHE_QUELL_URLS`) – darum brauchen geförderte Stellen echte Live-Quellen.
+  - `conservation_job_board.py`, `tamu_jobs.py`, `goodwork.py` = HTML-Live-Scraper
+    (server-gerendert, `selectolax`); überwiegend Nordamerika, kein Förderprogramm.
+  - `esc.py` = **Europäisches Solidaritätskorps** über die öffentliche JSON/Elasticsearch-
+    Such-API des EU-Jugendportals (`/api/rest/eyp/v1/search`, dieselbe Abfrage wie die
+    Web-Suche). Liefert *geförderte* Naturschutz-Freiwilligendienste aus ~50 Ländern;
+    `programm="ESC"` ⇒ `normalize` leitet *Kost & Logis frei* ab. Paginiert mit 429-Backoff.
   - Scraper setzen **`_`-präfixierte Helfer-Felder** (`_job_type`, `_experience`,
     `_location_text`, `_kategorie`) für die Filterstufen. `normalize_record` übernimmt **nur**
     `SCHEMA_FELDER` → die Helfer-Felder fallen automatisch raus (dürfen nie im Output landen).
@@ -71,7 +78,10 @@ Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via st
   `google/gemini-2.5-flash-lite`; Key via `OPENROUTER_API_KEY`.
 - **`sources/geo.py`** – Gazetteer + Heuristik: `aufloesen(ortstext) -> (land, region,
   kontinent)`. Kennt US-Staaten/CA-Provinzen/UK/AU + ~120 Länder (dt./engl.) und das Format
-  „City ST/PROV". Wird **in den Scrapern** aufgerufen, bevor normalisiert wird.
+  „City ST/PROV". `aus_laendercode(iso2)` löst zusätzlich ISO-3166-1-alpha-2-Codes auf (z. B.
+  liefert ESC nur „FR"/„UG") – **nicht** über `aufloesen` schicken, weil Codes mit
+  US-Staat-Kürzeln kollidieren („DE"=Delaware vs. Deutschland). Wird **in den Scrapern**
+  aufgerufen, bevor normalisiert wird.
 - `normalize.py` (Rohdaten → `datenmodell.md`-Schema, leitet `kost_unterkunft_frei`/
   `kostenpflichtig` ab), `dedup.py` (Merge gleicher Stellen über Quellen hinweg),
   `sources/base.py` (Vokabular, `slug()`, `stabile_id()`, `feld_aus_text()`),
@@ -99,6 +109,8 @@ Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via st
   `<Grid>` meiden (TS-Fallen mit fraktionalen Spans) → stattdessen `Flex`/`SimpleGrid`.
 - Neue Quelle hinzufügen = Modul mit `QUELLE` + `fetch()` in `sources/`, Geo dort auflösen,
   Helfer-Felder für die Eignung setzen, in `build.sammle_live()` registrieren, Parser-Test mit
-  HTML-Fixture (siehe `tests/test_conservation_job_board.py`).
+  Fixture (HTML: `tests/test_conservation_job_board.py`; JSON-API: `tests/test_esc.py`). Bei
+  JSON-Quellen `fetch()` schlank halten (Netz + Paginierung) und das reine Mapping in ein
+  testbares `_parse(payload)` auslagern.
 
 Konzept/Datenmodell: `KONZEPT.md`, `datenmodell.md`. Ausführliche Doku: `README.md`.

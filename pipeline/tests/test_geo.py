@@ -80,3 +80,28 @@ def test_city_state_ohne_komma_usa():
 
 def test_city_prov_mit_slash():
     assert geo.aufloesen("Manotick / Greater Ottawa ON")[0] == "Kanada"
+
+
+def test_laendercode_basis():
+    assert geo.aus_laendercode("FR") == ("Frankreich", None, "Europa")
+    assert geo.aus_laendercode("UG") == ("Uganda", None, "Afrika")
+    assert geo.aus_laendercode("CR") == ("Costa Rica", None, "Nordamerika")
+    assert geo.aus_laendercode("EC") == ("Ecuador", None, "Südamerika")
+
+
+def test_laendercode_kollidiert_nicht_mit_us_staaten():
+    # "DE"=Delaware, "GA"=Georgia, "GE"=Georgia(US-Slug) – als ISO-Code andere Länder.
+    assert geo.aus_laendercode("DE") == ("Deutschland", None, "Europa")
+    assert geo.aus_laendercode("GE") == ("Georgien", None, "Asien")
+
+
+def test_laendercode_eu_sonderfaelle():
+    assert geo.aus_laendercode("EL")[0] == "Griechenland"  # EU nutzt EL statt GR
+    assert geo.aus_laendercode("UK")[0] == "Vereinigtes Königreich"
+
+
+def test_laendercode_kleinschreibung_und_unbekannt():
+    assert geo.aus_laendercode("tr") == ("Türkei", None, "Asien")
+    assert geo.aus_laendercode("ZZ") == ("", None, "")
+    assert geo.aus_laendercode("") == ("", None, "")
+    assert geo.aus_laendercode(None) == ("", None, "")

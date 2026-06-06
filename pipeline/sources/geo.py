@@ -197,6 +197,112 @@ for _name, _kont, _aliase in _LAENDER_ROH:
     for _a in _aliase:
         _LAND_INDEX[_a] = (_name, _kont)
 
+# --- ISO-3166-1-alpha-2-Codes -> (deutscher Name, Kontinent) ------------------------
+# Manche Quellen (z. B. das Europäische Solidaritätskorps) liefern das Land nur als
+# zweistelligen Ländercode. Diese können NICHT über ``_land_aus_token`` aufgelöst werden,
+# weil viele Codes mit US-Bundesstaat-Kürzeln kollidieren ("DE"=Delaware vs. Deutschland,
+# "GA"=Georgia vs. Georgien). Darum ein eigener, expliziter Index.
+# Hinweis: Die EU nutzt "EL" für Griechenland und "UK" für das Vereinigte Königreich.
+_ISO2_LAND: dict[str, tuple[str, str]] = {
+    # Europa
+    "AT": ("Österreich", "Europa"), "BE": ("Belgien", "Europa"),
+    "BG": ("Bulgarien", "Europa"), "HR": ("Kroatien", "Europa"),
+    "CY": ("Zypern", "Europa"), "CZ": ("Tschechien", "Europa"),
+    "DK": ("Dänemark", "Europa"), "EE": ("Estland", "Europa"),
+    "FI": ("Finnland", "Europa"), "FR": ("Frankreich", "Europa"),
+    "DE": ("Deutschland", "Europa"), "GR": ("Griechenland", "Europa"),
+    "EL": ("Griechenland", "Europa"), "HU": ("Ungarn", "Europa"),
+    "IE": ("Irland", "Europa"), "IT": ("Italien", "Europa"),
+    "LV": ("Lettland", "Europa"), "LT": ("Litauen", "Europa"),
+    "LU": ("Luxemburg", "Europa"), "MT": ("Malta", "Europa"),
+    "NL": ("Niederlande", "Europa"), "PL": ("Polen", "Europa"),
+    "PT": ("Portugal", "Europa"), "RO": ("Rumänien", "Europa"),
+    "SK": ("Slowakei", "Europa"), "SI": ("Slowenien", "Europa"),
+    "ES": ("Spanien", "Europa"), "SE": ("Schweden", "Europa"),
+    "IS": ("Island", "Europa"), "NO": ("Norwegen", "Europa"),
+    "LI": ("Liechtenstein", "Europa"), "CH": ("Schweiz", "Europa"),
+    "UK": ("Vereinigtes Königreich", "Europa"), "GB": ("Vereinigtes Königreich", "Europa"),
+    "RS": ("Serbien", "Europa"), "MK": ("Nordmazedonien", "Europa"),
+    "AL": ("Albanien", "Europa"), "ME": ("Montenegro", "Europa"),
+    "BA": ("Bosnien und Herzegowina", "Europa"), "XK": ("Kosovo", "Europa"),
+    "MD": ("Moldau", "Europa"), "UA": ("Ukraine", "Europa"),
+    "BY": ("Belarus", "Europa"), "RU": ("Russland", "Europa"),
+    # Afrika
+    "MA": ("Marokko", "Afrika"), "TN": ("Tunesien", "Afrika"),
+    "DZ": ("Algerien", "Afrika"), "EG": ("Ägypten", "Afrika"),
+    "UG": ("Uganda", "Afrika"), "KE": ("Kenia", "Afrika"),
+    "TZ": ("Tansania", "Afrika"), "GH": ("Ghana", "Afrika"),
+    "SN": ("Senegal", "Afrika"), "CM": ("Kamerun", "Afrika"),
+    "CG": ("Kongo", "Afrika"), "CD": ("DR Kongo", "Afrika"),
+    "TG": ("Togo", "Afrika"), "BJ": ("Benin", "Afrika"),
+    "MR": ("Mauretanien", "Afrika"), "ML": ("Mali", "Afrika"),
+    "BF": ("Burkina Faso", "Afrika"), "NG": ("Nigeria", "Afrika"),
+    "ET": ("Äthiopien", "Afrika"), "RW": ("Ruanda", "Afrika"),
+    "BI": ("Burundi", "Afrika"), "ZA": ("Südafrika", "Afrika"),
+    "NA": ("Namibia", "Afrika"), "ZW": ("Simbabwe", "Afrika"),
+    "ZM": ("Sambia", "Afrika"), "MZ": ("Mosambik", "Afrika"),
+    "MW": ("Malawi", "Afrika"), "MG": ("Madagaskar", "Afrika"),
+    "CI": ("Elfenbeinküste", "Afrika"), "SL": ("Sierra Leone", "Afrika"),
+    "GM": ("Gambia", "Afrika"), "LR": ("Liberia", "Afrika"),
+    "GN": ("Guinea", "Afrika"), "GW": ("Guinea-Bissau", "Afrika"),
+    "NE": ("Niger", "Afrika"), "TD": ("Tschad", "Afrika"),
+    "SD": ("Sudan", "Afrika"), "AO": ("Angola", "Afrika"),
+    "BW": ("Botswana", "Afrika"), "LS": ("Lesotho", "Afrika"),
+    "SZ": ("Eswatini", "Afrika"), "CV": ("Kap Verde", "Afrika"),
+    "SC": ("Seychellen", "Afrika"),
+    # Asien
+    "GE": ("Georgien", "Asien"), "AM": ("Armenien", "Asien"),
+    "AZ": ("Aserbaidschan", "Asien"), "TR": ("Türkei", "Asien"),
+    "NP": ("Nepal", "Asien"), "IN": ("Indien", "Asien"),
+    "LK": ("Sri Lanka", "Asien"), "TH": ("Thailand", "Asien"),
+    "VN": ("Vietnam", "Asien"), "KH": ("Kambodscha", "Asien"),
+    "LA": ("Laos", "Asien"), "ID": ("Indonesien", "Asien"),
+    "MY": ("Malaysia", "Asien"), "PH": ("Philippinen", "Asien"),
+    "CN": ("China", "Asien"), "JP": ("Japan", "Asien"),
+    "KR": ("Südkorea", "Asien"), "MN": ("Mongolei", "Asien"),
+    "BD": ("Bangladesch", "Asien"), "MM": ("Myanmar", "Asien"),
+    "IL": ("Israel", "Asien"), "JO": ("Jordanien", "Asien"),
+    "LB": ("Libanon", "Asien"), "PS": ("Palästina", "Asien"),
+    "SG": ("Singapur", "Asien"), "KZ": ("Kasachstan", "Asien"),
+    "KG": ("Kirgisistan", "Asien"), "TJ": ("Tadschikistan", "Asien"),
+    "UZ": ("Usbekistan", "Asien"), "PK": ("Pakistan", "Asien"),
+    "TL": ("Timor-Leste", "Asien"),
+    # Nordamerika (inkl. Mittelamerika & Karibik)
+    "US": ("USA", "Nordamerika"), "CA": ("Kanada", "Nordamerika"),
+    "MX": ("Mexiko", "Nordamerika"), "CR": ("Costa Rica", "Nordamerika"),
+    "PA": ("Panama", "Nordamerika"), "GT": ("Guatemala", "Nordamerika"),
+    "HN": ("Honduras", "Nordamerika"), "NI": ("Nicaragua", "Nordamerika"),
+    "BZ": ("Belize", "Nordamerika"), "SV": ("El Salvador", "Nordamerika"),
+    "CU": ("Kuba", "Nordamerika"), "DO": ("Dominikanische Republik", "Nordamerika"),
+    "JM": ("Jamaika", "Nordamerika"), "HT": ("Haiti", "Nordamerika"),
+    # Südamerika
+    "BR": ("Brasilien", "Südamerika"), "AR": ("Argentinien", "Südamerika"),
+    "CL": ("Chile", "Südamerika"), "PE": ("Peru", "Südamerika"),
+    "EC": ("Ecuador", "Südamerika"), "CO": ("Kolumbien", "Südamerika"),
+    "BO": ("Bolivien", "Südamerika"), "PY": ("Paraguay", "Südamerika"),
+    "UY": ("Uruguay", "Südamerika"), "VE": ("Venezuela", "Südamerika"),
+    "GY": ("Guyana", "Südamerika"), "SR": ("Suriname", "Südamerika"),
+    # Ozeanien
+    "AU": ("Australien", "Ozeanien"), "NZ": ("Neuseeland", "Ozeanien"),
+    "FJ": ("Fidschi", "Ozeanien"), "PG": ("Papua-Neuguinea", "Ozeanien"),
+    "WS": ("Samoa", "Ozeanien"), "TO": ("Tonga", "Ozeanien"),
+    "VU": ("Vanuatu", "Ozeanien"), "SB": ("Salomonen", "Ozeanien"),
+}
+
+
+def aus_laendercode(code: str | None) -> tuple[str, str | None, str]:
+    """Löst einen ISO-3166-1-alpha-2-Ländercode zu ``(land, region, kontinent)`` auf.
+
+    ``region`` ist immer ``None`` (der Code allein nennt keine Stadt). Unbekannte oder
+    leere Codes ergeben ``("", None, "")``.
+    """
+    treffer = _ISO2_LAND.get((code or "").strip().upper())
+    if not treffer:
+        return ("", None, "")
+    land, kont = treffer
+    return (land, None, kont)
+
+
 # Platzhalter, die kein Land bedeuten
 _PLATZHALTER = {
     "", "remote", "various", "various locations", "multiple", "multiple locations",

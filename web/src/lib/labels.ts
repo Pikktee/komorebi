@@ -50,6 +50,7 @@ export const KONTINENTE = [
 ];
 
 export const QUELLE_LABEL: Record<string, string> = {
+  esc: 'Europäisches Solidaritätskorps',
   eurodesk: 'Eurodesk',
   'sci-workcamps': 'SCI Workcamps',
   'conservation-job-board': 'Conservation Job Board',

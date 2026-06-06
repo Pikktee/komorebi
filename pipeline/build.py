@@ -71,10 +71,10 @@ def _lade_env() -> None:
 
 
 def sammle_live() -> list[dict]:
-    from sources import conservation_job_board, goodwork, tamu_jobs
+    from sources import conservation_job_board, esc, goodwork, tamu_jobs
 
     records: list[dict] = []
-    for modul in (conservation_job_board, tamu_jobs, goodwork):
+    for modul in (conservation_job_board, tamu_jobs, goodwork, esc):
         try:
             gefunden = modul.fetch()
         except Exception as exc:  # noqa: BLE001 - eine Quelle darf den Build nicht kippen
