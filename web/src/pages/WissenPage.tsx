@@ -80,7 +80,7 @@ function Ref({ n }: { n: number | number[] }) {
       {liste.map((x, i) => (
         <span key={x}>
           {i > 0 && ','}
-          <Anchor href={`#q${x}`} fz={11} fw={700} c="wald.7" aria-label={`Quelle ${x}`}>
+          <Anchor href={`#q${x}`} fz={11} fw={700} c="wald.9" aria-label={`Quelle ${x}`}>
             [{x}]
           </Anchor>
         </span>
@@ -197,16 +197,16 @@ const GLOSSAR: { begriff: string; text: ReactNode }[] = [
 
 function SectionTitle({ icon, kicker, titel }: { icon: ReactNode; kicker: string; titel: string }) {
   return (
-    <Stack gap={6} mb="md">
+    <Stack gap={6} mb="lg">
       <Group gap={8} c="wald.8">
         <ThemeIcon variant="light" color="wald" radius="md" size="md">
           {icon}
         </ThemeIcon>
-        <Text fw={600} tt="uppercase" fz="sm" lts={1}>
+        <Text fw={700} tt="uppercase" fz="xs" lts={1.5}>
           {kicker}
         </Text>
       </Group>
-      <Title order={2} className="nz-display" fz={{ base: 24, md: 30 }}>
+      <Title order={2} className="nz-display" fz={{ base: 26, md: 32 }} c="wald.9">
         {titel}
       </Title>
     </Stack>
@@ -218,27 +218,56 @@ export function WissenPage() {
     <>
       {/* Kopfband */}
       <Box style={{ background: 'linear-gradient(180deg, var(--mantine-color-wald-0), transparent)' }}>
-        <Container size="md" pt={{ base: 'xl', md: 56 }} pb="md">
-          <Stack gap="md" align="center" ta="center">
-            <KomorebiMark size={48} />
-            <Title order={1} className="nz-display" fz={{ base: 32, md: 44 }}>
-              Gut zu wissen
-            </Title>
-            <Text c="dimmed" maw={620} fz={{ base: 'md', md: 'lg' }}>
-              Was ökologische Freiwilligendienste sind, welche Programme es gibt, was sie
-              übernehmen – und worauf du achten solltest. Kompakt erklärt, mit Quellen zum
-              Weiterlesen.
-            </Text>
-          </Stack>
+        <Container size="md" pt={{ base: 'xl', md: 64 }} pb="xl">
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl" style={{ alignItems: 'center' }}>
+            <Stack gap="md" className="nz-wissen-header-stack">
+              <KomorebiMark size={48} />
+              <Title order={1} className="nz-display" fz={{ base: 34, md: 46 }} c="wald.9">
+                Gut zu wissen
+              </Title>
+              <Text c="dimmed" fz={{ base: 'sm', md: 'md' }} style={{ lineHeight: 1.5 }}>
+                Was ökologische Freiwilligendienste sind, welche Programme es gibt, was sie
+                übernehmen – und worauf du achten solltest. Kompakt erklärt, mit Belegen zum
+                Weiterlesen.
+              </Text>
+            </Stack>
+            <Box style={{ position: 'relative', width: '100%', maxWidth: 360, margin: '0 auto' }}>
+              <Box
+                style={{
+                  position: 'absolute',
+                  inset: 6,
+                  borderRadius: 16,
+                  backgroundColor: 'var(--mantine-color-sonne-2)',
+                  transform: 'rotate(2deg)',
+                  zIndex: 0,
+                }}
+              />
+              <img
+                src="/komorebi_forest.png"
+                alt="Sonnenlicht fällt durch Blätter"
+                style={{
+                  width: '100%',
+                  height: 200,
+                  objectFit: 'cover',
+                  borderRadius: 14,
+                  border: '1px solid var(--nz-line)',
+                  boxShadow: '0 8px 24px rgba(10, 42, 27, 0.15)',
+                  position: 'relative',
+                  zIndex: 1,
+                  display: 'block',
+                }}
+              />
+            </Box>
+          </SimpleGrid>
         </Container>
       </Box>
 
       <Container size="md" py={{ base: 'lg', md: 'xl' }}>
-        <Stack gap={56}>
+        <Stack gap={64}>
           {/* In Kürze */}
           <section>
             <SectionTitle icon={<IconLeaf size={18} />} kicker="In Kürze" titel="Was ist ein ökologischer Freiwilligendienst?" />
-            <Text mb="md">
+            <Text mb="lg" style={{ lineHeight: 1.6 }}>
               Ein ökologischer Freiwilligendienst ist ein organisierter Einsatz im Natur-,
               Arten- oder Umweltschutz – das deutsche <b>Freiwillige Ökologische Jahr (FÖJ)</b>{' '}
               ist das bekannteste Vorbild.<Ref n={6} /> Du arbeitest mehrere Monate in einem
@@ -246,7 +275,7 @@ export function WissenPage() {
               kein reguläres Gehalt. Komorebi sammelt solche Plätze <b>weltweit</b> und macht sie
               gemeinsam durchsuchbar.<Ref n={7} />
             </Text>
-            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
+            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="lg">
               <KurzKarte icon={<IconLeaf size={22} />} titel="Was" text="Naturschutz, Artenschutz, Feldforschung & Umweltbildung – statt Schreibtisch." />
               <KurzKarte icon={<IconWorld size={22} />} titel="Für wen" text="Junge Menschen, die Natur erleben und sich orientieren wollen – ideal vor dem Studium." />
               <KurzKarte icon={<IconCoin size={22} />} titel="Was kostet's" text="Bei geförderten Diensten nichts – oft gibt es sogar Taschengeld und freie Kost & Logis." />
@@ -256,32 +285,59 @@ export function WissenPage() {
           {/* Programme */}
           <section>
             <SectionTitle icon={<IconWorld size={18} />} kicker="Förderung" titel="Die wichtigsten Programme" />
-            <Text mb="lg">
+            <Text mb="xl" style={{ lineHeight: 1.6 }}>
               Viele Plätze laufen über staatlich oder von der EU geförderte Programme. Sie
               unterscheiden sich in Träger, Dauer, Alter und Zielregion – die Leistungen sind
               aber ähnlich: Der Platz ist für dich <b>kostenlos</b>.
             </Text>
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
               {PROGRAMME.map((p) => (
-                <Card key={p.name} withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--nz-line)' }}>
-                  <Group justify="space-between" mb={6}>
-                    <Text fw={700} fz="lg" className="nz-display">
-                      {p.name}
+                <Card 
+                  key={p.name} 
+                  withBorder 
+                  radius="lg" 
+                  padding="lg" 
+                  className="nz-glass-panel"
+                  style={{ 
+                    borderColor: 'var(--nz-line)',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  }}
+                >
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: -30,
+                      right: -30,
+                      width: 130,
+                      height: 130,
+                      borderRadius: 999,
+                      background: `radial-gradient(circle, var(--mantine-color-${p.farbe}-2) 0%, transparent 70%)`,
+                      opacity: 0.65,
+                      zIndex: 0,
+                      pointerEvents: 'none',
+                    }}
+                  />
+                  <Stack gap="sm" style={{ position: 'relative', zIndex: 1 }}>
+                    <Group justify="space-between" mb={2} wrap="nowrap">
+                      <Text fw={700} fz="lg" className="nz-display" c="wald.9">
+                        {p.name}
+                      </Text>
+                      <Badge variant="light" color={p.farbe} radius="sm" style={{ textTransform: 'none', fontWeight: 700, border: `1px solid var(--mantine-color-${p.farbe}-2)` }}>
+                        {p.traeger}
+                      </Badge>
+                    </Group>
+                    <Text size="xs" c="dark.5" mb="xs" style={{ lineHeight: 1.45 }}>
+                      {p.text}
+                      <Ref n={p.ref} />
                     </Text>
-                    <Badge variant="light" color={p.farbe} radius="sm" style={{ textTransform: 'none' }}>
-                      {p.traeger}
-                    </Badge>
-                  </Group>
-                  <Text size="sm" c="dark.4" mb="sm">
-                    {p.text}
-                    <Ref n={p.ref} />
-                  </Text>
-                  <Divider mb="sm" />
-                  <Group gap="lg">
-                    <FactMini label="Dauer" wert={p.dauer} />
-                    <FactMini label="Alter" wert={p.alter} />
-                    <FactMini label="Region" wert={p.region} />
-                  </Group>
+                    <Divider />
+                    <Group gap="md" wrap="wrap" pt={4}>
+                      <FactMini label="Dauer" wert={p.dauer} />
+                      <FactMini label="Alter" wert={p.alter} />
+                      <FactMini label="Region" wert={p.region} />
+                    </Group>
+                  </Stack>
                 </Card>
               ))}
             </SimpleGrid>
@@ -290,42 +346,52 @@ export function WissenPage() {
           {/* Leistungen */}
           <section>
             <SectionTitle icon={<IconShieldCheck size={18} />} kicker="Leistungen" titel="Was die Förderung übernimmt" />
-            <Text mb="lg">
+            <Text mb="xl" style={{ lineHeight: 1.6 }}>
               Am Beispiel des Europäischen Solidaritätskorps: Die EU zahlt keinen Lohn, sondern
               macht den Platz <b>kostenlos</b> für dich.<Ref n={1} /> Bei IJFD, weltwärts und
               kulturweit ist es ähnlich.<Ref n={[3, 4, 5]} />
             </Text>
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="md">
+            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
               {LEISTUNGEN.map((l) => (
-                <Group key={l.titel} gap="sm" align="flex-start" wrap="nowrap">
-                  <ThemeIcon variant="light" color="wald" radius="md" size="lg">
-                    {l.icon}
-                  </ThemeIcon>
-                  <div>
-                    <Text fw={600} size="sm">
-                      {l.titel}
-                    </Text>
-                    <Text size="sm" c="dimmed">
-                      {l.text}
-                    </Text>
-                  </div>
-                </Group>
+                <Card key={l.titel} withBorder radius="md" p="md" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
+                  <Group gap="sm" align="flex-start" wrap="nowrap">
+                    <ThemeIcon variant="light" color="wald" radius="md" size="lg" style={{ flexShrink: 0 }}>
+                      {l.icon}
+                    </ThemeIcon>
+                    <div>
+                      <Text fw={700} size="sm" c="wald.9">
+                        {l.titel}
+                      </Text>
+                      <Text size="xs" c="dimmed" mt={2} style={{ lineHeight: 1.35 }}>
+                        {l.text}
+                      </Text>
+                    </div>
+                  </Group>
+                </Card>
               ))}
             </SimpleGrid>
           </section>
 
           {/* Voluntourism */}
           <section>
-            <Card withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--mantine-color-terra-2)', backgroundColor: 'var(--mantine-color-terra-0)' }}>
+            <Card 
+              withBorder 
+              radius="lg" 
+              padding="lg" 
+              style={{ 
+                borderColor: 'var(--mantine-color-terra-3)', 
+                backgroundColor: 'var(--mantine-color-terra-0)' 
+              }}
+            >
               <Group gap="sm" mb="xs">
                 <ThemeIcon variant="light" color="terra" radius="md" size="lg">
                   <IconAlertTriangle size={20} />
                 </ThemeIcon>
-                <Title order={3} fz="xl">
+                <Title order={3} fz="xl" className="nz-display" c="terra.9">
                   Vorsicht: die Voluntourism-Falle
                 </Title>
               </Group>
-              <Text c="dark.5">
+              <Text size="xs" c="dark.5" style={{ lineHeight: 1.5 }}>
                 Viele weltweite „Conservation"-Programme sind <b>kostenpflichtig</b> – teils mehrere
                 tausend Euro. Solche kommerziellen Freiwilligenreisen („Voluntourism") halten nicht
                 immer, was sie versprechen, und sind nicht automatisch sinnvoll für Natur oder
@@ -338,45 +404,47 @@ export function WissenPage() {
           {/* Checkliste */}
           <section>
             <SectionTitle icon={<IconCircleCheck size={18} />} kicker="Orientierung" titel="Deine Checkliste" />
-            <List
-              spacing="sm"
-              center
-              icon={
-                <ThemeIcon color="wald" radius="xl" size={22}>
-                  <IconCircleCheck size={14} />
-                </ThemeIcon>
-              }
-            >
-              <List.Item>Ist der Platz <b>gefördert</b> oder fällt eine Teilnahmegebühr an? Was genau ist enthalten?</List.Item>
-              <List.Item>Gibt es <b>freie Kost & Unterkunft</b> und ein Taschengeld?</List.Item>
-              <List.Item>Wer ist die <b>Organisation</b> – seriös, transparent, mit echten Ansprechpersonen?</List.Item>
-              <List.Item>Passt die <b>Dauer</b> (Wochen, Monate, ein ganzes Jahr) zu deinen Plänen?</List.Item>
-              <List.Item>Welche <b>Voraussetzungen</b> gelten (Alter, Sprache, Vorkenntnisse, Impfungen)?</List.Item>
-              <List.Item>Bis wann musst du dich <b>bewerben</b> – und brauchst du eine Entsendeorganisation?<Ref n={7} /></List.Item>
-            </List>
+            <Card withBorder radius="lg" p="lg" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
+              <List
+                spacing="sm"
+                center
+                icon={
+                  <ThemeIcon color="wald" radius="xl" size={22}>
+                    <IconCircleCheck size={14} />
+                  </ThemeIcon>
+                }
+              >
+                <List.Item>Ist der Platz <b>gefördert</b> oder fällt eine Teilnahmegebühr an? Was genau ist enthalten?</List.Item>
+                <List.Item>Gibt es <b>freie Kost & Unterkunft</b> und ein Taschengeld?</List.Item>
+                <List.Item>Wer ist die <b>Organisation</b> – seriös, transparent, mit echten Ansprechpersonen?</List.Item>
+                <List.Item>Passt die <b>Dauer</b> (Wochen, Monate, ein ganzes Jahr) zu deinen Plänen?</List.Item>
+                <List.Item>Welche <b>Voraussetzungen</b> gelten (Alter, Sprache, Vorkenntnisse, Impfungen)?</List.Item>
+                <List.Item>Bis wann musst du dich <b>bewerben</b> – und brauchst du eine Entsendeorganisation?<Ref n={7} /></List.Item>
+              </List>
+            </Card>
           </section>
 
           {/* Glossar */}
           <section>
             <SectionTitle icon={<IconBook2 size={18} />} kicker="Nachschlagen" titel="Glossar" />
-            <Stack gap={0}>
-              {GLOSSAR.map((g, i) => (
-                <Box key={g.begriff} py="md" style={{ borderTop: i === 0 ? undefined : '1px solid var(--nz-line)' }}>
-                  <Text fw={600} mb={2}>
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+              {GLOSSAR.map((g) => (
+                <Card key={g.begriff} withBorder radius="lg" p="md" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
+                  <Text fw={700} mb={4} c="wald.9" className="nz-display" fz="sm">
                     {g.begriff}
                   </Text>
-                  <Text size="sm" c="dimmed">
+                  <Text size="xs" c="dimmed" style={{ lineHeight: 1.4 }}>
                     {g.text}
                   </Text>
-                </Box>
+                </Card>
               ))}
-            </Stack>
+            </SimpleGrid>
           </section>
 
           {/* Quellen */}
           <section id="quellen">
             <SectionTitle icon={<IconExternalLink size={18} />} kicker="Belege" titel="Quellen" />
-            <Text size="sm" c="dimmed" mb="md">
+            <Text size="sm" c="dimmed" mb="md" style={{ lineHeight: 1.45 }}>
               Alle Angaben sind sorgfältig recherchiert, aber ohne Gewähr – Details (Alter, Dauer,
               Leistungen) können sich ändern. Verbindliche Informationen findest du immer direkt
               bei den Programmen und Organisationen. Stand: Juni 2026.
@@ -384,10 +452,10 @@ export function WissenPage() {
             <Stack gap="xs">
               {QUELLEN.map((q) => (
                 <Group key={q.n} id={`q${q.n}`} gap="xs" wrap="nowrap" align="flex-start">
-                  <Text fw={700} c="wald.7" fz="sm" style={{ minWidth: 24 }}>
+                  <Text fw={700} c="wald.9" fz="sm" style={{ minWidth: 24 }}>
                     [{q.n}]
                   </Text>
-                  <Anchor href={q.url} target="_blank" rel="noopener noreferrer" size="sm">
+                  <Anchor href={q.url} target="_blank" rel="noopener noreferrer" size="sm" className="nz-link-high-contrast">
                     <Group gap={4} wrap="nowrap">
                       <span>{q.name}</span>
                       <IconExternalLink size={13} style={{ flexShrink: 0 }} />
@@ -400,7 +468,7 @@ export function WissenPage() {
 
           {/* CTA */}
           <Box ta="center" py="md">
-            <Button component={Link} to="/finden" size="md" color="wald" rightSection={<IconArrowRight size={18} />}>
+            <Button component={Link} to="/finden" size="md" color="wald" rightSection={<IconArrowRight size={18} />} style={{ fontWeight: 700 }}>
               Jetzt Stellen finden
             </Button>
           </Box>
@@ -412,14 +480,23 @@ export function WissenPage() {
 
 function KurzKarte({ icon, titel, text }: { icon: ReactNode; titel: string; text: string }) {
   return (
-    <Card withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--nz-line)' }}>
+    <Card 
+      withBorder 
+      radius="lg" 
+      padding="lg" 
+      className="nz-glass-panel"
+      style={{ 
+        borderColor: 'var(--nz-line)',
+        boxShadow: '0 8px 20px -6px rgba(20, 35, 27, 0.04)',
+      }}
+    >
       <ThemeIcon variant="light" color="wald" radius="md" size="lg" mb="sm">
         {icon}
       </ThemeIcon>
-      <Text fw={600} mb={4}>
+      <Text fw={700} mb={4} c="wald.9" className="nz-display" fz="md">
         {titel}
       </Text>
-      <Text size="sm" c="dimmed">
+      <Text size="xs" c="dimmed" style={{ lineHeight: 1.4 }}>
         {text}
       </Text>
     </Card>
@@ -429,10 +506,10 @@ function KurzKarte({ icon, titel, text }: { icon: ReactNode; titel: string; text
 function FactMini({ label, wert }: { label: string; wert: string }) {
   return (
     <div>
-      <Text fz={11} c="dimmed" tt="uppercase" lts={0.5}>
+      <Text fz={9} c="dimmed" tt="uppercase" lts={0.5} fw={700}>
         {label}
       </Text>
-      <Text size="sm" fw={500}>
+      <Text size="xs" fw={600} c="dark.4">
         {wert}
       </Text>
     </div>

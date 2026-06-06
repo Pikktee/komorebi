@@ -7,6 +7,7 @@ import {
   Card,
   Container,
   Group,
+  SimpleGrid,
   Stack,
   Text,
   ThemeIcon,
@@ -86,7 +87,7 @@ export function UeberPage() {
         <Container size="sm" pt={{ base: 'xl', md: 56 }} pb="md">
           <Stack gap="md" align="center" ta="center">
             <KomorebiMark size={48} />
-            <Title order={1} className="nz-display" fz={{ base: 32, md: 44 }}>
+            <Title order={1} className="nz-display" fz={{ base: 32, md: 44 }} c="wald.9">
               Über Komorebi
             </Title>
             <Text c="dimmed" maw={560} fz={{ base: 'md', md: 'lg' }}>
@@ -100,20 +101,36 @@ export function UeberPage() {
       <Container size="sm" py={{ base: 'lg', md: 'xl' }}>
         <Stack gap={48}>
           {/* Der Name */}
-          <Card withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--nz-line)' }}>
-            <Group gap="sm" mb="xs">
-              <ThemeIcon variant="light" color="sonne" radius="md" size="lg">
-                <IconSunHigh size={20} />
-              </ThemeIcon>
-              <Title order={2} fz="xl" className="nz-display">
-                Woher der Name?
-              </Title>
-            </Group>
-            <Text c="dark.5">
-              <b>Komorebi</b> (japanisch 木漏れ日) bezeichnet das <b>Sonnenlicht, das durch die
-              Blätter der Bäume fällt</b> – ein eigenes Wort für diese Lichtflecken im Wald. Es steht
-              für genau die Momente draußen in der Natur, die solche Einsätze ausmachen.
-            </Text>
+          <Card withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--nz-line)' }} className="nz-glass-panel">
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg" style={{ alignItems: 'center' }}>
+              <Stack gap="xs">
+                <Group gap="sm" mb={4}>
+                  <ThemeIcon variant="light" color="sonne" radius="md" size="lg">
+                    <IconSunHigh size={20} />
+                  </ThemeIcon>
+                  <Title order={2} fz="xl" className="nz-display" c="wald.9">
+                    Woher der Name?
+                  </Title>
+                </Group>
+                <Text c="dark.5" size="sm" style={{ lineHeight: 1.5 }}>
+                  <b>Komorebi</b> (japanisch 木漏れ日) bezeichnet das <b>Sonnenlicht, das durch die
+                  Blätter der Bäume fällt</b> – ein eigenes Wort für diese Lichtflecken im Wald. Es steht
+                  für genau die Momente draußen in der Natur, die solche Einsätze ausmachen.
+                </Text>
+              </Stack>
+              <img
+                src="/komorebi_forest.png"
+                alt="Sonnenlicht durch Blätter"
+                style={{
+                  width: '100%',
+                  height: 160,
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                  border: '1px solid var(--nz-line)',
+                  boxShadow: '0 6px 18px rgba(10, 42, 27, 0.1)',
+                }}
+              />
+            </SimpleGrid>
           </Card>
 
           {/* FAQ */}

@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  ThemeIcon,
   Title,
 } from '@mantine/core';
 import {
@@ -26,18 +27,21 @@ import {
   IconLink,
   IconMapPin,
   IconWallet,
+  IconCircleCheck,
+  IconCoins,
 } from '@tabler/icons-react';
 import { useStellen } from '../lib/useStellen';
 import { dauerText, datumText, PROGRAMM_LABEL, PROGRAMM_TOOLTIP, quelleLabel } from '../lib/labels';
 import { TaetigkeitsPills, feldFarbe } from '../components/TaetigkeitsPills';
 import { LeistungsBadges, leistungsListe } from '../components/LeistungsBadges';
 import { InfoTooltip } from '../components/InfoTooltip';
+import { ProgramPopover } from '../components/ProgramPopover';
 import type { CSSProperties } from 'react';
 
 function FactRow({ icon, label, value }: { icon: ReactNode; label: string; value: ReactNode }) {
   return (
     <Group gap="sm" wrap="nowrap" align="flex-start">
-      <Box c="wald.7" mt={2}>
+      <Box c="wald.9" mt={2}>
         {icon}
       </Box>
       <div>
@@ -155,15 +159,18 @@ export function DetailPage() {
         <Box style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <Stack gap="md">
             <Group gap="sm">
-              <Badge
-                variant={stelle.programm === 'keins' ? 'light' : 'filled'}
-                color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
-                radius="sm"
-                style={{ textTransform: 'none' }}
-              >
-                {PROGRAMM_LABEL[stelle.programm]}
-              </Badge>
-              <Group gap={4} c="wald.8">
+              <ProgramPopover programm={stelle.programm}>
+                <Badge
+                  variant={stelle.programm === 'keins' ? 'light' : 'filled'}
+                  color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
+                  radius="sm"
+                  style={{ textTransform: 'none', cursor: 'pointer' }}
+                >
+                  {PROGRAMM_LABEL[stelle.programm]}
+                </Badge>
+              </ProgramPopover>
+              
+              <Group gap={4} c="wald.9">
                 <IconMapPin size={16} />
                 <Text fw={600}>
                   {ortText(stelle.land, stelle.region)}
@@ -172,10 +179,10 @@ export function DetailPage() {
               </Group>
             </Group>
 
-            <Title order={1} fz={{ base: 30, md: 40 }} lh={1.1}>
+            <Title order={1} fz={{ base: 30, md: 40 }} lh={1.1} className="nz-display" c="wald.9">
               {stelle.titel}
             </Title>
-            <Text size="lg" c="dimmed">
+            <Text size="lg" c="dimmed" fw={500}>
               {stelle.organisation}
             </Text>
 
@@ -210,16 +217,46 @@ export function DetailPage() {
               <DetailFact icon={<IconLink size={18} />} label="Quellen" value={quellenText} />
             </SimpleGrid>
 
-            <Text fz="md" lh={1.7} mt="xs">
+            <Text fz="md" lh={1.7} mt="xs" style={{ whiteSpace: 'pre-line' }}>
               {stelle.beschreibung}
             </Text>
 
-            <Divider my="sm" />
+            {leistungen.length > 0 && (
+              <>
+                <Divider my="md" />
+                <Stack gap="xs">
+                  <Title order={3} fz="xl" className="nz-display" c="wald.9">
+                    Leistungen im Detail
+                  </Title>
+                  <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                    {leistungen.map((l, idx) => (
+                      <Card key={idx} withBorder radius="lg" p="md" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
+                        <Group gap="md" wrap="nowrap" align="flex-start">
+                          <ThemeIcon size={40} radius="md" color={l.color} variant="light" style={{ flexShrink: 0 }}>
+                            {l.icon}
+                          </ThemeIcon>
+                          <div>
+                            <Text fw={700} size="sm" c="wald.9">{l.text}</Text>
+                            <Text size="xs" c="dimmed" mt={2} style={{ lineHeight: 1.35 }}>{l.tip}</Text>
+                          </div>
+                        </Group>
+                      </Card>
+                    ))}
+                  </SimpleGrid>
+                </Stack>
+              </>
+            )}
 
-            <Title order={3} fz="xl">
+            <Divider my="md" />
+
+            <Title order={3} fz="xl" className="nz-display" c="wald.9">
               Voraussetzungen
             </Title>
-            <List spacing="xs" center>
+            <List spacing="xs" center icon={
+              <ThemeIcon color="wald" size={20} radius="xl">
+                <IconCircleCheck size={12} />
+              </ThemeIcon>
+            }>
               {alter && <List.Item>Alter: {alter}</List.Item>}
               {v.sprache && <List.Item>Sprache: {v.sprache}</List.Item>}
               {v.vorkenntnisse && <List.Item>{v.vorkenntnisse}</List.Item>}
@@ -233,24 +270,49 @@ export function DetailPage() {
               p="md"
               className="nz-program-note"
               style={{
-                borderRadius: 8,
+                borderRadius: 12,
               }}
             >
               <Group gap={6} justify="space-between">
                 <Group gap={6}>
-                  <Text fw={600}>Förderung</Text>
+                  <Text fw={650}>Förderung & Programm</Text>
                   <InfoTooltip label={PROGRAMM_TOOLTIP[stelle.programm]} />
                 </Group>
-                <Badge
-                  variant={stelle.programm === 'keins' ? 'light' : 'filled'}
-                  color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
-                  radius="sm"
-                  style={{ textTransform: 'none' }}
-                >
-                  {PROGRAMM_LABEL[stelle.programm]}
-                </Badge>
+                <ProgramPopover programm={stelle.programm}>
+                  <Badge
+                    variant={stelle.programm === 'keins' ? 'light' : 'filled'}
+                    color={stelle.programm === 'keins' ? 'gray' : 'himmel'}
+                    radius="sm"
+                    style={{ textTransform: 'none', cursor: 'pointer' }}
+                  >
+                    {PROGRAMM_LABEL[stelle.programm]}
+                  </Badge>
+                </ProgramPopover>
               </Group>
             </Box>
+
+            {(stelle.programm === 'weltwärts' || (stelle.programm === 'IJFD' && Array.isArray(leistungen) && leistungen.length > 0)) && (
+              <Card 
+                withBorder 
+                radius="lg" 
+                p="lg" 
+                style={{ 
+                  borderColor: 'var(--mantine-color-terra-3)', 
+                  backgroundColor: 'var(--mantine-color-terra-0)' 
+                }} 
+                mt="md"
+              >
+                <Group gap="xs" mb="xs">
+                  <ThemeIcon color="terra" variant="light">
+                    <IconCoins size={18} />
+                  </ThemeIcon>
+                  <Text fw={700} className="nz-display" c="terra.9">Gut zu wissen: Der Spenderkreis</Text>
+                </Group>
+                <Text size="xs" c="dark.5" style={{ lineHeight: 1.5 }}>
+                  Bei Programmen wie weltwärts (und manchen IJFD-Trägern) werden bis zu 75% der Kosten vom Bund gefördert. Die restlichen Kosten decken die gemeinnützigen Organisationen über Spenden ab. Daher wirst du nach Zusage gebeten, einen <b>Förderkreis (Spenderkreis)</b> aufzubauen. Das ist <b>keine</b> feste Gebühr, die du selbst zahlen musst – du sammelst kleine Spendenberichte von Unterstützern (z.B. Verwandten, Vereinen, Firmen). Keine Sorge: Deine Zusage scheitert fast nie am Spenderkreis!
+                </Text>
+              </Card>
+            )}
           </Stack>
         </Box>
 
@@ -269,7 +331,7 @@ export function DetailPage() {
             } as CSSProperties}
           >
             <Stack gap="lg">
-              <Text fw={600} fz="lg" className="nz-display">
+              <Text fw={700} fz="lg" className="nz-display" c="wald.9">
                 Auf einen Blick
               </Text>
 
@@ -311,7 +373,7 @@ export function DetailPage() {
                   <Anchor key={url} href={url} target="_blank" rel="noopener noreferrer" size="sm">
                     <Group gap={4} wrap="nowrap">
                       <IconExternalLink size={14} />
-                      <span>{url === stelle.quell_url ? quelleLabel(stelle.quelle) : hostAusUrl(url)}</span>
+                      <span style={{ wordBreak: 'break-all' }}>{url === stelle.quell_url ? quelleLabel(stelle.quelle) : hostAusUrl(url)}</span>
                     </Group>
                   </Anchor>
                 ))}
@@ -326,6 +388,7 @@ export function DetailPage() {
                 size="md"
                 rightSection={<IconArrowUpRight size={18} />}
                 fullWidth
+                style={{ fontWeight: 700 }}
               >
                 Zur Stelle &amp; Bewerbung
               </Button>

@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconAdjustmentsHorizontal, IconAlertCircle, IconCalendarStats, IconFilter } from '@tabler/icons-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useStellen } from '../lib/useStellen';
 import { KomorebiMark } from '../components/Logo';
 import {
@@ -54,26 +55,26 @@ export function FindenPage() {
         <Group justify="space-between" align="flex-end" gap="lg">
           <Stack gap={6}>
             <Group gap={6}>
-              <Title order={1} fz={{ base: 32, md: 42 }}>
+              <Title order={1} fz={{ base: 32, md: 42 }} className="nz-display" c="wald.9">
                 Stellen finden
               </Title>
               <InfoTooltip label="Deine Filter werden in der URL gespeichert. Du kannst die Suche also direkt teilen oder später wieder öffnen." />
             </Group>
             <Group gap="xs">
-              <Badge variant="light" color="wald" radius="sm" leftSection={<IconFilter size={13} />}>
+              <Badge variant="light" color="wald" radius="sm" leftSection={<IconFilter size={13} />} style={{ border: '1px solid var(--mantine-color-wald-2)' }}>
                 {aktiv} aktiv
               </Badge>
-              <Badge variant="light" color="himmel" radius="sm">
+              <Badge variant="light" color="himmel" radius="sm" style={{ border: '1px solid var(--mantine-color-himmel-2)' }}>
                 {loading ? 'Lade …' : `${gefiltert.length} Treffer`}
               </Badge>
               {generiertAm && (
                 <Badge variant="outline" color="gray" radius="sm" leftSection={<IconCalendarStats size={13} />}>
-                  {datumText(generiertAm)}
+                  Aktualisiert: {datumText(generiertAm)}
                 </Badge>
               )}
             </Group>
           </Stack>
-          <Text c="dimmed" maw={420} visibleFrom="md">
+          <Text c="dimmed" maw={420} visibleFrom="md" style={{ lineHeight: 1.4 }}>
             Ökologische Freiwilligen-, Praxis- und Feldstellen aus geprüften Quellen.
           </Text>
         </Group>
@@ -85,8 +86,8 @@ export function FindenPage() {
           visibleFrom="md"
           style={{ position: 'sticky', top: 84, flexShrink: 0 }}
         >
-          <Box className="nz-panel" p="lg" style={{ borderRadius: 8 }}>
-            <Text fw={600} className="nz-display" fz="lg" mb="md">
+          <Box className="nz-panel nz-glass-panel" p="lg" style={{ borderRadius: 12 }}>
+            <Text fw={700} className="nz-display" fz="lg" mb="md" c="wald.9">
               Filter
             </Text>
             <FilterPanel filter={filter} onChange={setFilter} laenderOptions={laenderOptions} />
@@ -95,7 +96,7 @@ export function FindenPage() {
 
         <Box style={{ flex: 1, minWidth: 0 }}>
           <Group justify="space-between" mb="md">
-            <Text fw={600}>
+            <Text fw={650}>
               {loading ? 'Lade Stellen …' : `${gefiltert.length} ${gefiltert.length === 1 ? 'Stelle' : 'Stellen'}`}
             </Text>
             <Indicator label={aktiv} disabled={aktiv === 0} color="terra" size={18} hiddenFrom="md">
@@ -142,9 +143,21 @@ export function FindenPage() {
 
           {!loading && !error && gefiltert.length > 0 && (
             <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
-              {gefiltert.map((s) => (
-                <StelleCard key={s.id} stelle={s} showAddedDate={filter.sort === 'neu'} />
-              ))}
+              <AnimatePresence mode="popLayout">
+                {gefiltert.map((s) => (
+                  <motion.div
+                    key={s.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.96, y: -15 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ height: '100%' }}
+                  >
+                    <StelleCard stelle={s} showAddedDate={filter.sort === 'neu'} />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </SimpleGrid>
           )}
         </Box>

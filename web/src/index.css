@@ -1,8 +1,9 @@
 :root {
-  --nz-cream: #f7f4ec;
-  --nz-cream-2: #f1ece0;
-  --nz-ink: #16241d;
-  --nz-line: #e6e0d3;
+  --nz-cream: #f6f3eb;
+  --nz-cream-2: #f0ebd9;
+  --nz-ink: #14231b;
+  --nz-line: #e4dec8;
+  --mantine-color-dimmed: rgba(20, 35, 27, 0.58);
 }
 
 * {
@@ -19,10 +20,10 @@ body {
   background-color: var(--nz-cream);
   color: var(--nz-ink);
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0) 300px),
-    repeating-linear-gradient(90deg, rgba(21, 107, 65, 0.032) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(0deg, rgba(21, 107, 65, 0.026) 0 1px, transparent 1px 34px);
-  background-size: 100% 100%, 34px 34px, 34px 34px;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 350px),
+    repeating-linear-gradient(90deg, rgba(21, 107, 65, 0.026) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(0deg, rgba(21, 107, 65, 0.022) 0 1px, transparent 1px 32px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -42,12 +43,12 @@ a {
 .nz-hero {
   position: relative;
   overflow: hidden;
-  min-height: min(680px, calc(100vh - 132px));
+  min-height: min(720px, calc(100vh - 120px));
   display: flex;
   align-items: center;
   background:
-    linear-gradient(125deg, rgba(13, 47, 31, 0.92), rgba(21, 68, 48, 0.92) 48%, rgba(29, 108, 111, 0.72)),
-    linear-gradient(180deg, #194c36, #0d2f1f);
+    linear-gradient(125deg, rgba(10, 42, 27, 0.94), rgba(18, 59, 41, 0.94) 48%, rgba(24, 92, 95, 0.75)),
+    linear-gradient(180deg, #154531, #0a2419);
   color: #eaf5ee;
   isolation: isolate;
 }
@@ -57,10 +58,11 @@ a {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(115deg, transparent 0 18%, rgba(255, 224, 150, 0.17) 24%, transparent 38% 100%),
-    linear-gradient(100deg, transparent 0 42%, rgba(255, 224, 150, 0.11) 48%, transparent 63% 100%);
-  background-size: 150% 100%, 180% 100%;
-  animation: nz-light-sweep 18s ease-in-out infinite alternate;
+    radial-gradient(circle at 80% 20%, rgba(255, 228, 155, 0.16) 0%, transparent 50%),
+    linear-gradient(115deg, transparent 0 18%, rgba(255, 224, 150, 0.15) 24%, transparent 38% 100%),
+    linear-gradient(100deg, transparent 0 42%, rgba(255, 224, 150, 0.1) 48%, transparent 63% 100%);
+  background-size: 100% 100%, 150% 100%, 180% 100%;
+  animation: nz-light-sweep 24s ease-in-out infinite alternate;
   z-index: -1;
   opacity: 0.95;
 }
@@ -69,11 +71,14 @@ a {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    repeating-linear-gradient(92deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 26px),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 26px);
+  background:
+    radial-gradient(circle at 15% 15%, rgba(6, 30, 18, 0.45) 0%, transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(6, 30, 18, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 45% -5%, rgba(10, 42, 27, 0.55) 0%, transparent 35%);
   z-index: -1;
-  mask-image: linear-gradient(180deg, black, transparent 86%);
+  filter: blur(16px);
+  opacity: 0.95;
+  pointer-events: none;
 }
 
 .nz-canopy {
@@ -87,100 +92,107 @@ a {
 .nz-canopy::before {
   content: '';
   position: absolute;
-  inset: -12% -8% auto -8%;
-  height: 42%;
+  inset: -20%;
   background:
-    repeating-linear-gradient(125deg, rgba(9, 38, 24, 0.55) 0 18px, transparent 18px 42px),
-    repeating-linear-gradient(72deg, rgba(48, 123, 81, 0.36) 0 14px, transparent 14px 36px);
-  filter: blur(1px);
-  transform: rotate(-2deg);
-  opacity: 0.8;
-  animation: nz-canopy-shift 16s ease-in-out infinite alternate;
+    radial-gradient(circle at 30% 20%, rgba(21, 107, 65, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 70% 30%, rgba(21, 107, 65, 0.2) 0%, transparent 35%),
+    radial-gradient(circle at 50% 15%, rgba(159, 211, 179, 0.12) 0%, transparent 25%),
+    linear-gradient(115deg, transparent 0 32%, rgba(255, 238, 203, 0.06) 36%, transparent 42% 100%),
+    linear-gradient(130deg, transparent 0 62%, rgba(255, 238, 203, 0.04) 66%, transparent 72% 100%);
+  filter: blur(28px);
+  opacity: 0.9;
+  animation: nz-canopy-shift 24s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
 .nz-canopy__leaf {
   position: absolute;
-  top: -70px;
-  width: 32px;
-  height: 15px;
-  border-radius: 100% 0 100% 0;
-  background: rgba(159, 211, 179, 0.34);
-  transform: rotate(28deg);
-  animation: nz-leaf-fall 22s linear infinite;
+  top: -80px;
+  display: inline-block;
+  opacity: 0;
+  animation: nz-leaf-fall 24s linear infinite;
+  transform-origin: center;
 }
 
-.nz-canopy__leaf:nth-child(1) { left: 7%; animation-delay: -4s; }
-.nz-canopy__leaf:nth-child(2) { left: 16%; animation-delay: -12s; transform: rotate(-24deg); }
-.nz-canopy__leaf:nth-child(3) { left: 24%; animation-delay: -8s; width: 24px; }
-.nz-canopy__leaf:nth-child(4) { left: 36%; animation-delay: -17s; transform: rotate(42deg); }
-.nz-canopy__leaf:nth-child(5) { left: 43%; animation-delay: -2s; width: 26px; }
-.nz-canopy__leaf:nth-child(6) { left: 52%; animation-delay: -14s; transform: rotate(-18deg); }
-.nz-canopy__leaf:nth-child(7) { left: 61%; animation-delay: -6s; width: 22px; }
-.nz-canopy__leaf:nth-child(8) { left: 68%; animation-delay: -20s; transform: rotate(34deg); }
-.nz-canopy__leaf:nth-child(9) { left: 76%; animation-delay: -9s; }
-.nz-canopy__leaf:nth-child(10) { left: 84%; animation-delay: -15s; transform: rotate(-38deg); }
-.nz-canopy__leaf:nth-child(11) { left: 91%; animation-delay: -5s; width: 25px; }
-.nz-canopy__leaf:nth-child(12) { left: 98%; animation-delay: -18s; transform: rotate(16deg); }
+.nz-canopy__leaf svg {
+  fill: currentColor;
+}
+
+/* Leaf delay and trajectory styling */
+.nz-canopy__leaf:nth-child(1) { left: 5%; color: rgba(140, 196, 164, 0.28); animation-delay: -2s; animation-duration: 22s; }
+.nz-canopy__leaf:nth-child(2) { left: 15%; color: rgba(251, 221, 155, 0.22); animation-delay: -10s; animation-duration: 27s; }
+.nz-canopy__leaf:nth-child(3) { left: 25%; color: rgba(140, 196, 164, 0.25); animation-delay: -5s; animation-duration: 20s; }
+.nz-canopy__leaf:nth-child(4) { left: 38%; color: rgba(223, 127, 74, 0.18); animation-delay: -14s; animation-duration: 29s; }
+.nz-canopy__leaf:nth-child(5) { left: 48%; color: rgba(140, 196, 164, 0.32); animation-delay: -1s; animation-duration: 23s; }
+.nz-canopy__leaf:nth-child(6) { left: 58%; color: rgba(251, 221, 155, 0.25); animation-delay: -12s; animation-duration: 26s; }
+.nz-canopy__leaf:nth-child(7) { left: 68%; color: rgba(140, 196, 164, 0.24); animation-delay: -4s; animation-duration: 21s; }
+.nz-canopy__leaf:nth-child(8) { left: 78%; color: rgba(223, 127, 74, 0.15); animation-delay: -18s; animation-duration: 31s; }
+.nz-canopy__leaf:nth-child(9) { left: 88%; color: rgba(140, 196, 164, 0.28); animation-delay: -7s; animation-duration: 25s; }
+.nz-canopy__leaf:nth-child(10) { left: 95%; color: rgba(251, 221, 155, 0.20); animation-delay: -13s; animation-duration: 28s; }
 
 @keyframes nz-light-sweep {
-  from { background-position: 0 0, 100% 0; }
-  to { background-position: 100% 0, 0 0; }
+  from { background-position: 0 0, 100% 0, 0 0; }
+  to { background-position: 100% 0, 0 0, 100% 0; }
 }
 
 @keyframes nz-canopy-shift {
-  from { transform: translateX(-18px) rotate(-2deg); }
-  to { transform: translateX(18px) rotate(-1deg); }
+  from { transform: translateX(-24px) rotate(-1.5deg); }
+  to { transform: translateX(24px) rotate(-0.5deg); }
 }
 
 @keyframes nz-leaf-fall {
-  from { translate: 0 -10vh; opacity: 0; }
-  8% { opacity: 0.85; }
-  88% { opacity: 0.7; }
-  to { translate: -46px 92vh; opacity: 0; }
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(105vh) translateX(-60px) rotate(380deg) scale(1.1);
+    opacity: 0;
+  }
 }
 
 .nz-hero-stat {
-  min-height: 74px;
-  padding: 12px 14px;
-  border: 1px solid rgba(234, 245, 238, 0.18);
-  border-radius: 8px;
-  background: rgba(13, 47, 31, 0.34);
+  min-height: 80px;
+  padding: 14px 16px;
+  border: 1px solid rgba(234, 245, 238, 0.16);
+  border-radius: 12px;
+  background: rgba(10, 42, 27, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.nz-hero-stat:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 221, 155, 0.35);
 }
 
 .nz-hero-stat__icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: grid;
   place-items: center;
   color: var(--mantine-color-sonne-3);
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ------------------------------------------------------------- Animation */
+/* ------------------------------------------------------------------ Glassmorphism */
 
-@keyframes nz-rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.nz-rise {
-  animation: nz-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .nz-rise,
-  .nz-canopy::before,
-  .nz-canopy__leaf,
-  .nz-hero::before {
-    animation: none;
-  }
+.nz-glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 10px 30px -10px rgba(20, 35, 27, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* ------------------------------------------------------------------ Karten */
@@ -188,37 +200,98 @@ a {
 .nz-card {
   position: relative;
   overflow: hidden;
-  min-height: 292px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(252, 249, 241, 0.96)),
-    var(--mantine-color-white);
+  min-height: 300px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(228, 222, 200, 0.65);
+  box-shadow: 
+    0 4px 18px -10px rgba(20, 35, 27, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nz-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 36px -24px rgba(15, 47, 31, 0.58);
-  border-color: var(--mantine-color-wald-3) !important;
+  transform: translateY(-6px) scale(1.008);
+  box-shadow: 
+    0 24px 44px -16px rgba(10, 42, 27, 0.16),
+    0 4px 12px -4px rgba(10, 42, 27, 0.04);
+  border-color: var(--mantine-color-wald-4) !important;
 }
 
-.nz-card__terrain {
+/* Hover Shine Effect */
+.nz-card::after {
+  content: '';
   position: absolute;
-  inset: 0 0 auto;
-  height: 56px;
-  opacity: 0.42;
-  background:
-    linear-gradient(160deg, transparent 0 18%, color-mix(in srgb, var(--nz-accent) 42%, transparent) 18% 20%, transparent 20% 100%),
-    linear-gradient(150deg, transparent 0 46%, rgba(21, 107, 65, 0.18) 46% 48%, transparent 48% 100%),
-    linear-gradient(180deg, rgba(21, 107, 65, 0.12), transparent);
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  pointer-events: none;
+}
+
+.nz-card:hover::after {
+  animation: nz-shine 1s ease-in-out forwards;
+}
+
+@keyframes nz-shine {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+.nz-card__glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--nz-accent, var(--mantine-color-wald-2)) 0%, transparent 70%);
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+  transition: 
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease;
+}
+
+.nz-card:hover .nz-card__glow {
+  transform: scale(1.35) translate(-10px, 10px);
+  opacity: 0.25;
+}
+
+.nz-card__watermark {
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 90px;
+  height: 90px;
+  color: var(--nz-accent, var(--mantine-color-wald-5));
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.nz-card:hover .nz-card__watermark {
+  transform: scale(1.2) rotate(-6deg);
+  opacity: 0.08;
 }
 
 .nz-card__arrow {
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: 10px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -226,13 +299,16 @@ a {
   background: var(--mantine-color-wald-0);
   border: 1px solid var(--mantine-color-wald-2);
   transition:
-    transform 0.18s ease,
-    background 0.18s ease;
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+  z-index: 1;
 }
 
 .nz-card:hover .nz-card__arrow {
-  transform: translate(2px, -2px);
-  background: var(--mantine-color-wald-1);
+  transform: translate(3px, -3px);
+  background-color: var(--mantine-color-wald-1);
+  border-color: var(--mantine-color-wald-3);
 }
 
 .nz-accent::before {
@@ -241,32 +317,37 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 5px;
   border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
   background: var(--nz-accent, var(--mantine-color-wald-5));
 }
 
 .nz-panel {
   background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--nz-line);
 }
 
 .nz-detail-aside {
-  background: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 30px -10px rgba(10, 42, 27, 0.08);
 }
 
 .nz-program-note {
   border: 1px solid var(--mantine-color-wald-2);
   background:
-    linear-gradient(135deg, rgba(238, 247, 241, 0.92), rgba(238, 246, 246, 0.74));
+    linear-gradient(135deg, rgba(238, 247, 241, 0.94), rgba(238, 246, 246, 0.8));
 }
 
 .nz-field-pill {
   border: 1px solid var(--mantine-color-wald-2);
-  background: rgba(238, 247, 241, 0.78);
+  background: rgba(238, 247, 241, 0.85);
   color: var(--mantine-color-wald-9);
   font-weight: 650;
+  box-shadow: 0 1px 2px rgba(21, 107, 65, 0.03);
 }
 
 .nz-field-pill__dot {
@@ -283,13 +364,19 @@ a {
 
 .nz-quick-field {
   border: 1px solid var(--mantine-color-wald-2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nz-quick-field:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(21, 107, 65, 0.08);
 }
 
 .nz-data-band {
   border-block: 1px solid var(--nz-line);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(241, 236, 224, 0.74)),
-    linear-gradient(115deg, rgba(29, 108, 111, 0.09), transparent 58%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(241, 236, 224, 0.78)),
+    linear-gradient(115deg, rgba(29, 108, 111, 0.06), transparent 58%);
 }
 
 .nz-data-icon {
@@ -307,32 +394,37 @@ a {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(21, 107, 65, 0.1);
+  background: rgba(21, 107, 65, 0.08);
 }
 
 .nz-meter span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--mantine-color-wald-6), var(--mantine-color-himmel-6));
+  background: linear-gradient(90deg, var(--mantine-color-wald-5), var(--mantine-color-himmel-5));
 }
 
 .nz-quality-line {
-  min-height: 38px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(21, 107, 65, 0.09);
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(21, 107, 65, 0.08);
+  transition: background-color 0.2s ease;
+}
+
+.nz-quality-line:hover {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .nz-finder-head {
-  padding: 16px 0 20px;
+  padding: 16px 0 24px;
   border-bottom: 1px solid var(--nz-line);
 }
 
 .nz-section-icon {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
   display: grid;
   place-items: center;
@@ -346,17 +438,23 @@ a {
 }
 
 .nz-detail-fact {
-  min-height: 74px;
-  padding: 12px;
-  border-radius: 8px;
+  min-height: 76px;
+  padding: 12px 14px;
+  border-radius: 10px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(238, 247, 241, 0.62));
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(238, 247, 241, 0.65));
   border: 1px solid var(--nz-line);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.nz-detail-fact:hover {
+  transform: translateY(-1px);
+  border-color: var(--mantine-color-wald-3);
 }
 
 .nz-detail-fact__icon {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   flex-shrink: 0;
   border-radius: 8px;
   display: grid;
@@ -364,4 +462,87 @@ a {
   color: var(--mantine-color-wald-8);
   background: var(--mantine-color-wald-0);
   border: 1px solid var(--mantine-color-wald-2);
+}
+
+/* ------------------------------------------------------------- Infographics */
+
+.nz-infographic-step {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.nz-infographic-step:hover {
+  transform: translateY(-4px);
+}
+
+.nz-infographic-connector {
+  position: absolute;
+  top: 40px;
+  left: calc(50% + 40px);
+  right: calc(-50% + 40px);
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--mantine-color-wald-2),
+    var(--mantine-color-wald-2) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .nz-infographic-connector {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------- Logo Animation */
+
+.nz-logo-sunbeam {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nz-logo-wrapper:hover .nz-logo-sunbeam {
+  transform: rotate(45deg);
+}
+
+.nz-logo-leaf {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nz-logo-wrapper:hover .nz-logo-leaf {
+  transform: scale(1.05) translate(-1px, 1px);
+}
+
+.nz-logo-wrapper:hover .nz-logo-wordmark {
+  color: var(--mantine-color-wald-6) !important;
+}
+
+.nz-wissen-header-stack {
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .nz-wissen-header-stack {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+.nz-text-high-contrast {
+  color: #0c331f !important;
+}
+
+.nz-link-high-contrast {
+  color: #0c331f !important;
+  text-decoration: underline;
+  text-decoration-color: rgba(12, 51, 31, 0.3);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.nz-link-high-contrast:hover {
+  color: var(--mantine-color-wald-6) !important;
+  text-decoration-color: var(--mantine-color-wald-6);
 }

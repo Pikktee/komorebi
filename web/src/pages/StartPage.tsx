@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
+  Card,
   Container,
   Group,
   SimpleGrid,
   Stack,
   Text,
+  ThemeIcon,
   Title,
   Tooltip,
 } from '@mantine/core';
@@ -22,7 +24,10 @@ import {
   IconSearch,
   IconShieldCheck,
   IconWorldSearch,
+  IconFilter,
+  IconArrowUpRight,
 } from '@tabler/icons-react';
+import { motion } from 'motion/react';
 import { useStellen } from '../lib/useStellen';
 import { StelleCard } from '../components/StelleCard';
 import { feldFarbe } from '../components/TaetigkeitsPills';
@@ -39,11 +44,29 @@ const SCHNELL_FELDER = [
 ];
 
 function HeroCanopy() {
+  const leafPaths = [
+    // Buchenblatt
+    'M16 4C9 4 6 10 6 16c0 6 5 12 10 12s10-6 10-12c0-6-3-12-10-12zm0 21c-1.5 0-3-.4-4.2-1l12-12c.2.6.2 1.3.2 2 0 6-5 11-10 11z',
+    // Farnblatt
+    'M16 2s-5 5-5 10c0 3 2.5 5 5 5s5-2 5-5c0-5-5-10-5-10z',
+    // Ahornblatt (vereinfacht)
+    'M16 2l3 6 7-1-4 5 5 7-7-2-5 5 2-8-6-4 8-2z',
+    // Weidenblatt
+    'M16 2C11 8 9 15 9 19c0 4 3 7 7 7s7-3 7-7c0-4-2-11-7-17z'
+  ];
+
   return (
     <Box className="nz-canopy" aria-hidden="true">
-      {Array.from({ length: 12 }).map((_, i) => (
-        <span key={i} className="nz-canopy__leaf" />
-      ))}
+      {Array.from({ length: 10 }).map((_, i) => {
+        const path = leafPaths[i % leafPaths.length];
+        return (
+          <span key={i} className="nz-canopy__leaf">
+            <svg width="24" height="24" viewBox="0 0 32 32">
+              <path d={path} />
+            </svg>
+          </span>
+        );
+      })}
     </Box>
   );
 }
@@ -86,22 +109,32 @@ function DatenRadar({ stellen }: { stellen: Stelle[] }) {
 
   return (
     <Box className="nz-data-band">
-      <Container size="lg" py={{ base: 34, md: 46 }}>
+      <Container size="lg" py={{ base: 40, md: 52 }}>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
-          <RadarBlock titel="Quellenmix" icon={<IconWorldSearch size={20} />}>
-            {quellen.map(([label, count]) => (
-              <RadarBar key={label} label={label} count={count} max={maxQuelle} />
-            ))}
+          <RadarBlock titel="Top-Quellen" icon={<IconWorldSearch size={20} />}>
+            <Card className="nz-glass-panel" p="md" radius="lg" style={{ height: '100%' }}>
+              <Stack gap="md">
+                {quellen.map(([label, count]) => (
+                  <RadarBar key={label} label={label} count={count} max={maxQuelle} />
+                ))}
+              </Stack>
+            </Card>
           </RadarBlock>
           <RadarBlock titel="Regionen" icon={<IconMap2 size={20} />}>
-            {regionen.map(([label, count]) => (
-              <RadarBar key={label} label={label} count={count} max={maxRegion} />
-            ))}
+            <Card className="nz-glass-panel" p="md" radius="lg" style={{ height: '100%' }}>
+              <Stack gap="md">
+                {regionen.map(([label, count]) => (
+                  <RadarBar key={label} label={label} count={count} max={maxRegion} />
+                ))}
+              </Stack>
+            </Card>
           </RadarBlock>
-          <RadarBlock titel="Qualität" icon={<IconShieldCheck size={20} />}>
-            <QualityLine label="Konkrete Angebotslinks" value="100 %" />
-            <QualityLine label="Doppelte URLs" value={String(doppelteUrls)} />
-            <QualityLine label="Aktive Quellen" value={String(quellenGesamt)} />
+          <RadarBlock titel="Datenqualität" icon={<IconShieldCheck size={20} />}>
+            <Stack gap="xs" style={{ height: '100%', justifyContent: 'space-between' }}>
+              <QualityLine label="Direkte Angebotslinks" value="100 %" />
+              <QualityLine label="Doppelte URLs bereinigt" value={String(doppelteUrls)} />
+              <QualityLine label="Aktive Datenquellen" value={String(quellenGesamt)} />
+            </Stack>
           </RadarBlock>
         </SimpleGrid>
       </Container>
@@ -114,7 +147,7 @@ function RadarBlock({ titel, icon, children }: { titel: string; icon: ReactNode;
     <Stack gap="sm">
       <Group gap="xs">
         <Box className="nz-data-icon">{icon}</Box>
-        <Title order={3} fz="lg">
+        <Title order={3} fz="lg" className="nz-display" c="wald.9">
           {titel}
         </Title>
       </Group>
@@ -130,7 +163,7 @@ function RadarBar({ label, count, max }: { label: string; count: number; max: nu
         <Text size="sm" fw={600} lineClamp={1}>
           {label}
         </Text>
-        <Text size="sm" c="dimmed" fw={600}>
+        <Text size="sm" c="wald.9" fw={700}>
           {count}
         </Text>
       </Group>
@@ -143,14 +176,44 @@ function RadarBar({ label, count, max }: { label: string; count: number; max: nu
 
 function QualityLine({ label, value }: { label: string; value: string }) {
   return (
-    <Group justify="space-between" className="nz-quality-line" wrap="nowrap">
-      <Text size="sm" fw={600}>
+    <Group justify="space-between" className="nz-quality-line" wrap="nowrap" style={{ flex: 1 }}>
+      <Text size="sm" fw={600} c="dark.4">
         {label}
       </Text>
-      <Text className="nz-display" fw={650} c="wald.8">
+      <Text className="nz-display" fz="lg" fw={700} c="wald.9">
         {value}
       </Text>
     </Group>
+  );
+}
+
+function InfografikSchritt({ nummer, titel, beschreibung, icon }: { nummer: number; titel: string; beschreibung: string; icon: ReactNode }) {
+  return (
+    <div className="nz-infographic-step">
+      {nummer < 4 && <div className="nz-infographic-connector" />}
+      <Card className="nz-glass-panel" p="lg" radius="lg" style={{ height: '100%', position: 'relative', zIndex: 2 }}>
+        <Stack align="center" gap="xs" style={{ textAlign: 'center' }}>
+          <ThemeIcon
+            size={54}
+            radius="xl"
+            color="wald"
+            variant="light"
+            style={{
+              border: '2px solid var(--mantine-color-wald-2)',
+              boxShadow: '0 8px 20px -6px rgba(21, 107, 65, 0.15)',
+            }}
+          >
+            {icon}
+          </ThemeIcon>
+          <Text fw={700} fz="md" mt="xs" className="nz-display" c="wald.9">
+            {titel}
+          </Text>
+          <Text size="xs" c="dimmed" style={{ lineHeight: 1.45 }}>
+            {beschreibung}
+          </Text>
+        </Stack>
+      </Card>
+    </div>
   );
 }
 
@@ -165,74 +228,160 @@ export function StartPage() {
     .filter((s) => s.kost_unterkunft_frei && !s.kostenpflichtig)
     .slice(0, 3);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
+
   return (
     <>
       <Box className="nz-hero">
         <HeroCanopy />
-        <Container size="lg" py={{ base: 58, md: 92 }}>
-          <Stack gap="xl" maw={790} className="nz-rise">
-            <Group gap={10} c="rgba(234,245,238,0.85)">
-              <KomorebiMark size={24} ton="hell" />
-              <Text fz="sm" fw={700} tt="uppercase" lts={1.4}>
-                ökologische Stellen weltweit
-              </Text>
-            </Group>
-            <Stack gap="md">
-              <Title className="nz-display" order={1} fz={{ base: 46, md: 74 }} lh={1.02} fw={650}>
-                Komorebi
-              </Title>
-              <Text fz={{ base: 19, md: 23 }} c="rgba(234,245,238,0.9)" maw={650}>
-                Freiwilligen-, Praxis- und Feldstellen für Naturschutz, Artenschutz,
-                Meeresschutz und ökologische Forschung.
-              </Text>
+        <Container size="lg" py={{ base: 64, md: 96 }}>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <Stack gap="xl" maw={790}>
+              <motion.div variants={itemVariants}>
+                <Group gap={10} c="rgba(234,245,238,0.85)">
+                  <KomorebiMark size={24} ton="hell" />
+                  <Text fz="xs" fw={700} tt="uppercase" lts={1.8}>
+                    Ökologische Freiwilligenarbeit weltweit
+                  </Text>
+                </Group>
+              </motion.div>
+              
+              <Stack gap="md">
+                <motion.div variants={itemVariants}>
+                  <Title className="nz-display" order={1} fz={{ base: 48, md: 76 }} lh={1.0} fw={650} style={{ letterSpacing: '-0.02em' }}>
+                    Komorebi
+                  </Title>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <Text fz={{ base: 19, md: 22 }} c="rgba(234,245,238,0.92)" maw={670} style={{ lineHeight: 1.4 }}>
+                    Finde geförderte Freiwilligendienste, Praxisstellen und Forschungsassistenzen für Naturschutz, Artenschutz und Feldarbeit an einem Ort.
+                  </Text>
+                </motion.div>
+              </Stack>
+              
+              <motion.div variants={itemVariants}>
+                <Group gap="sm">
+                  <Button
+                    component={Link}
+                    to="/finden"
+                    size="md"
+                    radius="md"
+                    color="sonne.4"
+                    c="wald.9"
+                    rightSection={<IconArrowRight size={18} />}
+                    style={{
+                      boxShadow: '0 8px 24px -6px rgba(243, 187, 67, 0.35)',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Stellen finden
+                  </Button>
+                  <Button
+                    component={Link}
+                    to="/wissen"
+                    size="md"
+                    radius="md"
+                    variant="outline"
+                    leftSection={<IconBook2 size={18} />}
+                    styles={{ root: { borderColor: 'rgba(234,245,238,0.35)', color: '#eaf5ee' } }}
+                  >
+                    Gut vorbereitet
+                  </Button>
+                </Group>
+              </motion.div>
+              
+              <motion.div variants={itemVariants} style={{ width: '100%' }}>
+                <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="sm" maw={700} mt="lg">
+                  <Stat wert={stellen.length || '—'} label="offene Stellen" icon={<IconSearch size={18} />} />
+                  <Stat wert={laender || '—'} label="Länder" icon={<IconMap2 size={18} />} />
+                  <Stat
+                    wert={kostenlos || '—'}
+                    label="Kost & Logis inklusive"
+                    icon={<IconHeartHandshake size={18} />}
+                  />
+                </SimpleGrid>
+              </motion.div>
             </Stack>
-            <Group gap="sm">
-              <Button
-                component={Link}
-                to="/finden"
-                size="md"
-                radius="md"
-                color="sonne.4"
-                c="wald.9"
-                rightSection={<IconArrowRight size={18} />}
-              >
-                Stellen finden
-              </Button>
-              <Button
-                component={Link}
-                to="/wissen"
-                size="md"
-                radius="md"
-                variant="outline"
-                leftSection={<IconBook2 size={18} />}
-                styles={{ root: { borderColor: 'rgba(234,245,238,0.42)', color: '#eaf5ee' } }}
-              >
-                Gut vorbereitet
-              </Button>
-            </Group>
-            <SimpleGrid cols={{ base: 1, xs: 3 }} spacing="sm" maw={670}>
-              <Stat wert={stellen.length || '—'} label="offene Stellen" icon={<IconSearch size={17} />} />
-              <Stat wert={laender || '—'} label="Länder" icon={<IconMap2 size={17} />} />
-              <Stat
-                wert={kostenlos || '—'}
-                label="mit freier Kost & Logis"
-                icon={<IconHeartHandshake size={17} />}
-              />
-            </SimpleGrid>
-          </Stack>
+          </motion.div>
         </Container>
       </Box>
 
-      <Container size="lg" py={{ base: 38, md: 56 }}>
+      {/* Timeline Infografik Sektion */}
+      <Container size="lg" py={{ base: 48, md: 64 }}>
+        <Stack gap="xs" mb="xl" align="center" style={{ textAlign: 'center' }}>
+          <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
+            Wie es funktioniert
+          </Text>
+          <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }} c="wald.9">
+            Dein Weg ins grüne Abenteuer
+          </Title>
+          <Text size="sm" c="dimmed" maw={520}>
+            Komorebi hilft dir, aus dem weltweiten Rauschen die passenden, geförderten Naturschutzprojekte herauszufiltern.
+          </Text>
+        </Stack>
+
+        <SimpleGrid cols={{ base: 1, sm: 4 }} spacing="lg" mt="md">
+          <InfografikSchritt
+            nummer={1}
+            titel="1. Suchen & Finden"
+            beschreibung="Stöbere durch täglich aktualisierte Angebote von verifizierten Quellen weltweit."
+            icon={<IconSearch size={22} />}
+          />
+          <InfografikSchritt
+            nummer={2}
+            titel="2. Filter setzen"
+            beschreibung="Filtere nach Kontinent, Dauer oder Freier Kost & Logis. Dein Such-Link bleibt teilbar."
+            icon={<IconFilter size={22} />}
+          />
+          <InfografikSchritt
+            nummer={3}
+            titel="3. Qualität vertrauen"
+            beschreibung="Unsere zweistufige Pipeline sortiert kommerzielle Job-Attrappen und Rauschen aus."
+            icon={<IconShieldCheck size={22} />}
+          />
+          <InfografikSchritt
+            nummer={4}
+            titel="4. Direkt bewerben"
+            beschreibung="Bewirb dich direkt bei der Organisation vor Ort. Keine Portalgebühren, kein Vermittler."
+            icon={<IconArrowUpRight size={22} />}
+          />
+        </SimpleGrid>
+      </Container>
+
+      <Container size="lg" pb={{ base: 38, md: 56 }}>
         <Stack gap="xs" mb="md">
-          <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+          <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
             Schneller Einstieg
           </Text>
           <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
             Wähle ein Tätigkeitsfeld
           </Title>
         </Stack>
-        <Group gap="sm">
+        <Group gap="xs">
           {SCHNELL_FELDER.map(({ feld, icon }) => (
             <Tooltip
               key={feld}
@@ -256,6 +405,58 @@ export function StartPage() {
         </Group>
       </Container>
 
+      {/* Über das Projekt Sektion mit KI-Bild */}
+      <Container size="lg" py={{ base: 42, md: 58 }}>
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing={48} style={{ alignItems: 'center' }}>
+          <Box style={{ position: 'relative' }}>
+            <Box
+              style={{
+                position: 'absolute',
+                inset: 12,
+                borderRadius: 24,
+                backgroundColor: 'var(--mantine-color-wald-1)',
+                transform: 'rotate(-2deg)',
+                zIndex: 0,
+              }}
+            />
+            <img
+              src="/volunteer_nature.png"
+              alt="Freiwillige pflanzt Setzling im Wald"
+              style={{
+                width: '100%',
+                maxHeight: 400,
+                objectFit: 'cover',
+                borderRadius: 20,
+                border: '1px solid var(--nz-line)',
+                boxShadow: '0 12px 36px -12px rgba(10, 42, 27, 0.25)',
+                position: 'relative',
+                zIndex: 1,
+                display: 'block',
+              }}
+            />
+          </Box>
+          <Stack gap="md">
+            <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
+              Über das Projekt
+            </Text>
+            <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }} c="wald.9" lh={1.15}>
+              Vom Hörsaal direkt in die Wildnis
+            </Title>
+            <Text size="sm" c="dark.5" style={{ lineHeight: 1.6 }}>
+              Komorebi wurde ursprünglich als persönliches Hilfsmittel für eine angehende Biologin entwickelt, um die weltweite Suche nach Feldforschungs- und Naturschutzpraktika zu erleichtern.
+            </Text>
+            <Text size="sm" c="dark.5" style={{ lineHeight: 1.6 }}>
+              Da kommerzielle Anbieter oft horrende Vermittlungsgebühren verlangen (die sogenannte „Voluntourism“-Falle), filtert Komorebi diese Angebote mithilfe einer zweistufigen Eignungsprüfung automatisch aus. So findest du hier nur echte, verifizierte und meist geförderte Stellen mit freier Kost und Logis.
+            </Text>
+            <Group gap="sm" mt="xs">
+              <Button component={Link} to="/ueber" variant="outline" color="wald" radius="md" style={{ fontWeight: 700 }}>
+                Mehr erfahren
+              </Button>
+            </Group>
+          </Stack>
+        </SimpleGrid>
+      </Container>
+
       <DatenRadar stellen={stellen} />
 
       <Container size="lg" py={{ base: 42, md: 64 }}>
@@ -267,7 +468,7 @@ export function StartPage() {
                   <Box className="nz-section-icon" aria-hidden="true">
                     <IconCalendarPlus size={18} />
                   </Box>
-                  <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+                  <Text fw={700} c="wald.9" tt="uppercase" fz="sm" lts={1}>
                     Neu hinzugekommen
                   </Text>
                 </Group>
@@ -298,7 +499,7 @@ export function StartPage() {
           <>
             <Group justify="space-between" align="flex-end" mb="lg">
               <Stack gap="xs">
-                <Text fw={700} c="wald.8" tt="uppercase" fz="sm" lts={1}>
+                <Text fw={700} c="wald.9" tt="uppercase" fz="sm" lts={1}>
                   Reinschnuppern
                 </Text>
                 <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
