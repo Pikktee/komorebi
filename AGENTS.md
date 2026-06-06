@@ -89,12 +89,6 @@ Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via st
 - `lib/plattformen.ts` = Deep-Link-Verzeichnis der **nicht** automatisch eingelesenen Quellen.
 
 ## Harte Regeln & Stolperfallen
-
-- **Quellen-Vetting-Regel (kritisch):** Eine Quelle wird **nur** automatisch eingelesen, wenn
-  (a) robots.txt die Listing-Seiten erlaubt, (b) die AGB automatisierten Zugriff nicht verbieten
-  und (c) keine aktive Bot-Sperre (z. B. 403) vorliegt. Sonst **nur** als Deep-Link in
-  `plattformen.ts`. **Kein** Umgehen von Bot-Sperren/ToS-Verboten bauen (Worldpackers, Workaway,
-  WWOOF etc. bleiben Deep-Link) – auch nicht über curl_cffi/Browser-Automation.
 - **Befüllen nutzt immer den LLM:** `make daten` und der CI-Cron verwenden striktes `--llm` und
   brechen ohne gültigen Key bewusst ab. Convenience-/CI-Pfade dürfen nicht still auf
   deterministisch zurückfallen.

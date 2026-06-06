@@ -1,6 +1,6 @@
 {
   "generiert_am": "2026-06-06",
-  "anzahl": 117,
+  "anzahl": 114,
   "stellen": [
     {
       "id": "conservation-job-board:au-reef",
@@ -857,48 +857,6 @@
       "zuletzt_geaendert": "2026-06-06"
     },
     {
-      "id": "conservation-job-board:275739",
-      "titel": "2026 Fall Hazardous Fuels Reduction Crew Leader",
-      "organisation": "Arizona Conservation Corps",
-      "aufnahmeorganisation": null,
-      "entsendeorganisation": null,
-      "land": "USA",
-      "region": "Tucson",
-      "kontinent": "Nordamerika",
-      "dauer_monate_min": null,
-      "dauer_monate_max": null,
-      "zeitraum_von": null,
-      "zeitraum_bis": null,
-      "flexibler_start": false,
-      "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
-      ],
-      "beschreibung": "Saison-/Zeitstelle im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $925 - $1,125 per week.",
-      "bewerbungsfrist": "2026-06-12",
-      "voraussetzungen": {
-        "mindestalter": null,
-        "hoechstalter": null,
-        "sprache": null,
-        "vorkenntnisse": null
-      },
-      "programm": "keins",
-      "kost_unterkunft_frei": false,
-      "kostenpflichtig": false,
-      "teilnahmegebuehr_eur": null,
-      "taschengeld_eur_monat": null,
-      "reisekosten_erstattet": null,
-      "versicherung": null,
-      "sprachkurs": null,
-      "quelle": "conservation-job-board",
-      "quell_url": "https://www.conservationjobboard.com/job-listing-2026-fall-hazardous-fuels-reduction-crew-leader-tucson-arizona/3366214703",
-      "weitere_quell_urls": [],
-      "quell_id": "275739",
-      "erstmals_gesehen": "2026-06-06",
-      "zuletzt_gesehen": "2026-06-06",
-      "zuletzt_geaendert": "2026-06-06"
-    },
-    {
       "id": "tamu-nr-jobs:116884",
       "titel": "Agriculture Specialist",
       "organisation": "Pacific Conservation District (State)",
@@ -1418,7 +1376,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Naturschutz",
-        "Sonstiges"
+        "Meeresschutz"
       ],
       "beschreibung": "Saison-/Zeitstelle im Bereich Naturschutz bei Russian Riverkeeper. Vergütung: $25 per hour.",
       "bewerbungsfrist": "2026-07-01",
@@ -2075,48 +2033,6 @@
       "zuletzt_geaendert": "2026-06-06"
     },
     {
-      "id": "conservation-job-board:275733",
-      "titel": "Fall Tucson Crew Leader",
-      "organisation": "Arizona Conservation Corps",
-      "aufnahmeorganisation": null,
-      "entsendeorganisation": null,
-      "land": "USA",
-      "region": "Tucson",
-      "kontinent": "Nordamerika",
-      "dauer_monate_min": null,
-      "dauer_monate_max": null,
-      "zeitraum_von": null,
-      "zeitraum_bis": null,
-      "flexibler_start": false,
-      "taetigkeitsfeld": [
-        "Naturschutz",
-        "Forschung/Feldassistenz"
-      ],
-      "beschreibung": "Saison-/Zeitstelle im Bereich Naturschutz bei Arizona Conservation Corps. Vergütung: $925 - $1,125 per week.",
-      "bewerbungsfrist": "2026-07-03",
-      "voraussetzungen": {
-        "mindestalter": null,
-        "hoechstalter": null,
-        "sprache": null,
-        "vorkenntnisse": null
-      },
-      "programm": "keins",
-      "kost_unterkunft_frei": false,
-      "kostenpflichtig": false,
-      "teilnahmegebuehr_eur": null,
-      "taschengeld_eur_monat": null,
-      "reisekosten_erstattet": null,
-      "versicherung": null,
-      "sprachkurs": null,
-      "quelle": "conservation-job-board",
-      "quell_url": "https://www.conservationjobboard.com/job-listing-fall-tucson-crew-leader-tucson-arizona/7127045595",
-      "weitere_quell_urls": [],
-      "quell_id": "275733",
-      "erstmals_gesehen": "2026-06-06",
-      "zuletzt_gesehen": "2026-06-06",
-      "zuletzt_geaendert": "2026-06-06"
-    },
-    {
       "id": "conservation-job-board:275730",
       "titel": "Fall Tucson Field Crew Member - AmeriCorps",
       "organisation": "Arizona Conservation Corps",
@@ -2468,7 +2384,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Wald/Forst",
-        "Landwirtschaft/Permakultur"
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "Saison-/Zeitstelle im Bereich Wald/Forst bei CAL FIRE. Vergütung: $4,148 - $5,879 per month.",
       "bewerbungsfrist": "2026-06-15",
@@ -2972,7 +2888,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Forschung/Feldassistenz",
-        "Naturschutz"
+        "Artenschutz/Tiere"
       ],
       "beschreibung": "Natural Resource Technician, Temporary (Up To 6 Months) (Fisheries) bei Avista (Private). Vergütung: $19.60 to $24.79 per hour. Beginn: between 6/29/2026 and 7/27/2026.",
       "bewerbungsfrist": "2026-07-05",
@@ -3125,48 +3041,6 @@
       "zuletzt_geaendert": "2026-06-06"
     },
     {
-      "id": "tamu-nr-jobs:116847",
-      "titel": "Nearshore Fish & Habitat Biologist/Assistant Project Leader (Natural Resource Specialist 2)",
-      "organisation": "Oregon Department of Fish and Wildlife (State)",
-      "aufnahmeorganisation": null,
-      "entsendeorganisation": null,
-      "land": "USA",
-      "region": "Newport",
-      "kontinent": "Nordamerika",
-      "dauer_monate_min": null,
-      "dauer_monate_max": null,
-      "zeitraum_von": null,
-      "zeitraum_bis": null,
-      "flexibler_start": false,
-      "taetigkeitsfeld": [
-        "Meeresschutz",
-        "Forschung/Feldassistenz"
-      ],
-      "beschreibung": "Nearshore Fish & Habitat Biologist/Assistant Project Leader (Natural Resource Specialist 2) bei Oregon Department of Fish and Wildlife (State). Vergütung: $4,738 to $7,247 per month. Beginn: after 6/23/2026.",
-      "bewerbungsfrist": "2026-06-23",
-      "voraussetzungen": {
-        "mindestalter": null,
-        "hoechstalter": null,
-        "sprache": null,
-        "vorkenntnisse": null
-      },
-      "programm": "keins",
-      "kost_unterkunft_frei": false,
-      "kostenpflichtig": false,
-      "teilnahmegebuehr_eur": null,
-      "taschengeld_eur_monat": null,
-      "reisekosten_erstattet": null,
-      "versicherung": null,
-      "sprachkurs": null,
-      "quelle": "tamu-nr-jobs",
-      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=116847",
-      "weitere_quell_urls": [],
-      "quell_id": "116847",
-      "erstmals_gesehen": "2026-06-06",
-      "zuletzt_gesehen": "2026-06-06",
-      "zuletzt_geaendert": "2026-06-06"
-    },
-    {
       "id": "conservation-job-board:275692",
       "titel": "Outdoor Education Field Instructor",
       "organisation": "Camp Nuhop",
@@ -3223,7 +3097,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Umweltbildung"
+        "Umweltbildung",
+        "Naturschutz"
       ],
       "beschreibung": "Park Ranger I (Park Interpreter) (00058596) bei Texas Parks & Wildlife Department (State). Vergütung: starting at $4,217.37 per month. Beginn: after 6/19/2026.",
       "bewerbungsfrist": "2026-06-19",
@@ -3936,8 +3811,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Artenschutz/Tiere",
-        "Forschung/Feldassistenz"
+        "Forschung/Feldassistenz",
+        "Artenschutz/Tiere"
       ],
       "beschreibung": "Saison-/Zeitstelle im Bereich Meeresschutz bei Washington Department of Fish and Wildlife. Vergütung: $3,581 - $4,771 per month.",
       "bewerbungsfrist": "2026-06-08",
@@ -4105,7 +3980,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Naturschutz",
-        "Forschung/Feldassistenz"
+        "Wald/Forst"
       ],
       "beschreibung": "Trails & Restoration Specialist bei The Great Basin Institute (Private). Vergütung: $61,000 to $78,000 per year. Beginn: after 6/15/2026.",
       "bewerbungsfrist": "2026-06-30",
@@ -4146,8 +4021,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Appalachian Conservation Corps. Vergütung: $900 per week.",
       "bewerbungsfrist": null,
@@ -4188,8 +4063,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $950 per week.",
       "bewerbungsfrist": "2026-07-03",
@@ -4230,8 +4105,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "Saison-/Zeitstelle im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $1,025 - $1,125 per week.",
       "bewerbungsfrist": "2026-07-03",
@@ -4272,8 +4147,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $900 per week.",
       "bewerbungsfrist": "2026-07-10",
@@ -4440,7 +4315,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Artenschutz/Tiere"
+        "Artenschutz/Tiere",
+        "Umweltbildung"
       ],
       "beschreibung": "Wildlife Care Internship, Fall 2026 bei Center for Wildlife (Private). Vergütung: none. Beginn: after 8/17/2026.",
       "bewerbungsfrist": "2026-06-30",

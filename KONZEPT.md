@@ -84,19 +84,6 @@ Quellen: [Annex – Applicable Rates ESC](https://www.europeansolidaritycorps.nl
 [James Borrell – Conservation Volunteering Database](http://www.jamesborrell.com/resources/conservation-volunteering-database/),
 [WILDLABS – Where to look for conservation jobs](https://wildlabs.net/discussion/where-look-conservation-jobs-running-list).
 
-### Tier B — NICHT ingestierbar, nur Deep-Link
-
-- **[Worldpackers](https://www.worldpackers.com/)** — robots.txt erlaubt Listings, *aber*
-  die [AGB](https://www.worldpackers.com/terms) verbieten „scrapers/automated means"
-  ausdrücklich, erlauben nur „personal, non-commercial", untersagen Ersatz-/Konkurrenz-
-  dienste; `/search` antwortet automatisiert mit **403 (Cloudflare)**. → nur Deep-Link.
-- **Workaway, WWOOF, HelpX** — Login/Paywall + Anti-Scraping. → nur Deep-Link.
-
-> **Bewusst ausgeschlossen:** das Umgehen der Worldpackers-Bot-Sperre per
-> curl_cffi/Browser-Automation. Das aktive Aushebeln einer technischen Schutzmaßnahme
-> gegen den erklärten Willen des Betreibers wird nicht umgesetzt — unabhängig vom privaten
-> Zweck. Wird später ggf. extern ergänzt.
-
 ### Datenfalle: Voluntourism
 
 Viele weltweite „Conservation-Volunteer"-Programme sind **kostenpflichtig** (die Freiwillige
