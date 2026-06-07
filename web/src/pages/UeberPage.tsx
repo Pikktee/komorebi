@@ -87,7 +87,7 @@ export function UeberPage() {
         <Container size="sm" pt={{ base: 'xl', md: 56 }} pb="md">
           <Stack gap="md" align="center" ta="center">
             <KomorebiMark size={48} />
-            <Title order={1} className="nz-display" fz={{ base: 32, md: 44 }} c="wald.9">
+            <Title order={1} className="nz-display" fz={{ base: 32, md: 44 }}>
               Über Komorebi
             </Title>
             <Text c="dimmed" maw={560} fz={{ base: 'md', md: 'lg' }}>
@@ -108,7 +108,7 @@ export function UeberPage() {
                   <ThemeIcon variant="light" color="sonne" radius="md" size="lg">
                     <IconSunHigh size={20} />
                   </ThemeIcon>
-                  <Title order={2} fz="xl" className="nz-display" c="wald.9">
+                  <Title order={2} fz="xl" className="nz-display">
                     Woher der Name?
                   </Title>
                 </Group>

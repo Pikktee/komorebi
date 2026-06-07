@@ -32,6 +32,7 @@ import {
   IconExternalLink,
 } from '@tabler/icons-react';
 import { KomorebiMark } from '../components/Logo';
+import { TippBox } from '../components/TippBox';
 
 /** Quellenverzeichnis – jede Aussage im Text verweist hierauf (durchgehende Belege). */
 const QUELLEN = [
@@ -198,7 +199,7 @@ const GLOSSAR: { begriff: string; text: ReactNode }[] = [
 function SectionTitle({ icon, kicker, titel }: { icon: ReactNode; kicker: string; titel: string }) {
   return (
     <Stack gap={6} mb="lg">
-      <Group gap={8} c="wald.8">
+      <Group gap={8} c="dimmed">
         <ThemeIcon variant="light" color="wald" radius="md" size="md">
           {icon}
         </ThemeIcon>
@@ -206,7 +207,7 @@ function SectionTitle({ icon, kicker, titel }: { icon: ReactNode; kicker: string
           {kicker}
         </Text>
       </Group>
-      <Title order={2} className="nz-display" fz={{ base: 26, md: 32 }} c="wald.9">
+      <Title order={2} className="nz-display" fz={{ base: 26, md: 32 }}>
         {titel}
       </Title>
     </Stack>
@@ -222,7 +223,7 @@ export function WissenPage() {
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl" style={{ alignItems: 'center' }}>
             <Stack gap="md" className="nz-wissen-header-stack">
               <KomorebiMark size={48} />
-              <Title order={1} className="nz-display" fz={{ base: 34, md: 46 }} c="wald.9">
+              <Title order={1} className="nz-display" fz={{ base: 34, md: 46 }}>
                 Gut zu wissen
               </Title>
               <Text c="dimmed" fz={{ base: 'sm', md: 'md' }} style={{ lineHeight: 1.5 }}>
@@ -320,7 +321,7 @@ export function WissenPage() {
                   />
                   <Stack gap="sm" style={{ position: 'relative', zIndex: 1 }}>
                     <Group justify="space-between" mb={2} wrap="nowrap">
-                      <Text fw={700} fz="lg" className="nz-display" c="wald.9">
+                      <Text fw={700} fz="lg" className="nz-display">
                         {p.name}
                       </Text>
                       <Badge variant="light" color={p.farbe} radius="sm" style={{ textTransform: 'none', fontWeight: 700, border: `1px solid var(--mantine-color-${p.farbe}-2)` }}>
@@ -359,7 +360,7 @@ export function WissenPage() {
                       {l.icon}
                     </ThemeIcon>
                     <div>
-                      <Text fw={700} size="sm" c="wald.9">
+                      <Text fw={700} size="sm">
                         {l.titel}
                       </Text>
                       <Text size="xs" c="dimmed" mt={2} style={{ lineHeight: 1.35 }}>
@@ -374,31 +375,16 @@ export function WissenPage() {
 
           {/* Voluntourism */}
           <section>
-            <Card 
-              withBorder 
-              radius="lg" 
-              padding="lg" 
-              style={{ 
-                borderColor: 'var(--mantine-color-terra-3)', 
-                backgroundColor: 'var(--mantine-color-terra-0)' 
-              }}
-            >
-              <Group gap="sm" mb="xs">
-                <ThemeIcon variant="light" color="terra" radius="md" size="lg">
-                  <IconAlertTriangle size={20} />
-                </ThemeIcon>
-                <Title order={3} fz="xl" className="nz-display" c="terra.9">
-                  Vorsicht: die Voluntourism-Falle
-                </Title>
-              </Group>
-              <Text size="xs" c="dark.5" style={{ lineHeight: 1.5 }}>
-                Viele weltweite „Conservation"-Programme sind <b>kostenpflichtig</b> – teils mehrere
-                tausend Euro. Solche kommerziellen Freiwilligenreisen („Voluntourism") halten nicht
-                immer, was sie versprechen, und sind nicht automatisch sinnvoll für Natur oder
-                Gemeinschaft.<Ref n={7} /> Komorebi blendet kostenpflichtige Angebote{' '}
-                <b>standardmäßig aus</b> und stellt freie Kost & Unterkunft in den Vordergrund.
-              </Text>
-            </Card>
+            <TippBox
+              titel="Vorsicht: Die Voluntourism-Falle"
+              icon={<IconAlertTriangle size={20} />}
+              color="terra"
+              takeaway={<>Viele weltweite „Conservation“-Programme verlangen hohe Gebühren – teils mehrere tausend Euro.<Ref n={7} /></>}
+              points={[
+                <><b>Wirkung prüfen:</b> Solche kommerziellen Freiwilligenreisen halten oft nicht, was sie versprechen, und sind nicht automatisch sinnvoll für Natur oder Gemeinschaft vor Ort.</>,
+                <><b>Komorebi-Standard:</b> Wir blenden kostenpflichtige Angebote standardmäßig aus und stellen Plätze mit freier Kost &amp; Unterkunft in den Vordergrund.</>
+              ]}
+            />
           </section>
 
           {/* Checkliste */}
@@ -430,7 +416,7 @@ export function WissenPage() {
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
               {GLOSSAR.map((g) => (
                 <Card key={g.begriff} withBorder radius="lg" p="md" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
-                  <Text fw={700} mb={4} c="wald.9" className="nz-display" fz="sm">
+                  <Text fw={700} mb={4} className="nz-display" fz="sm">
                     {g.begriff}
                   </Text>
                   <Text size="xs" c="dimmed" style={{ lineHeight: 1.4 }}>
@@ -452,7 +438,7 @@ export function WissenPage() {
             <Stack gap="xs">
               {QUELLEN.map((q) => (
                 <Group key={q.n} id={`q${q.n}`} gap="xs" wrap="nowrap" align="flex-start">
-                  <Text fw={700} c="wald.9" fz="sm" style={{ minWidth: 24 }}>
+                  <Text fw={700} c="dimmed" fz="sm" style={{ minWidth: 24 }}>
                     [{q.n}]
                   </Text>
                   <Anchor href={q.url} target="_blank" rel="noopener noreferrer" size="sm" className="nz-link-high-contrast">
@@ -493,7 +479,7 @@ function KurzKarte({ icon, titel, text }: { icon: ReactNode; titel: string; text
       <ThemeIcon variant="light" color="wald" radius="md" size="lg" mb="sm">
         {icon}
       </ThemeIcon>
-      <Text fw={700} mb={4} c="wald.9" className="nz-display" fz="md">
+      <Text fw={700} mb={4} className="nz-display" fz="md">
         {titel}
       </Text>
       <Text size="xs" c="dimmed" style={{ lineHeight: 1.4 }}>

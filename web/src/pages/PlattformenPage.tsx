@@ -1,6 +1,4 @@
 import {
-  Alert,
-  Anchor,
   Badge,
   Card,
   Container,
@@ -9,9 +7,19 @@ import {
   Stack,
   Text,
   Title,
+  Box,
 } from '@mantine/core';
-import { IconArrowUpRight, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconArrowUpRight,
+  IconInfoCircle,
+  IconBriefcase,
+  IconArrowsExchange,
+  IconWorld,
+  IconCompass,
+} from '@tabler/icons-react';
 import { PLATTFORMEN, type PlattformKategorie } from '../lib/plattformen';
+import { TippBox } from '../components/TippBox';
+import type { CSSProperties } from 'react';
 
 const KATEGORIEN: { key: PlattformKategorie; titel: string; text: string }[] = [
   {
@@ -36,32 +44,104 @@ const KATEGORIEN: { key: PlattformKategorie; titel: string; text: string }[] = [
   },
 ];
 
-function PlattformKarte({ name, url, beschreibung, hinweis, kostenlosMoeglich }: (typeof PLATTFORMEN)[number]) {
+function getWatermarkIcon(kategorie: PlattformKategorie) {
+  switch (kategorie) {
+    case 'Stellenboerse':
+      return IconBriefcase;
+    case 'Work-Exchange':
+      return IconArrowsExchange;
+    case 'Aggregator':
+      return IconWorld;
+    case 'Anbieter':
+      return IconCompass;
+  }
+}
+
+function PlattformKarte({ name, url, beschreibung, hinweis, kostenlosMoeglich, kategorie }: (typeof PLATTFORMEN)[number]) {
+  const WatermarkIcon = getWatermarkIcon(kategorie);
+  const akzent = kostenlosMoeglich ? 'wald' : 'terra';
+
+  const style = {
+    height: '100%',
+    borderColor: 'var(--nz-line)',
+    textDecoration: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    '--nz-accent': `var(--mantine-color-${akzent}-4)`,
+  } as CSSProperties;
+
   return (
-    <Card withBorder radius="lg" padding="lg" className="nz-card" style={{ borderColor: 'var(--nz-line)' }}>
-      <Stack gap="xs" h="100%">
-        <Group justify="space-between" wrap="nowrap">
-          <Text fw={600} fz="lg">
-            {name}
-          </Text>
-          <Badge variant="light" color={kostenlosMoeglich ? 'wald' : 'terra'} radius="sm" style={{ textTransform: 'none' }}>
-            {kostenlosMoeglich ? 'kostenlos möglich' : 'kostenpflichtig'}
-          </Badge>
-        </Group>
-        <Text size="sm" c="dark.4">
-          {beschreibung}
-        </Text>
-        {hinweis && (
-          <Text size="xs" c="dimmed" fs="italic">
-            {hinweis}
-          </Text>
-        )}
-        <Anchor href={url} target="_blank" rel="noopener noreferrer" mt="auto" fw={600} c="wald.8">
-          <Group gap={4}>
-            <span>Öffnen</span>
-            <IconArrowUpRight size={16} />
+    <Card
+      component="a"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      withBorder
+      radius="lg"
+      padding="md"
+      className="nz-card nz-platform-card"
+      style={style}
+    >
+      <Box className="nz-card__glow" aria-hidden="true" />
+      <Box className="nz-card__watermark" aria-hidden="true">
+        <WatermarkIcon size={72} stroke={1.0} />
+      </Box>
+
+      <Stack gap="xs" h="100%" justify="space-between" style={{ position: 'relative', zIndex: 1 }}>
+        <Stack gap="xs">
+          <Group justify="space-between" align="flex-start" wrap="nowrap" gap="sm">
+            <Text fw={650} fz="md" c="var(--nz-ink)" style={{ lineHeight: 1.25 }}>
+              {name}
+            </Text>
+            <Box className="nz-card__arrow" aria-hidden="true">
+              <IconArrowUpRight size={14} />
+            </Box>
           </Group>
-        </Anchor>
+
+          <Group gap={6} mt={-4}>
+            <Badge
+              variant="light"
+              color={kostenlosMoeglich ? 'wald' : 'terra'}
+              size="xs"
+              radius="sm"
+              className="nz-badge-soft"
+              style={{ textTransform: 'none', fontWeight: 650 }}
+            >
+              {kostenlosMoeglich ? 'kostenlos möglich' : 'kostenpflichtig'}
+            </Badge>
+          </Group>
+
+          <Text size="sm" c="dark.4" style={{ lineHeight: 1.4, marginTop: 4 }}>
+            {beschreibung}
+          </Text>
+        </Stack>
+
+        {hinweis && (
+          <Group
+            gap={6}
+            p={8}
+            mt="sm"
+            style={{
+              background: kostenlosMoeglich ? 'rgba(21, 107, 65, 0.04)' : 'rgba(219, 109, 48, 0.04)',
+              border: `1px solid ${kostenlosMoeglich ? 'var(--mantine-color-wald-1)' : 'var(--mantine-color-terra-1)'}`,
+              borderRadius: '8px',
+            }}
+            wrap="nowrap"
+            align="flex-start"
+          >
+            <IconInfoCircle
+              size={14}
+              style={{
+                color: kostenlosMoeglich ? 'var(--mantine-color-wald-6)' : 'var(--mantine-color-terra-6)',
+                flexShrink: 0,
+                marginTop: 2,
+              }}
+            />
+            <Text size="xs" c="dark.3" style={{ lineHeight: 1.35 }}>
+              {hinweis}
+            </Text>
+          </Group>
+        )}
       </Stack>
     </Card>
   );
@@ -81,10 +161,17 @@ export function PlattformenPage() {
         </Text>
       </Stack>
 
-      <Alert color="wald" variant="light" icon={<IconInfoCircle />} mb="xl" radius="md">
-        Tipp: Achte überall auf den Unterschied zwischen freier Kost &amp; Unterkunft und einer
-        Teilnahmegebühr. Viele organisierte Programme sind kostenpflichtig.
-      </Alert>
+      <TippBox
+        titel="Tipp: Kosten im Blick behalten"
+        icon={<IconInfoCircle size={20} />}
+        color="wald"
+        mb="xl"
+        takeaway="Achte überall auf den Unterschied zwischen freier Kost & Unterkunft und einer Teilnahmegebühr."
+        points={[
+          <><b>Freie Dienste:</b> Geförderte Dienste (wie ESC, weltwärts, IJFD) übernehmen deine Kosten vollständig oder weitgehend.</>,
+          <><b>Kommerzielle Dienste:</b> Viele privat organisierte Programme verlangen hohe Gebühren von dir.</>
+        ]}
+      />
 
       <Stack gap={48}>
         {KATEGORIEN.map((kat) => (

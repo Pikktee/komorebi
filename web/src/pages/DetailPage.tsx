@@ -36,6 +36,7 @@ import { TaetigkeitsPills, feldFarbe } from '../components/TaetigkeitsPills';
 import { LeistungsBadges, leistungsListe } from '../components/LeistungsBadges';
 import { InfoTooltip } from '../components/InfoTooltip';
 import { ProgramPopover } from '../components/ProgramPopover';
+import { TippBox } from '../components/TippBox';
 import type { CSSProperties } from 'react';
 
 function FactRow({ icon, label, value }: { icon: ReactNode; label: string; value: ReactNode }) {
@@ -170,8 +171,8 @@ export function DetailPage() {
                 </Badge>
               </ProgramPopover>
               
-              <Group gap={4} c="wald.9">
-                <IconMapPin size={16} />
+              <Group gap={4}>
+                <IconMapPin size={16} style={{ color: 'var(--mantine-color-wald-6)', flexShrink: 0 }} />
                 <Text fw={600}>
                   {ortText(stelle.land, stelle.region)}
                 </Text>
@@ -179,7 +180,7 @@ export function DetailPage() {
               </Group>
             </Group>
 
-            <Title order={1} fz={{ base: 30, md: 40 }} lh={1.1} className="nz-display" c="wald.9">
+            <Title order={1} fz={{ base: 30, md: 40 }} lh={1.1} className="nz-display">
               {stelle.titel}
             </Title>
             <Text size="lg" c="dimmed" fw={500}>
@@ -225,7 +226,7 @@ export function DetailPage() {
               <>
                 <Divider my="md" />
                 <Stack gap="xs">
-                  <Title order={3} fz="xl" className="nz-display" c="wald.9">
+                  <Title order={3} fz="xl" className="nz-display">
                     Leistungen im Detail
                   </Title>
                   <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
@@ -236,7 +237,7 @@ export function DetailPage() {
                             {l.icon}
                           </ThemeIcon>
                           <div>
-                            <Text fw={700} size="sm" c="wald.9">{l.text}</Text>
+                            <Text fw={700} size="sm">{l.text}</Text>
                             <Text size="xs" c="dimmed" mt={2} style={{ lineHeight: 1.35 }}>{l.tip}</Text>
                           </div>
                         </Group>
@@ -249,7 +250,7 @@ export function DetailPage() {
 
             <Divider my="md" />
 
-            <Title order={3} fz="xl" className="nz-display" c="wald.9">
+            <Title order={3} fz="xl" className="nz-display">
               Voraussetzungen
             </Title>
             <List spacing="xs" center icon={
@@ -292,26 +293,18 @@ export function DetailPage() {
             </Box>
 
             {(stelle.programm === 'weltwärts' || (stelle.programm === 'IJFD' && Array.isArray(leistungen) && leistungen.length > 0)) && (
-              <Card 
-                withBorder 
-                radius="lg" 
-                p="lg" 
-                style={{ 
-                  borderColor: 'var(--mantine-color-terra-3)', 
-                  backgroundColor: 'var(--mantine-color-terra-0)' 
-                }} 
+              <TippBox
+                titel="Gut zu wissen: Der Spenderkreis"
+                icon={<IconCoins size={20} />}
+                color="terra"
                 mt="md"
-              >
-                <Group gap="xs" mb="xs">
-                  <ThemeIcon color="terra" variant="light">
-                    <IconCoins size={18} />
-                  </ThemeIcon>
-                  <Text fw={700} className="nz-display" c="terra.9">Gut zu wissen: Der Spenderkreis</Text>
-                </Group>
-                <Text size="xs" c="dark.5" style={{ lineHeight: 1.5 }}>
-                  Bei Programmen wie weltwärts (und manchen IJFD-Trägern) werden bis zu 75% der Kosten vom Bund gefördert. Die restlichen Kosten decken die gemeinnützigen Organisationen über Spenden ab. Daher wirst du nach Zusage gebeten, einen <b>Förderkreis (Spenderkreis)</b> aufzubauen. Das ist <b>keine</b> feste Gebühr, die du selbst zahlen musst – du sammelst kleine Spendenberichte von Unterstützern (z.B. Verwandten, Vereinen, Firmen). Keine Sorge: Deine Zusage scheitert fast nie am Spenderkreis!
-                </Text>
-              </Card>
+                takeaway="Der Spenderkreis ist keine feste Gebühr, die du selbst zahlen musst."
+                points={[
+                  <><b>Förderung &amp; Spenden:</b> Bei weltwärts (und manchen IJFD-Trägern) werden bis zu 75% der Kosten vom Bund gefördert. Die restlichen Kosten decken die Träger über Spenden ab.</>,
+                  <><b>Deine Rolle:</b> Du wirst nach Zusage gebeten, Unterstützer (z.B. Verwandte, Vereinen, Firmen) zu suchen, die kleine Beiträge spenden.</>,
+                  <><b>Keine Sorge:</b> Deine Zusage scheitert fast nie am Spenderkreis! Die Träger unterstützen dich intensiv dabei.</>
+                ]}
+              />
             )}
           </Stack>
         </Box>
@@ -331,7 +324,7 @@ export function DetailPage() {
             } as CSSProperties}
           >
             <Stack gap="lg">
-              <Text fw={700} fz="lg" className="nz-display" c="wald.9">
+              <Text fw={700} fz="lg" className="nz-display">
                 Auf einen Blick
               </Text>
 

@@ -55,7 +55,7 @@ export function FindenPage() {
         <Group justify="space-between" align="flex-end" gap="lg">
           <Stack gap={6}>
             <Group gap={6}>
-              <Title order={1} fz={{ base: 32, md: 42 }} className="nz-display" c="wald.9">
+              <Title order={1} fz={{ base: 32, md: 42 }} className="nz-display">
                 Stellen finden
               </Title>
               <InfoTooltip label="Deine Filter werden in der URL gespeichert. Du kannst die Suche also direkt teilen oder später wieder öffnen." />
@@ -87,7 +87,7 @@ export function FindenPage() {
           style={{ position: 'sticky', top: 84, flexShrink: 0 }}
         >
           <Box className="nz-panel nz-glass-panel" p="lg" style={{ borderRadius: 12 }}>
-            <Text fw={700} className="nz-display" fz="lg" mb="md" c="wald.9">
+            <Text fw={700} className="nz-display" fz="lg" mb="md">
               Filter
             </Text>
             <FilterPanel filter={filter} onChange={setFilter} laenderOptions={laenderOptions} />

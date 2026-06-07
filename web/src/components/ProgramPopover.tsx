@@ -105,7 +105,7 @@ export function ProgramPopover({ programm, children }: ProgramPopoverProps) {
       </Popover.Target>
       <Popover.Dropdown style={{ pointerEvents: 'none' }}>
         <Box>
-          <Text fw={700} fz="sm" className="nz-display" c="wald.9" mb={4}>
+          <Text fw={700} fz="sm" className="nz-display" mb={4}>
             {info.title}
           </Text>
           <Text size="xs" c="dimmed" mb="xs" lh={1.3}>
@@ -155,7 +155,7 @@ export function ProgramPopover({ programm, children }: ProgramPopoverProps) {
             </Table.Tbody>
           </Table>
 
-          <Text size="xs" fw={700} c="wald.8" mb={4} mt={6}>
+          <Text size="xs" fw={700} c="dark.5" mb={4} mt={6}>
             Übernommene Leistungen:
           </Text>
           <Box style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>

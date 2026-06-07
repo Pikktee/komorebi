@@ -88,9 +88,9 @@ export function StelleCard({ stelle, showAddedDate = false }: { stelle: Stelle; 
       
       <Stack gap="sm" h="100%" style={{ position: 'relative', zIndex: 1 }}>
         <Group justify="space-between" align="flex-start" wrap="nowrap" gap="xs">
-          <Group gap={5} c="wald.9" wrap="nowrap">
-            <IconMapPin size={16} style={{ flexShrink: 0 }} />
-            <Text fw={700} size="sm" lineClamp={1}>
+          <Group gap={5} wrap="nowrap">
+            <IconMapPin size={16} style={{ flexShrink: 0, color: 'var(--mantine-color-wald-6)' }} />
+            <Text fw={700} size="sm" lineClamp={1} c="dark.4">
               {ortText(stelle)}
             </Text>
           </Group>
@@ -135,9 +135,9 @@ export function StelleCard({ stelle, showAddedDate = false }: { stelle: Stelle; 
               </Group>
             )}
             {showAddedDate && hinzugefuegt && (
-              <Group gap={5} c="wald.9">
+              <Group gap={5} c="dark.3">
                 <IconCalendarPlus size={15} style={{ flexShrink: 0 }} />
-                <Text size="xs" fw={500}>Hinzugefügt am {hinzugefuegt}</Text>
+                <Text size="xs">Hinzugefügt am {hinzugefuegt}</Text>
               </Group>
             )}
           </Stack>

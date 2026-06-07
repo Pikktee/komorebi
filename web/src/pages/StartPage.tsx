@@ -147,7 +147,7 @@ function RadarBlock({ titel, icon, children }: { titel: string; icon: ReactNode;
     <Stack gap="sm">
       <Group gap="xs">
         <Box className="nz-data-icon">{icon}</Box>
-        <Title order={3} fz="lg" className="nz-display" c="wald.9">
+        <Title order={3} fz="lg" className="nz-display">
           {titel}
         </Title>
       </Group>
@@ -163,7 +163,7 @@ function RadarBar({ label, count, max }: { label: string; count: number; max: nu
         <Text size="sm" fw={600} lineClamp={1}>
           {label}
         </Text>
-        <Text size="sm" c="wald.9" fw={700}>
+        <Text size="sm" fw={700}>
           {count}
         </Text>
       </Group>
@@ -180,7 +180,7 @@ function QualityLine({ label, value }: { label: string; value: string }) {
       <Text size="sm" fw={600} c="dark.4">
         {label}
       </Text>
-      <Text className="nz-display" fz="lg" fw={700} c="wald.9">
+      <Text className="nz-display" fz="lg" fw={700}>
         {value}
       </Text>
     </Group>
@@ -205,7 +205,7 @@ function InfografikSchritt({ nummer, titel, beschreibung, icon }: { nummer: numb
           >
             {icon}
           </ThemeIcon>
-          <Text fw={700} fz="md" mt="xs" className="nz-display" c="wald.9">
+          <Text fw={700} fz="md" mt="xs" className="nz-display">
             {titel}
           </Text>
           <Text size="xs" c="dimmed" style={{ lineHeight: 1.45 }}>
@@ -333,10 +333,10 @@ export function StartPage() {
       {/* Timeline Infografik Sektion */}
       <Container size="lg" py={{ base: 48, md: 64 }}>
         <Stack gap="xs" mb="xl" align="center" style={{ textAlign: 'center' }}>
-          <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
+          <Text fw={700} c="dimmed" tt="uppercase" fz="xs" lts={1.5}>
             Wie es funktioniert
           </Text>
-          <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }} c="wald.9">
+          <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }}>
             Dein Weg ins grüne Abenteuer
           </Title>
           <Text size="sm" c="dimmed" maw={520}>
@@ -374,7 +374,7 @@ export function StartPage() {
 
       <Container size="lg" pb={{ base: 38, md: 56 }}>
         <Stack gap="xs" mb="md">
-          <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
+          <Text fw={700} c="dimmed" tt="uppercase" fz="xs" lts={1.5}>
             Schneller Einstieg
           </Text>
           <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
@@ -436,10 +436,10 @@ export function StartPage() {
             />
           </Box>
           <Stack gap="md">
-            <Text fw={700} c="wald.9" tt="uppercase" fz="xs" lts={1.5}>
+            <Text fw={700} c="dimmed" tt="uppercase" fz="xs" lts={1.5}>
               Über das Projekt
             </Text>
-            <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }} c="wald.9" lh={1.15}>
+            <Title order={2} className="nz-display" fz={{ base: 28, md: 36 }} lh={1.15}>
               Vom Hörsaal direkt in die Wildnis
             </Title>
             <Text size="sm" c="dark.5" style={{ lineHeight: 1.6 }}>
@@ -468,7 +468,7 @@ export function StartPage() {
                   <Box className="nz-section-icon" aria-hidden="true">
                     <IconCalendarPlus size={18} />
                   </Box>
-                  <Text fw={700} c="wald.9" tt="uppercase" fz="sm" lts={1}>
+                  <Text fw={700} c="dimmed" tt="uppercase" fz="sm" lts={1}>
                     Neu hinzugekommen
                   </Text>
                 </Group>
@@ -499,7 +499,7 @@ export function StartPage() {
           <>
             <Group justify="space-between" align="flex-end" mb="lg">
               <Stack gap="xs">
-                <Text fw={700} c="wald.9" tt="uppercase" fz="sm" lts={1}>
+                <Text fw={700} c="dimmed" tt="uppercase" fz="sm" lts={1}>
                   Reinschnuppern
                 </Text>
                 <Title order={2} className="nz-display" fz={{ base: 26, md: 34 }}>
