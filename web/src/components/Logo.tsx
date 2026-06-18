@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import type { CSSProperties } from 'react';
 
 interface MarkProps {
@@ -9,7 +10,9 @@ interface MarkProps {
 
 /** Markenzeichen „Komorebi": Sonnenlicht, das durch ein Blatt fällt. */
 export function KomorebiMark({ size = 34, ton = 'farbe', style }: MarkProps) {
-  const uid = `km-${ton}`;
+  const reactId = useId();
+  const safeId = reactId.replace(/:/g, '-');
+  const uid = `km-${ton}-${safeId}`;
   const blattVon = ton === 'hell' ? '#eaf7ee' : '#3f9468';
   const blattBis = ton === 'hell' ? '#bfe6cd' : '#15532f';
   const vene = ton === 'hell' ? '#15532f' : '#eaf7ee';

@@ -218,6 +218,23 @@ export function DetailPage() {
               <DetailFact icon={<IconLink size={18} />} label="Quellen" value={quellenText} />
             </SimpleGrid>
 
+            {/* Mobiler CTA direkt unter den Facts */}
+            <Button
+              component="a"
+              href={stelle.quell_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="wald"
+              size="md"
+              rightSection={<IconArrowUpRight size={18} />}
+              fullWidth
+              style={{ fontWeight: 700 }}
+              hiddenFrom="md"
+              mt="md"
+            >
+              Zur Stelle &amp; Bewerbung
+            </Button>
+
             <Text fz="md" lh={1.7} mt="xs" style={{ whiteSpace: 'pre-line' }}>
               {stelle.beschreibung}
             </Text>
@@ -324,39 +341,42 @@ export function DetailPage() {
             } as CSSProperties}
           >
             <Stack gap="lg">
-              <Text fw={700} fz="lg" className="nz-display">
-                Auf einen Blick
-              </Text>
+              <Box visibleFrom="md">
+                <Stack gap="lg">
+                  <Text fw={700} fz="lg" className="nz-display" mb="xs">
+                    Auf einen Blick
+                  </Text>
 
-              <FactRow
-                icon={<IconClock size={18} />}
-                label="Dauer"
-                value={dauerText(stelle.dauer_monate_min, stelle.dauer_monate_max)}
-              />
-              {zeitraum && (
-                <FactRow icon={<IconCalendar size={18} />} label="Zeitraum" value={zeitraum} />
-              )}
-              {stelle.bewerbungsfrist && (
-                <FactRow
-                  icon={<IconCalendar size={18} />}
-                  label="Bewerbungsfrist"
-                  value={datumText(stelle.bewerbungsfrist)}
-                />
-              )}
+                  <FactRow
+                    icon={<IconClock size={18} />}
+                    label="Dauer"
+                    value={dauerText(stelle.dauer_monate_min, stelle.dauer_monate_max)}
+                  />
+                  {zeitraum && (
+                    <FactRow icon={<IconCalendar size={18} />} label="Zeitraum" value={zeitraum} />
+                  )}
+                  {stelle.bewerbungsfrist && (
+                    <FactRow
+                      icon={<IconCalendar size={18} />}
+                      label="Bewerbungsfrist"
+                      value={datumText(stelle.bewerbungsfrist)}
+                    />
+                  )}
 
-              {leistungen.length > 0 && (
-                <>
+                  {leistungen.length > 0 && (
+                    <>
+                      <Divider />
+                      <div>
+                        <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} mb={8}>
+                          Leistungen
+                        </Text>
+                        <LeistungsBadges stelle={stelle} />
+                      </div>
+                    </>
+                  )}
                   <Divider />
-                  <div>
-                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} mb={8}>
-                      Leistungen
-                    </Text>
-                    <LeistungsBadges stelle={stelle} />
-                  </div>
-                </>
-              )}
-
-              <Divider />
+                </Stack>
+              </Box>
 
               <Stack gap={6}>
                 <Text size="xs" c="dimmed" tt="uppercase" lts={0.5}>

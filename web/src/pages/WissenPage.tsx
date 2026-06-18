@@ -265,8 +265,28 @@ export function WissenPage() {
 
       <Container size="md" py={{ base: 'lg', md: 'xl' }}>
         <Stack gap={64}>
+          {/* Inhaltsverzeichnis / Navigation */}
+          <Card withBorder radius="lg" p="md" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)', marginTop: -16 }}>
+            <Group gap="xs" justify="center" wrap="wrap">
+              <Text size="sm" fw={700} mr="xs">Inhalt:</Text>
+              <Anchor href="#inkuerze" size="sm" fw={600} c="wald.9">In Kürze</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#programme" size="sm" fw={600} c="wald.9">Programme</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#leistungen" size="sm" fw={600} c="wald.9">Leistungen</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#voluntourism" size="sm" fw={600} c="wald.9">Voluntourism</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#checkliste" size="sm" fw={600} c="wald.9">Checkliste</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#glossar" size="sm" fw={600} c="wald.9">Glossar</Anchor>
+              <Text c="dimmed" size="xs">&bull;</Text>
+              <Anchor href="#quellen" size="sm" fw={600} c="wald.9">Quellen</Anchor>
+            </Group>
+          </Card>
+
           {/* In Kürze */}
-          <section>
+          <section id="inkuerze">
             <SectionTitle icon={<IconLeaf size={18} />} kicker="In Kürze" titel="Was ist ein ökologischer Freiwilligendienst?" />
             <Text mb="lg" style={{ lineHeight: 1.6 }}>
               Ein ökologischer Freiwilligendienst ist ein organisierter Einsatz im Natur-,
@@ -284,7 +304,7 @@ export function WissenPage() {
           </section>
 
           {/* Programme */}
-          <section>
+          <section id="programme">
             <SectionTitle icon={<IconWorld size={18} />} kicker="Förderung" titel="Die wichtigsten Programme" />
             <Text mb="xl" style={{ lineHeight: 1.6 }}>
               Viele Plätze laufen über staatlich oder von der EU geförderte Programme. Sie
@@ -345,7 +365,7 @@ export function WissenPage() {
           </section>
 
           {/* Leistungen */}
-          <section>
+          <section id="leistungen">
             <SectionTitle icon={<IconShieldCheck size={18} />} kicker="Leistungen" titel="Was die Förderung übernimmt" />
             <Text mb="xl" style={{ lineHeight: 1.6 }}>
               Am Beispiel des Europäischen Solidaritätskorps: Die EU zahlt keinen Lohn, sondern
@@ -374,7 +394,7 @@ export function WissenPage() {
           </section>
 
           {/* Voluntourism */}
-          <section>
+          <section id="voluntourism">
             <TippBox
               titel="Vorsicht: Die Voluntourism-Falle"
               icon={<IconAlertTriangle size={20} />}
@@ -388,7 +408,7 @@ export function WissenPage() {
           </section>
 
           {/* Checkliste */}
-          <section>
+          <section id="checkliste">
             <SectionTitle icon={<IconCircleCheck size={18} />} kicker="Orientierung" titel="Deine Checkliste" />
             <Card withBorder radius="lg" p="lg" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
               <List
@@ -411,7 +431,7 @@ export function WissenPage() {
           </section>
 
           {/* Glossar */}
-          <section>
+          <section id="glossar">
             <SectionTitle icon={<IconBook2 size={18} />} kicker="Nachschlagen" titel="Glossar" />
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
               {GLOSSAR.map((g) => (

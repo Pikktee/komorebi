@@ -42,6 +42,10 @@ function stelle(p: Partial<Stelle>): Stelle {
     erstmals_gesehen: p.erstmals_gesehen ?? '2026-06-05',
     zuletzt_gesehen: '2026-06-05',
     zuletzt_geaendert: '2026-06-05',
+    geo_lat: p.geo_lat ?? null,
+    geo_lon: p.geo_lon ?? null,
+    geo_genauigkeit: p.geo_genauigkeit ?? null,
+    geo_label: p.geo_label ?? null,
   };
 }
 
@@ -88,6 +92,40 @@ describe('filterStellen', () => {
   it('sortiert nach Land alphabetisch', () => {
     const r = filterStellen(daten, { ...DEFAULT_FILTER, ohneGebuehr: false, sort: 'land' });
     expect(r.map((s) => s.land)).toEqual(['Costa Rica', 'Estland', 'Griechenland', 'Thailand']);
+  });
+
+  it('sortiert standardmäßig nach Relevanz', () => {
+    const dataForRelevance: Stelle[] = [
+      // Let's create varying records to test priorities:
+      // a: No program, no free accommodation, known location
+      stelle({ id: 'a', land: 'Estland', programm: 'keins', kost_unterkunft_frei: false, titel: 'A_titel' }),
+      // b: Program, free accommodation, known location
+      stelle({ id: 'b', land: 'Griechenland', programm: 'ESC', kost_unterkunft_frei: true, titel: 'B_titel' }),
+      // c: No program, free accommodation, known location
+      stelle({ id: 'c', land: 'Thailand', programm: 'keins', kost_unterkunft_frei: true, titel: 'C_titel' }),
+      // d: Program, free accommodation, unknown location ("Ort offen")
+      stelle({ id: 'd', land: 'Ort offen', programm: 'ESC', kost_unterkunft_frei: true, titel: 'D_titel' }),
+    ];
+    const r = filterStellen(dataForRelevance, { ...DEFAULT_FILTER, ohneGebuehr: false, sort: 'relevanz' });
+    // Expected order:
+    // 1st: b (Program, free accommodation, known land)
+    // 2nd: d (Program, free accommodation, unknown land "Ort offen" - program beats non-program)
+    // 3rd: c (No program, free accommodation, known land)
+    // 4th: a (No program, no free accommodation, known land)
+    expect(r.map((s) => s.id)).toEqual(['b', 'd', 'c', 'a']);
+  });
+
+  it('suche normalisiert Umlaute und findet Synonyme', () => {
+    const searchData: Stelle[] = [
+      stelle({ id: '1', titel: 'Bären-Schutzprojekt', taetigkeitsfeld: ['Artenschutz/Tiere'] }),
+      stelle({ id: '2', titel: 'Küstenforschung', taetigkeitsfeld: ['Meeresschutz'] }),
+    ];
+    // "baeren" normalisiert zu "baren" which should match "Bären" (which also normalizes to "baren")
+    expect(filterStellen(searchData, { ...DEFAULT_FILTER, q: 'baeren' }).map((s) => s.id)).toEqual(['1']);
+    // "Tiere" synonym matches "Artenschutz/Tiere"
+    expect(filterStellen(searchData, { ...DEFAULT_FILTER, q: 'Tiere' }).map((s) => s.id)).toEqual(['1']);
+    // "Meer" synonym matches "Meeresschutz"
+    expect(filterStellen(searchData, { ...DEFAULT_FILTER, q: 'Meer' }).map((s) => s.id)).toEqual(['2']);
   });
 });
 

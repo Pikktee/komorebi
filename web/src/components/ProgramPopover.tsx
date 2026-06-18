@@ -1,4 +1,4 @@
-import { Box, Group, Popover, Table, Text } from '@mantine/core';
+import { Box, Group, Popover, Table, Text, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconBook2, IconCalendar, IconCircleCheck, IconCoins, IconInfoCircle, IconUser } from '@tabler/icons-react';
 import type { Programm } from '../types';
@@ -49,7 +49,7 @@ const DETAILS: Record<Programm, ProgramDetails> = {
   },
   kulturweit: {
     title: 'kulturweit Freiwilligendienst',
-    traeger: 'Deutsche UNESCO-Kommission / Auswärtiges Amt',
+    traeger: 'Auswärtiges Amt / DUK',
     alter: '18 bis 26 Jahre',
     dauer: '6 oder 12 Monate',
     kosten: '100% kostenfrei für dich',
@@ -71,16 +71,35 @@ export function ProgramPopover({ programm, children }: ProgramPopoverProps) {
   const [opened, { close, open }] = useDisclosure(false);
   const info = DETAILS[programm];
 
-  // Default trigger if no children provided
   const trigger = children ? (
-    <div onMouseEnter={open} onMouseLeave={close} onClick={open} style={{ cursor: 'pointer', display: 'inline-flex' }}>
+    <UnstyledButton
+      onMouseEnter={open}
+      onMouseLeave={close}
+      onClick={opened ? close : open}
+      onFocus={open}
+      onBlur={close}
+      aria-expanded={opened}
+      aria-haspopup="dialog"
+      aria-label={`Programm-Info für ${PROGRAMM_LABEL[programm]}`}
+      style={{ cursor: 'pointer', display: 'inline-flex' }}
+    >
       {children}
-    </div>
+    </UnstyledButton>
   ) : (
-    <Group gap={4} onMouseEnter={open} onMouseLeave={close} onClick={open} style={{ cursor: 'pointer', color: 'var(--mantine-color-himmel-7)' }}>
+    <UnstyledButton
+      onMouseEnter={open}
+      onMouseLeave={close}
+      onClick={opened ? close : open}
+      onFocus={open}
+      onBlur={close}
+      aria-expanded={opened}
+      aria-haspopup="dialog"
+      aria-label={`Programm-Info für ${PROGRAMM_LABEL[programm]}`}
+      style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4, color: 'var(--mantine-color-himmel-7)' }}
+    >
       <Text size="xs" fw={600}>{PROGRAMM_LABEL[programm]}</Text>
       <IconInfoCircle size={14} />
-    </Group>
+    </UnstyledButton>
   );
 
   return (

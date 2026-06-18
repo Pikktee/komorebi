@@ -42,10 +42,25 @@ export interface Stelle {
   erstmals_gesehen: string;
   zuletzt_gesehen: string;
   zuletzt_geaendert: string;
+  geo_lat: number | null;
+  geo_lon: number | null;
+  geo_genauigkeit: 'stadt' | 'region' | 'land' | 'unbekannt' | null;
+  geo_label: string | null;
+}
+
+export interface Metriken {
+  datenstand: string;
+  gesamt: number;
+  quellen: Record<string, number>;
+  fehlende_laender: number;
+  gemappte_koordinaten: number;
+  llm_verwerfungen: number;
+  deterministisch_verworfen: number;
 }
 
 export interface Datensatz {
   generiert_am: string;
   anzahl: number;
+  metriken?: Metriken;
   stellen: Stelle[];
 }

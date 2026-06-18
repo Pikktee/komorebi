@@ -4,7 +4,6 @@ import {
   IconMapPin,
   IconClock,
   IconCalendarEvent,
-  IconArrowUpRight,
   IconCalendarPlus,
   IconLeaf,
   IconBinoculars,
@@ -116,12 +115,6 @@ export function StelleCard({ stelle, showAddedDate = false }: { stelle: Stelle; 
 
         <TaetigkeitsPills felder={stelle.taetigkeitsfeld} max={3} />
 
-        {stelle.beschreibung && (
-          <Text size="sm" c="dark.4" lineClamp={2} style={{ lineHeight: 1.4 }}>
-            {stelle.beschreibung}
-          </Text>
-        )}
-
         <Group justify="space-between" align="flex-end" gap="md" mt="auto" pt={6}>
           <Stack gap={6}>
             <Group gap={5} c="dark.3">
@@ -141,9 +134,6 @@ export function StelleCard({ stelle, showAddedDate = false }: { stelle: Stelle; 
               </Group>
             )}
           </Stack>
-          <Box className="nz-card__arrow" aria-hidden="true">
-            <IconArrowUpRight size={18} />
-          </Box>
         </Group>
 
         <LeistungsBadges stelle={stelle} />

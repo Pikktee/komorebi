@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import {
   Badge,
   Card,
@@ -8,6 +9,9 @@ import {
   Text,
   Title,
   Box,
+  TextInput,
+  SegmentedControl,
+  Button,
 } from '@mantine/core';
 import {
   IconArrowUpRight,
@@ -16,8 +20,10 @@ import {
   IconArrowsExchange,
   IconWorld,
   IconCompass,
+  IconSearch,
+  IconX,
 } from '@tabler/icons-react';
-import { PLATTFORMEN, type PlattformKategorie } from '../lib/plattformen';
+import { PLATTFORMEN, type PlattformKategorie, type Plattform } from '../lib/plattformen';
 import { TippBox } from '../components/TippBox';
 import type { CSSProperties } from 'react';
 
@@ -57,7 +63,7 @@ function getWatermarkIcon(kategorie: PlattformKategorie) {
   }
 }
 
-function PlattformKarte({ name, url, beschreibung, hinweis, kostenlosMoeglich, kategorie }: (typeof PLATTFORMEN)[number]) {
+function PlattformKarte({ name, url, beschreibung, hinweis, kostenlosMoeglich, kategorie }: Plattform) {
   const WatermarkIcon = getWatermarkIcon(kategorie);
   const akzent = kostenlosMoeglich ? 'wald' : 'terra';
 
@@ -148,6 +154,45 @@ function PlattformKarte({ name, url, beschreibung, hinweis, kostenlosMoeglich, k
 }
 
 export function PlattformenPage() {
+  const [suche, setSuche] = useState('');
+  const [kategorie, setKategorie] = useState<string>('alle');
+  const [gebuehr, setGebuehr] = useState<string>('alle');
+
+  const gefiltert = useMemo(() => {
+    return PLATTFORMEN.filter((p) => {
+      if (suche.trim()) {
+        const term = suche.toLowerCase();
+        const matchesName = p.name.toLowerCase().includes(term);
+        const matchesDesc = p.beschreibung.toLowerCase().includes(term);
+        const matchesHinweis = p.hinweis?.toLowerCase().includes(term) ?? false;
+        if (!matchesName && !matchesDesc && !matchesHinweis) return false;
+      }
+      if (kategorie !== 'alle' && p.kategorie !== kategorie) return false;
+      if (gebuehr === 'kostenlos' && !p.kostenlosMoeglich) return false;
+      if (gebuehr === 'kostenpflichtig' && p.kostenlosMoeglich) return false;
+      return true;
+    });
+  }, [suche, kategorie, gebuehr]);
+
+  const matchesByKat = useMemo(() => {
+    const map: Record<PlattformKategorie, Plattform[]> = {
+      Stellenboerse: [],
+      'Work-Exchange': [],
+      Aggregator: [],
+      Anbieter: [],
+    };
+    gefiltert.forEach((p) => {
+      map[p.kategorie].push(p);
+    });
+    return map;
+  }, [gefiltert]);
+
+  const handleReset = () => {
+    setSuche('');
+    setKategorie('alle');
+    setGebuehr('alle');
+  };
+
   return (
     <Container size="lg" py={{ base: 'lg', md: 'xl' }}>
       <Stack gap="xs" mb="lg" maw={720}>
@@ -173,24 +218,82 @@ export function PlattformenPage() {
         ]}
       />
 
+      {/* Filterleiste */}
+      <Card withBorder radius="lg" p="lg" mb="xl" className="nz-glass-panel" style={{ borderColor: 'var(--nz-line)' }}>
+        <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
+          <TextInput
+            placeholder="Name oder Stichwort suchen …"
+            value={suche}
+            onChange={(e) => setSuche(e.currentTarget.value)}
+            label="Suchbegriff"
+            leftSection={<IconSearch size={15} />}
+            rightSection={suche && <IconX size={15} style={{ cursor: 'pointer' }} onClick={() => setSuche('')} />}
+          />
+          <Stack gap={3}>
+            <Text size="sm" fw={500} c="dark.5">Kategorie</Text>
+            <SegmentedControl
+              value={kategorie}
+              onChange={setKategorie}
+              data={[
+                { label: 'Alle', value: 'alle' },
+                { label: 'Börsen', value: 'Stellenboerse' },
+                { label: 'Exchange', value: 'Work-Exchange' },
+                { label: 'Vergleiche', value: 'Aggregator' },
+                { label: 'Anbieter', value: 'Anbieter' },
+              ]}
+              color="wald"
+            />
+          </Stack>
+          <Stack gap={3}>
+            <Text size="sm" fw={500} c="dark.5">Gebühren</Text>
+            <SegmentedControl
+              value={gebuehr}
+              onChange={setGebuehr}
+              data={[
+                { label: 'Alle', value: 'alle' },
+                { label: 'Kostenlos', value: 'kostenlos' },
+                { label: 'Gebühren', value: 'kostenpflichtig' },
+              ]}
+              color="wald"
+            />
+          </Stack>
+        </SimpleGrid>
+      </Card>
+
       <Stack gap={48}>
-        {KATEGORIEN.map((kat) => (
-          <div key={kat.key}>
-            <Stack gap={2} mb="md">
-              <Title order={2} fz={{ base: 24, md: 28 }}>
-                {kat.titel}
-              </Title>
-              <Text c="dimmed" size="sm" maw={620}>
-                {kat.text}
-              </Text>
-            </Stack>
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-              {PLATTFORMEN.filter((p) => p.kategorie === kat.key).map((p) => (
-                <PlattformKarte key={p.name} {...p} />
-              ))}
-            </SimpleGrid>
-          </div>
-        ))}
+        {KATEGORIEN.map((kat) => {
+          const items = matchesByKat[kat.key] || [];
+          if (items.length === 0) return null;
+          return (
+            <div key={kat.key}>
+              <Stack gap={2} mb="md">
+                <Title order={2} fz={{ base: 24, md: 28 }}>
+                  {kat.titel}
+                </Title>
+                <Text c="dimmed" size="sm" maw={620}>
+                  {kat.text}
+                </Text>
+              </Stack>
+              <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+                {items.map((p) => (
+                  <PlattformKarte key={p.name} {...p} />
+                ))}
+              </SimpleGrid>
+            </div>
+          );
+        })}
+
+        {gefiltert.length === 0 && (
+          <Stack align="center" gap="md" py={64}>
+            <Text fw={650} fz="lg">Keine Plattformen gefunden</Text>
+            <Text c="dimmed" size="sm" ta="center" maw={420}>
+              Mit diesen Filtereinstellungen wurden leider keine passenden Portale gefunden. Passe deine Filter oder deinen Suchbegriff an.
+            </Text>
+            <Button variant="light" color="terra" size="xs" onClick={handleReset}>
+              Filter zurücksetzen
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </Container>
   );

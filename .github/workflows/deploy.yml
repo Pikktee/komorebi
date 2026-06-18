@@ -1,4 +1,4 @@
-name: Deploy (GitHub Pages)
+name: Deploy (GitHub Pages & Railway)
 
 on:
   push:
@@ -50,3 +50,31 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-railway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Installieren
+        working-directory: web
+        run: npm ci
+
+      - name: Build für Railway (Wurzelpfad /)
+        working-directory: web
+        run: npm run build
+
+      - name: Railway CLI installieren
+        run: npm i -g @railway/cli
+
+      - name: Zu Railway deployen
+        run: railway up --service frontend --detach --no-gitignore
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+

@@ -185,6 +185,7 @@ def main() -> int:
     roh = seed.get_records()
     print(f"Seed: {len(roh)} Stellen (kuratiert)")
 
+    stat = {"live_roh": 0, "verworfen_deterministisch": 0, "verworfen_llm": 0, "live_behalten": 0}
     if live_an:
         live = sammle_live()
         if live:
@@ -213,7 +214,31 @@ def main() -> int:
     stellen = dedup.merge(normalisiert)
     stellen.sort(key=lambda s: (s["kostenpflichtig"], s["land"] or "zzz", s["titel"]))
 
-    ausgabe = {"generiert_am": heute, "anzahl": len(stellen), "stellen": stellen}
+    # Metriken berechnen
+    quellen_stats = {}
+    for s in stellen:
+        q = s["quelle"] or "unbekannt"
+        quellen_stats[q] = quellen_stats.get(q, 0) + 1
+
+    fehlende_laender = sum(1 for s in stellen if not s.get("land"))
+    gemappte_koordinaten = sum(1 for s in stellen if s.get("geo_lat") is not None and s.get("geo_lon") is not None)
+
+    metriken = {
+        "datenstand": heute,
+        "gesamt": len(stellen),
+        "quellen": quellen_stats,
+        "fehlende_laender": fehlende_laender,
+        "gemappte_koordinaten": gemappte_koordinaten,
+        "llm_verwerfungen": stat.get("verworfen_llm", 0),
+        "deterministisch_verworfen": stat.get("verworfen_deterministisch", 0),
+    }
+
+    ausgabe = {
+        "generiert_am": heute,
+        "anzahl": len(stellen),
+        "metriken": metriken,
+        "stellen": stellen
+    }
     text = json.dumps(ausgabe, ensure_ascii=False, indent=2) + "\n"
 
     for pfad in AUSGABEN:

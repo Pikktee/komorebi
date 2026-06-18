@@ -47,6 +47,7 @@ SCHEMA_FELDER = [
     "taschengeld_eur_monat", "reisekosten_erstattet", "versicherung", "sprachkurs",
     "quelle", "quell_url", "weitere_quell_urls", "quell_id",
     "erstmals_gesehen", "zuletzt_gesehen", "zuletzt_geaendert",
+    "geo_lat", "geo_lon", "geo_genauigkeit", "geo_label",
 ]
 
 VORAUSSETZUNGEN_FELDER = ["mindestalter", "hoechstalter", "sprache", "vorkenntnisse"]

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   Alert,
@@ -9,20 +9,24 @@ import {
   Drawer,
   Group,
   Indicator,
-  SimpleGrid,
   Skeleton,
   Stack,
   Text,
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconAdjustmentsHorizontal, IconAlertCircle, IconCalendarStats, IconFilter, IconX, IconList, IconMap } from '@tabler/icons-react';
-import { motion, AnimatePresence } from 'motion/react';
+import {
+  IconAdjustmentsHorizontal,
+  IconAlertCircle,
+  IconCalendarStats,
+  IconFilter,
+  IconList,
+  IconMap,
+  IconX,
+} from '@tabler/icons-react';
 import { useStellen } from '../lib/useStellen';
-import { KomorebiMark } from '../components/Logo';
 import {
   anzahlAktiverFilter,
-  DEFAULT_FILTER,
   filterStellen,
   filterToParams,
   parseFilter,
@@ -30,10 +34,10 @@ import {
 } from '../lib/filter';
 import { datumText, PROGRAMM_LABEL } from '../lib/labels';
 import { FilterPanel } from '../components/FilterPanel';
-import { StelleCard } from '../components/StelleCard';
+import { StellenKarte } from '../components/StellenKarte';
 import { InfoTooltip } from '../components/InfoTooltip';
 
-export function FindenPage() {
+export function KartePage() {
   const { stellen, loading, error, generiertAm } = useStellen();
   const [params, setParams] = useSearchParams();
   const [drawer, { open, close }] = useDisclosure(false);
@@ -49,11 +53,12 @@ export function FindenPage() {
   const gefiltert = useMemo(() => filterStellen(stellen, filter), [stellen, filter]);
   const aktiv = anzahlAktiverFilter(filter);
 
-  // Incremental loading state
-  const [visibleCount, setVisibleCount] = useState(24);
-  useEffect(() => {
-    setVisibleCount(24);
-  }, [params]);
+  // Divide into geocoded and non-geocoded
+  const aufKarte = useMemo(
+    () => gefiltert.filter((s) => s.geo_lat !== null && s.geo_lon !== null),
+    [gefiltert],
+  );
+  const ohneKoordCount = gefiltert.length - aufKarte.length;
 
   return (
     <Container size="lg" py={{ base: 'lg', md: 'xl' }}>
@@ -62,16 +67,16 @@ export function FindenPage() {
           <Stack gap={6}>
             <Group gap={6}>
               <Title order={1} fz={{ base: 32, md: 42 }} className="nz-display">
-                Stellen finden
+                Interaktive Weltkarte
               </Title>
-              <InfoTooltip label="Deine Filter werden in der URL gespeichert. Du kannst die Suche also direkt teilen oder später wieder öffnen." />
+              <InfoTooltip label="Durchstöbere Stellen räumlich. Filter werden live angewendet und sind in der URL gespeichert." />
             </Group>
             <Group gap="xs">
               <Badge variant="light" color="wald" radius="sm" leftSection={<IconFilter size={13} />} style={{ border: '1px solid var(--mantine-color-wald-2)' }}>
                 {aktiv} aktiv
               </Badge>
               <Badge variant="light" color="himmel" radius="sm" style={{ border: '1px solid var(--mantine-color-himmel-2)' }}>
-                {loading ? 'Lade …' : `${gefiltert.length} Treffer`}
+                {loading ? 'Lade …' : `${aufKarte.length} auf Karte`}
               </Badge>
               {generiertAm && (
                 <Badge variant="outline" color="gray" radius="sm" leftSection={<IconCalendarStats size={13} />}>
@@ -80,35 +85,32 @@ export function FindenPage() {
               )}
             </Group>
           </Stack>
-          <Group gap="md">
-            <Text c="dimmed" maw={300} visibleFrom="lg" style={{ lineHeight: 1.4 }}>
-              Ökologische Freiwilligen-, Praxis- und Feldstellen aus geprüften Quellen.
-            </Text>
-            <Group gap="xs">
-              <Button
-                variant="filled"
-                color="wald"
-                leftSection={<IconList size={16} />}
-                size="sm"
-                disabled
-              >
-                Listenansicht
-              </Button>
-              <Button
-                component={Link}
-                to={`/karte?${params.toString()}`}
-                variant="default"
-                leftSection={<IconMap size={16} />}
-                size="sm"
-              >
-                Kartenansicht
-              </Button>
-            </Group>
+
+          {/* List/Map toggle with parameters preserved */}
+          <Group gap="xs">
+            <Button
+              component={Link}
+              to={`/finden?${params.toString()}`}
+              variant="default"
+              leftSection={<IconList size={16} />}
+              size="sm"
+            >
+              Listenansicht
+            </Button>
+            <Button
+              variant="filled"
+              color="wald"
+              leftSection={<IconMap size={16} />}
+              size="sm"
+              disabled
+            >
+              Kartenansicht
+            </Button>
           </Group>
         </Group>
       </Box>
 
-      {/* Aktive Filter-Chips */}
+      {/* Active Filter Chips */}
       {aktiv > 0 && (
         <Group gap="xs" mb="lg" wrap="wrap">
           {filter.q.trim() && (
@@ -206,7 +208,29 @@ export function FindenPage() {
         </Group>
       )}
 
+      {/* Info notice about hidden positions with no coordinates */}
+      {!loading && !error && ohneKoordCount > 0 && (
+        <Alert color="himmel" mb="lg" radius="md" style={{ border: '1px solid var(--mantine-color-himmel-2)' }}>
+          <Group justify="space-between" align="center" gap="sm">
+            <Text size="sm">
+              Hinweis: <strong>{ohneKoordCount} {ohneKoordCount === 1 ? 'Stelle' : 'Stellen'}</strong> ohne genaue Ortsangabe („Ort offen“) werden auf der Karte nicht angezeigt.
+            </Text>
+            <Button
+              component={Link}
+              to={`/finden?${params.toString()}`}
+              variant="subtle"
+              color="wald"
+              size="xs"
+              style={{ fontWeight: 600 }}
+            >
+              In der Liste anzeigen &rarr;
+            </Button>
+          </Group>
+        </Alert>
+      )}
+
       <Group align="flex-start" gap="xl" wrap="nowrap">
+        {/* Desktop Sidebar */}
         <Box
           w={300}
           visibleFrom="md"
@@ -220,14 +244,14 @@ export function FindenPage() {
           </Box>
         </Box>
 
+        {/* Map Area */}
         <Box style={{ flex: 1, minWidth: 0 }}>
-          <Group justify="space-between" mb="md">
+          <Group justify="space-between" mb="md" hiddenFrom="md">
             <Text fw={650}>
-              {loading ? 'Lade Stellen …' : `${gefiltert.length} ${gefiltert.length === 1 ? 'Stelle' : 'Stellen'}`}
+              {loading ? 'Lade Karte …' : `${aufKarte.length} Stellen auf Karte`}
             </Text>
-            <Indicator label={aktiv} disabled={aktiv === 0} color="terra" size={18} hiddenFrom="md">
+            <Indicator label={aktiv} disabled={aktiv === 0} color="terra" size={18}>
               <Button
-                hiddenFrom="md"
                 variant="default"
                 leftSection={<IconAdjustmentsHorizontal size={18} />}
                 onClick={open}
@@ -238,89 +262,22 @@ export function FindenPage() {
           </Group>
 
           {error && (
-            <Alert color="terra" icon={<IconAlertCircle />} title="Daten konnten nicht geladen werden">
+            <Alert color="terra" icon={<IconAlertCircle />} title="Karte konnte nicht geladen werden">
               {error}
             </Alert>
           )}
 
           {loading && (
-            <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} height={260} radius="md" />
-              ))}
-            </SimpleGrid>
+            <Skeleton height={500} radius="md" />
           )}
 
-          {!loading && !error && gefiltert.length === 0 && (
-            <Stack align="center" gap="md" py={64}>
-              <KomorebiMark size={52} />
-              <Text fw={600} fz="lg">
-                Hier wächst gerade nichts
-              </Text>
-              <Text c="dimmed" ta="center" maw={420}>
-                Mit diesen Filtern haben wir leider keine passenden Stellen gefunden.
-              </Text>
-
-              <Group gap="xs" justify="center" mt="xs">
-                {filter.ohneGebuehr && (
-                  <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, ohneGebuehr: false })}>
-                    Gebühr-Filter lockern
-                  </Button>
-                )}
-                {filter.dauerMax != null && (
-                  <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, dauerMax: null })}>
-                    Dauer-Filter entfernen
-                  </Button>
-                )}
-                {(filter.laender.length > 0 || filter.kontinente.length > 0) && (
-                  <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, laender: [], kontinente: [] })}>
-                    Weltweit suchen
-                  </Button>
-                )}
-                {filter.q.trim() !== '' && (
-                  <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, q: '' })}>
-                    Suchbegriff entfernen
-                  </Button>
-                )}
-                <Button size="xs" variant="light" color="terra" onClick={() => setFilter({ ...DEFAULT_FILTER })}>
-                  Alle Filter zurücksetzen
-                </Button>
-              </Group>
-            </Stack>
-          )}
-
-          {!loading && !error && gefiltert.length > 0 && (
-            <Stack gap="xl">
-              <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg">
-                <AnimatePresence mode="popLayout">
-                  {gefiltert.slice(0, visibleCount).map((s) => (
-                    <motion.div
-                      key={s.id}
-                      layout
-                      initial={{ opacity: 0, scale: 0.96, y: 15 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.96, y: -15 }}
-                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                      style={{ height: '100%' }}
-                    >
-                      <StelleCard stelle={s} showAddedDate={filter.sort === 'neu'} />
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </SimpleGrid>
-
-              {gefiltert.length > visibleCount && (
-                <Group justify="center" mt="md">
-                  <Button variant="outline" color="wald" onClick={() => setVisibleCount((prev) => prev + 24)}>
-                    Weitere anzeigen
-                  </Button>
-                </Group>
-              )}
-            </Stack>
+          {!loading && !error && (
+            <StellenKarte stellen={aufKarte} height="65vh" />
           )}
         </Box>
       </Group>
 
+      {/* Mobile Drawer */}
       <Drawer
         opened={drawer}
         onClose={close}
@@ -347,7 +304,7 @@ export function FindenPage() {
           zIndex: 10
         }}>
           <Button fullWidth color="wald" size="md" onClick={close}>
-            {gefiltert.length} {gefiltert.length === 1 ? 'Stelle' : 'Stellen'} anzeigen
+            {aufKarte.length} {aufKarte.length === 1 ? 'Stelle' : 'Stellen'} anzeigen
           </Button>
         </Box>
       </Drawer>

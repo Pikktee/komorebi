@@ -12,9 +12,12 @@ import {
   Text,
   ThemeIcon,
   Title,
+  Divider,
+  Badge,
 } from '@mantine/core';
-import { IconSunHigh, IconLeaf } from '@tabler/icons-react';
+import { IconSunHigh, IconLeaf, IconChartBar } from '@tabler/icons-react';
 import { KomorebiMark } from '../components/Logo';
+import { useStellen } from '../lib/useStellen';
 
 const FAQ: { frage: string; antwort: ReactNode }[] = [
   {
@@ -81,6 +84,7 @@ const FAQ: { frage: string; antwort: ReactNode }[] = [
 ];
 
 export function UeberPage() {
+  const { metriken, generiertAm } = useStellen();
   return (
     <>
       <Box style={{ background: 'linear-gradient(180deg, var(--mantine-color-wald-0), transparent)' }}>
@@ -132,6 +136,58 @@ export function UeberPage() {
               />
             </SimpleGrid>
           </Card>
+
+          {/* Datenstand & Metriken */}
+          {metriken && (
+            <Card withBorder radius="lg" padding="lg" style={{ borderColor: 'var(--nz-line)' }} className="nz-glass-panel">
+              <Stack gap="md">
+                <Group gap="sm" mb={4}>
+                  <ThemeIcon variant="light" color="himmel" radius="md" size="lg">
+                    <IconChartBar size={20} />
+                  </ThemeIcon>
+                  <Title order={2} fz="xl" className="nz-display">
+                    Datenstand & Pipeline-Metriken
+                  </Title>
+                </Group>
+                
+                <Text size="sm" c="dark.5" style={{ lineHeight: 1.45 }}>
+                  Komorebi läuft vollautomatisch. Die Daten-Pipeline durchsucht und filtert täglich
+                  neu. Hier ist ein transparenter Einblick in den aktuellen Datenbestand:
+                </Text>
+                
+                <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md" mt="xs">
+                  <Box style={{ textAlign: 'center', padding: '12px', borderRadius: '8px', backgroundColor: 'rgba(21, 107, 65, 0.03)', border: '1px solid var(--nz-line)' }}>
+                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} fw={700}>Datenstand</Text>
+                    <Text fw={700} fz="sm" mt={2}>{generiertAm ? new Date(generiertAm).toLocaleDateString('de-DE') : '—'}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center', padding: '12px', borderRadius: '8px', backgroundColor: 'rgba(21, 107, 65, 0.03)', border: '1px solid var(--nz-line)' }}>
+                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} fw={700}>Gesamt-Stellen</Text>
+                    <Text fw={700} fz="lg" c="wald.9" mt={2}>{metriken.gesamt}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center', padding: '12px', borderRadius: '8px', backgroundColor: 'rgba(21, 107, 65, 0.03)', border: '1px solid var(--nz-line)' }}>
+                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} fw={700}>Auf der Karte</Text>
+                    <Text fw={700} fz="lg" c="himmel.9" mt={2}>{metriken.gemappte_koordinaten}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center', padding: '12px', borderRadius: '8px', backgroundColor: 'rgba(21, 107, 65, 0.03)', border: '1px solid var(--nz-line)' }}>
+                    <Text size="xs" c="dimmed" tt="uppercase" lts={0.5} fw={700}>KI-Verwerfungen</Text>
+                    <Text fw={700} fz="lg" c="terra.9" mt={2}>{metriken.llm_verwerfungen}</Text>
+                  </Box>
+                </SimpleGrid>
+
+                <Divider my="sm" />
+
+                <Text size="sm" fw={600} mb={-4}>Verteilung nach Datenquellen:</Text>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="xs">
+                  {Object.entries(metriken.quellen).map(([quelle, anzahl]) => (
+                    <Group key={quelle} justify="space-between" wrap="nowrap" style={{ padding: '6px 12px', borderRadius: '6px', border: '1px solid var(--nz-line)', backgroundColor: '#fff' }}>
+                      <Text size="sm" fw={500}>{quelle}</Text>
+                      <Badge variant="light" color="wald">{anzahl}</Badge>
+                    </Group>
+                  ))}
+                </SimpleGrid>
+              </Stack>
+            </Card>
+          )}
 
           {/* FAQ */}
           <div>

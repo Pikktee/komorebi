@@ -128,13 +128,14 @@ function SortAuswahl({ value, onChange }: { value: SortKey; onChange: (s: SortKe
       <FilterLabel text="Sortierung" tip="Die Sortierung verändert nur die Reihenfolge, nicht deine Filter." mb={4} />
       <Select
         data={[
+          { value: 'relevanz', label: 'Beste Relevanz' },
           { value: 'land', label: 'Land (A–Z)' },
           { value: 'frist', label: 'Bewerbungsfrist' },
           { value: 'dauer', label: 'Kürzeste Dauer zuerst' },
           { value: 'neu', label: 'Neu hinzugekommen' },
         ]}
         value={value}
-        onChange={(v) => onChange((v as SortKey) ?? 'land')}
+        onChange={(v) => onChange((v as SortKey) ?? 'relevanz')}
         allowDeselect={false}
         radius="md"
       />

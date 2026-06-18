@@ -7,6 +7,7 @@ import { Logo } from './Logo';
 const NAV = [
   { to: '/', label: 'Start', end: true },
   { to: '/finden', label: 'Stellen finden', end: false },
+  { to: '/karte', label: 'Karte', end: false },
   { to: '/wissen', label: 'Wissen', end: false },
   { to: '/plattformen', label: 'Plattformen', end: false },
   { to: '/ueber', label: 'Über', end: false },
@@ -56,7 +57,7 @@ export function Layout() {
         </Container>
       </Box>
 
-      <Drawer opened={opened} onClose={close} title={<Logo size={28} />} padding="lg" size="xs" position="right">
+      <Drawer opened={opened} onClose={close} title={<Logo size={28} />} padding="lg" size="xs" position="right" closeButtonProps={{ 'aria-label': 'Menü schließen' }}>
         <Stack gap="lg" mt="md">
           {NAV.map((n) => (
             <NavLink key={n.to} to={n.to} end={n.end} style={navStyle} onClick={close}>

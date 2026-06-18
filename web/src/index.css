@@ -3,7 +3,7 @@
   --nz-cream-2: #f0ebd9;
   --nz-ink: #14231b;
   --nz-line: #e4dec8;
-  --mantine-color-dimmed: rgba(20, 35, 27, 0.58);
+  --mantine-color-dimmed: rgba(20, 35, 27, 0.75);
 }
 
 * {
@@ -43,9 +43,6 @@ a {
 .nz-hero {
   position: relative;
   overflow: hidden;
-  min-height: min(720px, calc(100vh - 120px));
-  display: flex;
-  align-items: center;
   background:
     linear-gradient(125deg, rgba(10, 42, 27, 0.94), rgba(18, 59, 41, 0.94) 48%, rgba(24, 92, 95, 0.75)),
     linear-gradient(180deg, #154531, #0a2419);
@@ -200,7 +197,7 @@ a {
 .nz-card {
   position: relative;
   overflow: hidden;
-  min-height: 300px;
+  min-height: 260px;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -560,4 +557,44 @@ a {
 .nz-link-high-contrast:hover {
   color: var(--mantine-color-wald-6) !important;
   text-decoration-color: var(--mantine-color-wald-6);
+}
+
+/* ----------------- Dynamic responsiveness and accessibility ----------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+
+  .nz-hero::before,
+  .nz-canopy::before,
+  .nz-canopy__leaf,
+  .nz-card::after,
+  .nz-card:hover::after,
+  .nz-logo-sunbeam,
+  .nz-logo-leaf {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .nz-card:hover {
+    transform: none !important;
+    box-shadow: 0 4px 18px -10px rgba(20, 35, 27, 0.05) !important;
+  }
+
+  .nz-card:hover .nz-card__arrow,
+  .nz-card:hover .nz-card__glow,
+  .nz-card:hover .nz-card__watermark,
+  .nz-logo-wrapper:hover .nz-logo-sunbeam,
+  .nz-logo-wrapper:hover .nz-logo-leaf {
+    transform: none !important;
+    transition: none !important;
+  }
 }

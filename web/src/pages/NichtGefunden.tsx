@@ -10,7 +10,7 @@ export function NichtGefunden() {
         <Text className="nz-display" fz={64} fw={600} c="wald.7" lh={1}>
           404
         </Text>
-        <Title order={2} ta="center">
+        <Title order={1} ta="center">
           Diese Seite ist im Dickicht verschwunden
         </Title>
         <Text c="dimmed" ta="center" maw={420}>

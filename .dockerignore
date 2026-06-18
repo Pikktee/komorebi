@@ -1,0 +1,16 @@
+.git
+.github
+node_modules
+web/node_modules
+web/src
+web/tests
+web/public
+pipeline
+*.env
+.env
+Makefile
+AGENTS.md
+CLAUDE.md
+KONZEPT.md
+datenmodell.md
+beispieldaten.json

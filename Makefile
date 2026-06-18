@@ -1,6 +1,6 @@
 # Komorebi – einfache Befehle. Aufruf:  make <ziel>   (z. B.  make daten)
 .DEFAULT_GOAL := hilfe
-.PHONY: hilfe setup daten daten-schnell web start
+.PHONY: hilfe setup daten daten-schnell web start release
 
 hilfe:
 	@echo ""
@@ -11,6 +11,7 @@ hilfe:
 	@echo "    make start           Daten neu befüllen UND danach die Web-App starten"
 	@echo "    make daten-schnell   nur Seed-Daten (kein Netz, kein LLM) – nur zum Testen"
 	@echo "    make setup           Abhängigkeiten installieren (einmalig)"
+	@echo "    make release         Erstellt eine neue Version (patch/minor/major) & deployt sie"
 	@echo ""
 
 setup:
@@ -29,3 +30,7 @@ web:
 	cd web && npm run dev
 
 start: daten web
+
+release:
+	@./scripts/release.sh
+

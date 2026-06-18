@@ -44,6 +44,10 @@ Die Normalisierung pro Quelle hat die Aufgabe, deren Rohdaten hierauf abzubilden
 | `erstmals_gesehen` | string(YYYY-MM-DD) | ja | erstes Auftauchen im Bestand |
 | `zuletzt_gesehen` | string(YYYY-MM-DD) | ja | letzter Lauf, in dem die Stelle noch da war |
 | `zuletzt_geaendert` | string(YYYY-MM-DD) | ja | letzte inhaltliche Änderung |
+| `geo_lat` | number\|null | nein | Breitengrad des Ortes |
+| `geo_lon` | number\|null | nein | Längengrad des Ortes |
+| `geo_genauigkeit` | string | ja | Genauigkeit der Koordinaten: `stadt`, `region`, `land`, `unbekannt` |
+| `geo_label` | string\|null | nein | Ortslabel für die Karten-UI (z. B. "Deutschland" oder "Kalifornien, USA") |
 
 ## Kontrolliertes Vokabular `taetigkeitsfeld`
 
@@ -62,4 +66,4 @@ Jede Quelle pflegt ein Mapping ihrer Rohkategorien → dieses Vokabular
   (typisch bei Voluntourism-Anbietern wie GVI, GoEco, IVHQ).
 - Konflikt `kost_unterkunft_frei == true` **und** `kostenpflichtig == true` ist erlaubt
   (Gebühr deckt teils Unterkunft) — UI zeigt beides transparent an.
-- `id` muss über Läufe hinweg stabil bleiben, damit `erstmals_gesehen`/Diffs funktionieren.
+- `id` must over runs stable remain, so `erstmals_gesehen`/Diffs work.

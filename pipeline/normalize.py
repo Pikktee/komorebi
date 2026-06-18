@@ -17,6 +17,7 @@ from sources.base import (
     normalize_taetigkeitsfelder,
     stabile_id,
 )
+from sources.geo_centroids import geokodiere
 
 
 def _voraussetzungen(raw: dict) -> dict:
@@ -48,14 +49,20 @@ def normalize_record(raw: dict, heute: str | None = None) -> dict:
     if kost_frei is None:
         kost_frei = programm in PROGRAMME_MIT_FREIER_KOST
 
+    land = (raw.get("land") or "").strip()
+    region = raw.get("region")
+
+    # Geokodierung durchführen
+    geo_lat, geo_lon, geo_genauigkeit, geo_label = geokodiere(land, region)
+
     rec = {
         "id": raw.get("id") or stabile_id(quelle, quell_id, quell_url),
         "titel": (raw.get("titel") or "").strip(),
         "organisation": (raw.get("organisation") or "").strip(),
         "aufnahmeorganisation": raw.get("aufnahmeorganisation"),
         "entsendeorganisation": raw.get("entsendeorganisation"),
-        "land": (raw.get("land") or "").strip(),
-        "region": raw.get("region"),
+        "land": land,
+        "region": region,
         "kontinent": (raw.get("kontinent") or "").strip(),
         "dauer_monate_min": raw.get("dauer_monate_min"),
         "dauer_monate_max": raw.get("dauer_monate_max"),
@@ -81,5 +88,9 @@ def normalize_record(raw: dict, heute: str | None = None) -> dict:
         "erstmals_gesehen": raw.get("erstmals_gesehen") or heute,
         "zuletzt_gesehen": heute,
         "zuletzt_geaendert": raw.get("zuletzt_geaendert") or heute,
+        "geo_lat": geo_lat,
+        "geo_lon": geo_lon,
+        "geo_genauigkeit": geo_genauigkeit,
+        "geo_label": geo_label,
     }
     return rec

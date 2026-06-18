@@ -39,6 +39,10 @@ const beispiel: Stelle = {
   erstmals_gesehen: '2026-06-05',
   zuletzt_gesehen: '2026-06-05',
   zuletzt_geaendert: '2026-06-05',
+  geo_lat: null,
+  geo_lon: null,
+  geo_genauigkeit: null,
+  geo_label: null,
 };
 
 function renderCard() {

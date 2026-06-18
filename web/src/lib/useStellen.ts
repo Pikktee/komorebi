@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import type { Datensatz, Stelle } from '../types';
+import type { Datensatz, Stelle, Metriken } from '../types';
 
 export interface StellenState {
   stellen: Stelle[];
   generiertAm: string | null;
+  metriken: Metriken | null;
   loading: boolean;
   error: string | null;
 }
@@ -13,6 +14,7 @@ export function useStellen(): StellenState {
   const [state, setState] = useState<StellenState>({
     stellen: [],
     generiertAm: null,
+    metriken: null,
     loading: true,
     error: null,
   });
@@ -29,6 +31,7 @@ export function useStellen(): StellenState {
         setState({
           stellen: d.stellen ?? [],
           generiertAm: d.generiert_am ?? null,
+          metriken: d.metriken ?? null,
           loading: false,
           error: null,
         });
@@ -38,6 +41,7 @@ export function useStellen(): StellenState {
         setState({
           stellen: [],
           generiertAm: null,
+          metriken: null,
           loading: false,
           error: e instanceof Error ? e.message : 'Unbekannter Fehler',
         });
