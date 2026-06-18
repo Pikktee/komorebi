@@ -71,9 +71,14 @@ fi
 echo ""
 echo "🚀 Erhöhe Version in 'web/'..."
 cd web
-# npm version bumped die Version, führt git add und git commit + tag aus
-NEW_VERSION=$(npm version $TYPE -m "release: v%s")
+# Version bumpen ohne automatische Git-Aktionen von npm
+NEW_VERSION=$(npm version $TYPE --no-git-tag-version)
 cd ..
+
+# Git commit und tag manuell erstellen
+git add web/package.json web/package-lock.json
+git commit -m "release: $NEW_VERSION"
+git tag -a "$NEW_VERSION" -m "release: $NEW_VERSION"
 
 # 7. Push zu GitHub
 echo ""
