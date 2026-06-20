@@ -36,6 +36,11 @@ AUSGABEN = [
     PROJEKT / "web" / "public" / "datensatz.json",
 ]
 
+# Schutzschwelle: Ein Live-Lauf, der unter diesen Anteil des zuletzt geschriebenen
+# Standes fällt, bricht ab statt zu überschreiben – fängt weggebrochene Quellen ab
+# (z. B. ESC, das im CI an Rate-Limiting scheitert). Mit --ohne-schwelle abschaltbar.
+MINDEST_ANTEIL = 0.7
+
 GENERISCHE_QUELL_URLS = {
     "https://programmes.eurodesk.eu/volunteering",
     "https://www.volunteer.sci.ngo",
@@ -143,6 +148,28 @@ def _bestehende_erstsichtung() -> dict[str, str]:
         return {}
 
 
+def _bestehende_anzahl() -> int:
+    """Anzahl Stellen im zuletzt geschriebenen Datensatz (0 = keiner vorhanden)."""
+    pfad = AUSGABEN[0]
+    if not pfad.exists():
+        return 0
+    try:
+        daten = json.loads(pfad.read_text(encoding="utf-8"))
+        stellen = daten.get("stellen", daten) if isinstance(daten, dict) else daten
+        return len(stellen)
+    except Exception:
+        return 0
+
+
+def unterschreitet_schwelle(neu: int, vorher: int, anteil: float = MINDEST_ANTEIL) -> bool:
+    """True, wenn ``neu`` unter ``anteil`` des vorherigen Standes liegt.
+
+    Bei fehlendem Vorstand (``vorher == 0``, z. B. Erstlauf) niemals True – dann gibt
+    es keinen guten Stand zu schützen.
+    """
+    return vorher > 0 and neu < int(vorher * anteil)
+
+
 def entscheide_llm(strict: bool, auto: bool, key_ok: bool) -> str:
     """Status der LLM-Stufe: ``'an'`` | ``'aus'`` | ``'fehler'`` | ``'auto-ohne-key'``.
 
@@ -219,6 +246,21 @@ def main() -> int:
     for s in stellen:
         q = s["quelle"] or "unbekannt"
         quellen_stats[q] = quellen_stats.get(q, 0) + 1
+
+    # Schutzschwelle (nur im Live-Lauf): Bricht ab, statt einen guten Datenstand mit
+    # einem degradierten zu überschreiben, wenn eine Quelle weggebrochen ist.
+    if live_an and "--ohne-schwelle" not in sys.argv:
+        vorher_anzahl = _bestehende_anzahl()
+        if unterschreitet_schwelle(len(stellen), vorher_anzahl):
+            print(
+                f"Abbruch: nur {len(stellen)} Stellen – unter {MINDEST_ANTEIL:.0%} des "
+                f"letzten Standes ({vorher_anzahl}). Wahrscheinlich ist eine Quelle "
+                f"weggebrochen (z. B. ESC an Rate-Limiting). Datenstand NICHT überschrieben.\n"
+                f"  Quellen diesmal: {quellen_stats}\n"
+                f"  Falls der Rückgang echt ist: erneut mit --ohne-schwelle ausführen.",
+                file=sys.stderr,
+            )
+            return 3
 
     fehlende_laender = sum(1 for s in stellen if not s.get("land"))
     gemappte_koordinaten = sum(1 for s in stellen if s.get("geo_lat") is not None and s.get("geo_lon") is not None)
