@@ -12,8 +12,8 @@ with code in this repository.
 **Komorebi** – eine nicht-kommerzielle Web-App, die ökologische Freiwilligendienste/Praktika/
 Feldforschungs-Stellen weltweit sammelt und filterbar macht (Zielnutzerin: angehende Biologin).
 Python-Daten-Pipeline + statisches React-Frontend, täglich via GitHub Actions aktualisiert,
-auf GitHub Pages gehostet. Sprache durchgehend **Deutsch, du-Ansprache, echte Umlaute** (ö/ü/ä,
-niemals oe/ue/ae).
+auf Railway gehostet (`komorebi.henrikheil.net`). Sprache durchgehend **Deutsch, du-Ansprache,
+echte Umlaute** (ö/ü/ä, niemals oe/ue/ae).
 
 ## Befehle
 
