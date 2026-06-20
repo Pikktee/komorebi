@@ -18,14 +18,14 @@
   },
   "stellen": [
     {
-      "id": "esc:52312",
-      "titel": "Dein ESK-Jahr im Tierheim Eupen: Verbinde Tierpflege, soziale Arbeit & Social Media in Ostbelgien!",
-      "organisation": "Tierschutzgesellschaft VoG",
-      "aufnahmeorganisation": "Tierschutzgesellschaft VoG",
+      "id": "tamu-nr-jobs:101250",
+      "titel": "General Wildlife Technician Internship; Belize",
+      "organisation": "Toucan Ridge Ecology and Education Society (Private)",
+      "aufnahmeorganisation": null,
       "entsendeorganisation": null,
-      "land": "Belgien",
-      "region": "Eupen",
-      "kontinent": "Europa",
+      "land": "Belize",
+      "region": null,
+      "kontinent": "Nordamerika",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
       "zeitraum_von": "2026-08-31",
@@ -124,27 +124,27 @@
       "zeitraum_bis": "2026-10-31",
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Artenschutz/Tiere",
-        "Naturschutz"
+        "Naturschutz",
+        "Forschung/Feldassistenz"
       ],
-      "beschreibung": "Geförderter Freiwilligendienst im Europäischen Solidaritätskorps (ESC) in Oostende, Belgien. You take your share in the daily work at the Wildlife Rehab centre. Step by step, we will introduce you to our way of working and the strict protocols that we follow. Being keen to learn is essential. In the beginning, you will mainly perform basic task and assist a more experienced volunteer or staff member. Do take in mind that at our centre everyone should undertake all sorts of work: feeding and weighing the animals, preparing food, but also cleaning cages, dishes, laundry and mopping floors. You have to pursue administrative discipline and follow certain hygienic procedures. Being …",
-      "bewerbungsfrist": null,
+      "beschreibung": "General Wildlife Technician Internship; Belize bei Toucan Ridge Ecology and Education Society (Private). Vergütung: none. Beginn: between 6/16/2026 and 12/15/2026.",
+      "bewerbungsfrist": "2026-12-15",
       "voraussetzungen": {
-        "mindestalter": 18,
-        "hoechstalter": 30,
+        "mindestalter": null,
+        "hoechstalter": null,
         "sprache": null,
         "vorkenntnisse": null
       },
-      "programm": "ESC",
-      "kost_unterkunft_frei": true,
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
       "kostenpflichtig": false,
       "teilnahmegebuehr_eur": null,
       "taschengeld_eur_monat": null,
       "reisekosten_erstattet": null,
       "versicherung": null,
       "sprachkurs": null,
-      "quelle": "esc",
-      "quell_url": "https://youth.europa.eu/solidarity/opportunity/50647_en",
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=101250",
       "weitere_quell_urls": [],
       "quell_id": "50647",
       "erstmals_gesehen": "2026-06-07",
@@ -5210,8 +5210,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Umweltbildung",
-        "Naturschutz"
+        "Naturschutz",
+        "Umweltbildung"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: volunteer, Stanley Park Ecology, Vancouver BC.",
       "bewerbungsfrist": null,
@@ -5712,7 +5712,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Landwirtschaft/Permakultur"
+        "Landwirtschaft/Permakultur",
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: vol. + veggies, The Cutting Veg, Sutton/Georgina, Lake Simcoe, GTA, Ontario.",
       "bewerbungsfrist": null,
@@ -5803,7 +5804,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Landwirtschaft/Permakultur"
+        "Landwirtschaft/Permakultur",
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: vol+ food+ accom., live on-site, April-Sep./flexible, Whole Village Ecovillage, Caledon, GTA, Ontario.",
       "bewerbungsfrist": null,
@@ -5985,7 +5987,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Landwirtschaft/Permakultur"
+        "Landwirtschaft/Permakultur",
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: vol., Wild By Nature Botanicals, east Toronto ON.",
       "bewerbungsfrist": null,
@@ -6168,7 +6171,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Landwirtschaft/Permakultur"
+        "Landwirtschaft/Permakultur",
+        "Naturschutz"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: Vol. + food, Yard Garden Harvest Project, Little Mountain / Riley Park, Vancouver BC.",
       "bewerbungsfrist": null,
@@ -12000,9 +12004,9 @@
       "geo_label": "USA"
     },
     {
-      "id": "conservation-job-board:275845",
-      "titel": "Bilingual Conservation Educator",
-      "organisation": "Point Blue Conservation Science",
+      "id": "conservation-job-board:276223",
+      "titel": "Basin Assessment Field Specialist",
+      "organisation": "Coquille Watershed Association",
       "aufnahmeorganisation": null,
       "entsendeorganisation": null,
       "land": "USA",
@@ -12191,6 +12195,51 @@
       "entsendeorganisation": null,
       "land": "USA",
       "region": "Galva",
+      "kontinent": "Nordamerika",
+      "dauer_monate_min": null,
+      "dauer_monate_max": null,
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
+      "flexibler_start": false,
+      "taetigkeitsfeld": [
+        "Forschung/Feldassistenz"
+      ],
+      "beschreibung": "Saison-/Zeitstelle im Bereich Artenschutz/Tiere bei Western EcoSystems Technology (WEST). Vergütung: $19 - $21 per hour.",
+      "bewerbungsfrist": null,
+      "voraussetzungen": {
+        "mindestalter": null,
+        "hoechstalter": null,
+        "sprache": null,
+        "vorkenntnisse": null
+      },
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
+      "kostenpflichtig": false,
+      "teilnahmegebuehr_eur": null,
+      "taschengeld_eur_monat": null,
+      "reisekosten_erstattet": null,
+      "versicherung": null,
+      "sprachkurs": null,
+      "quelle": "conservation-job-board",
+      "quell_url": "https://www.conservationjobboard.com/job-listing-biological-field-technician---1950-watertown-new-york/4738983839",
+      "weitere_quell_urls": [],
+      "quell_id": "275912",
+      "erstmals_gesehen": "2026-06-19",
+      "zuletzt_gesehen": "2026-06-19",
+      "zuletzt_geaendert": "2026-06-19",
+      "geo_lat": 37.0902,
+      "geo_lon": -95.7129,
+      "geo_genauigkeit": "land",
+      "geo_label": "USA"
+    },
+    {
+      "id": "conservation-job-board:276320",
+      "titel": "Biological Field Technician - (1953)",
+      "organisation": "Western EcoSystems Technology (WEST)",
+      "aufnahmeorganisation": null,
+      "entsendeorganisation": null,
+      "land": "USA",
+      "region": "Lee County",
       "kontinent": "Nordamerika",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
@@ -13164,10 +13213,10 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Forschung/Feldassistenz"
       ],
-      "beschreibung": "Saison-/Zeitstelle im Bereich Wald/Forst bei New Leaf Ecological Landscapes. Vergütung: $25 per hour.",
+      "beschreibung": "Saison-/Zeitstelle im Bereich Naturschutz bei New Leaf Ecological Landscapes. Vergütung: $25 per hour.",
       "bewerbungsfrist": null,
       "voraussetzungen": {
         "mindestalter": null,
@@ -13340,7 +13389,7 @@
       "aufnahmeorganisation": null,
       "entsendeorganisation": null,
       "land": "USA",
-      "region": "Glen Rose",
+      "region": "Escondido",
       "kontinent": "Nordamerika",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
@@ -13517,13 +13566,13 @@
       "geo_label": "USA"
     },
     {
-      "id": "conservation-job-board:275524",
-      "titel": "Environmental Educator in Residence",
-      "organisation": "Grand Canyon Conservancy",
+      "id": "conservation-job-board:276099",
+      "titel": "Environmental Educator",
+      "organisation": "The Nature Place",
       "aufnahmeorganisation": null,
       "entsendeorganisation": null,
       "land": "USA",
-      "region": "Grand Canyon",
+      "region": "La Crosse",
       "kontinent": "Nordamerika",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
@@ -13531,10 +13580,9 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Umweltbildung",
-        "Naturschutz"
+        "Umweltbildung"
       ],
-      "beschreibung": "Saison-/Zeitstelle im Bereich Umweltbildung bei Grand Canyon Conservancy. Vergütung: $600 per week.",
+      "beschreibung": "AmeriCorps-Programm im Bereich Umweltbildung bei The Nature Place. Vergütung: $460 per week.",
       "bewerbungsfrist": "2026-07-15",
       "voraussetzungen": {
         "mindestalter": null,
@@ -14956,7 +15004,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Wald/Forst",
-        "Naturschutz"
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "Forester bei City of Houston Parks and Recreation Department (City). Vergütung: $48,048 to $88,010 per year. Beginn: after 7/20/2026.",
       "bewerbungsfrist": "2026-06-20",
@@ -15323,8 +15371,7 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Artenschutz/Tiere",
-        "Forschung/Feldassistenz"
+        "Artenschutz/Tiere"
       ],
       "beschreibung": "Full and Part Time Fall Animal Care Internship (August-November) bei Lubee Bat Conservancy (Private). Vergütung: none. Beginn: between 8/1/2026 and 8/31/2026.",
       "bewerbungsfrist": "2026-06-26",
@@ -17020,7 +17067,7 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Naturschutz",
+        "Meeresschutz",
         "Forschung/Feldassistenz"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Naturschutz bei Conservation Legacy Program: Stewards Individual Placements Program. Vergütung: $600 per week.",
@@ -18705,13 +18752,13 @@
       "geo_label": "USA"
     },
     {
-      "id": "conservation-job-board:275722",
-      "titel": "Veteran Fire Crew Member",
-      "organisation": "Appalachian Conservation Corps",
+      "id": "tamu-nr-jobs:117138",
+      "titel": "USDA-ARS Research Fellowship in Turfgrass Genomics",
+      "organisation": "Oak Ridge Associated Universities (ORAU) (Private)",
       "aufnahmeorganisation": null,
       "entsendeorganisation": null,
       "land": "USA",
-      "region": "Beckley",
+      "region": "Logan",
       "kontinent": "Nordamerika",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
@@ -18719,11 +18766,11 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Forschung/Feldassistenz",
+        "Landwirtschaft/Permakultur"
       ],
-      "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Appalachian Conservation Corps. Vergütung: $900 per week.",
-      "bewerbungsfrist": null,
+      "beschreibung": "USDA-ARS Research Fellowship in Turfgrass Genomics bei Oak Ridge Associated Universities (ORAU) (Private). Vergütung: Commensurate / Negotiable. Beginn: after 9/1/2026.",
+      "bewerbungsfrist": "2026-08-14",
       "voraussetzungen": {
         "mindestalter": null,
         "hoechstalter": null,
@@ -18738,8 +18785,8 @@
       "reisekosten_erstattet": null,
       "versicherung": null,
       "sprachkurs": null,
-      "quelle": "conservation-job-board",
-      "quell_url": "https://www.conservationjobboard.com/job-listing-veteran-fire-crew-member-beckley-west-virginia/4182223216",
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=117138",
       "weitere_quell_urls": [],
       "quell_id": "275722",
       "erstmals_gesehen": "2026-06-07",
@@ -18765,8 +18812,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $950 per week.",
       "bewerbungsfrist": "2026-07-03",
@@ -18857,8 +18904,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Wald/Forst",
-        "Naturschutz"
+        "Naturschutz",
+        "Wald/Forst"
       ],
       "beschreibung": "AmeriCorps-Programm im Bereich Wald/Forst bei Arizona Conservation Corps. Vergütung: $900 per week.",
       "bewerbungsfrist": "2026-07-10",
@@ -20037,22 +20084,22 @@
       "geo_label": "USA"
     },
     {
-      "id": "esc:50751",
-      "titel": "Conservation Opportunity in Western Uganda",
-      "organisation": "VIATORES CHRISTI COMPANY LIMITED BY GUARANTEE",
-      "aufnahmeorganisation": "VIATORES CHRISTI COMPANY LIMITED BY GUARANTEE",
+      "id": "tamu-nr-jobs:117091",
+      "titel": "CWD Technician",
+      "organisation": "Virginia Department of Wildlife Resources (State)",
+      "aufnahmeorganisation": null,
       "entsendeorganisation": null,
-      "land": "Uganda",
-      "region": "Hoima",
-      "kontinent": "Afrika",
+      "land": "",
+      "region": null,
+      "kontinent": "",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
-      "zeitraum_von": "2026-10-10",
-      "zeitraum_bis": "2027-09-14",
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Naturschutz",
-        "Artenschutz/Tiere"
+        "Artenschutz/Tiere",
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "Geförderter Freiwilligendienst im Europäischen Solidaritätskorps (ESC) in Hoima, Uganda. The volunteer sent by VC Dublin will work on the AVCA (Amplifying Voice for Climate Action) project, This is an ESC Humanitarian Aid initiative in Uganda, hosted by VC Uganda with the Justice and Peace Commission Hoima and the Bulindi Chimpanzee and Community Project. Hoima faces environmental pressures from population growth, oil development, deforestation, and habitat loss, affecting local livelihoods and biodiversity. Volunteers support environmental education, tree planting, habitat restoration, conservation awareness, and sustainable agriculture in schools, communities, and conservation …",
       "bewerbungsfrist": null,
@@ -20608,8 +20655,8 @@
       "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Artenschutz/Tiere",
-        "Forschung/Feldassistenz"
+        "Forschung/Feldassistenz",
+        "Naturschutz"
       ],
       "beschreibung": "Fisheries Technician 2 bei Georgia Department of Natural Resources (State). Vergütung: starting at $41,641.03 per year. Beginn: after 7/1/2026.",
       "bewerbungsfrist": "2026-06-26",
@@ -20649,6 +20696,52 @@
       "entsendeorganisation": null,
       "land": "",
       "region": "remote work allowed",
+      "kontinent": "",
+      "dauer_monate_min": null,
+      "dauer_monate_max": null,
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
+      "flexibler_start": false,
+      "taetigkeitsfeld": [
+        "Naturschutz",
+        "Artenschutz/Tiere"
+      ],
+      "beschreibung": "Intern with the National Deer Association (nonprofit wildlife conservation organization) bei National Deer Association (Private). Vergütung: none. Beginn: after 7/1/2026.",
+      "bewerbungsfrist": "2026-07-03",
+      "voraussetzungen": {
+        "mindestalter": null,
+        "hoechstalter": null,
+        "sprache": null,
+        "vorkenntnisse": null
+      },
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
+      "kostenpflichtig": false,
+      "teilnahmegebuehr_eur": null,
+      "taschengeld_eur_monat": null,
+      "reisekosten_erstattet": null,
+      "versicherung": null,
+      "sprachkurs": null,
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=86586",
+      "weitere_quell_urls": [],
+      "quell_id": "86586",
+      "erstmals_gesehen": "2026-06-19",
+      "zuletzt_gesehen": "2026-06-19",
+      "zuletzt_geaendert": "2026-06-19",
+      "geo_lat": null,
+      "geo_lon": null,
+      "geo_genauigkeit": "unbekannt",
+      "geo_label": null
+    },
+    {
+      "id": "tamu-nr-jobs:117114",
+      "titel": "MASTER’S RESEARCH ASSISTANSHIP - Landscape Use by Wildlife Post-Wildfire",
+      "organisation": "Texas Tech University (State)",
+      "aufnahmeorganisation": null,
+      "entsendeorganisation": null,
+      "land": "",
+      "region": null,
       "kontinent": "",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
@@ -21055,41 +21148,41 @@
       "geo_label": null
     },
     {
-      "id": "esc:36892",
-      "titel": "Volontariat Siwa Oasis (Egypte)",
-      "organisation": "Torraha",
-      "aufnahmeorganisation": "Torraha",
+      "id": "tamu-nr-jobs:117069",
+      "titel": "WY Statewide Bat Acoustic Technician (Fall)",
+      "organisation": "Wyoming Natural Diversity Database (State)",
+      "aufnahmeorganisation": null,
       "entsendeorganisation": null,
-      "land": "Ägypten",
-      "region": "Siwa Oasis",
-      "kontinent": "Afrika",
+      "land": "",
+      "region": null,
+      "kontinent": "",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
-      "zeitraum_von": "2026-09-01",
-      "zeitraum_bis": "2026-10-31",
-      "flexibler_start": true,
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
+      "flexibler_start": false,
       "taetigkeitsfeld": [
-        "Naturschutz",
-        "Umweltbildung"
+        "Artenschutz/Tiere",
+        "Forschung/Feldassistenz"
       ],
-      "beschreibung": "Geförderter Freiwilligendienst im Europäischen Solidaritätskorps (ESC) in Siwa Oasis, Ägypten. L'association d'accueil des volontaires CES est Torraha. Son nom évoque à la fois le filet de pêche et la tenue traditionnelle des femmes d’Alexandrie, deux piliers culturels majeurs. Torraha se consacre à la création, à l'organisation et à la gestion de programmes culturels innovants. En utilisant l'art comme levier de développement, elle offre des opportunités uniques aux personnes défavorisées. Danse, musique, littérature – autant de domaines explorés pour construire un avenir équilibré et dynamique. Tel un filet tissé avec soin, Torraha relie les éléments du passé au présent, unissant …",
-      "bewerbungsfrist": null,
+      "beschreibung": "WY Statewide Bat Acoustic Technician (Fall) bei Wyoming Natural Diversity Database (State). Vergütung: $20 to $24 per hour. Beginn: after 8/31/2026.",
+      "bewerbungsfrist": "2026-07-15",
       "voraussetzungen": {
-        "mindestalter": 18,
-        "hoechstalter": 30,
+        "mindestalter": null,
+        "hoechstalter": null,
         "sprache": null,
         "vorkenntnisse": null
       },
-      "programm": "ESC",
-      "kost_unterkunft_frei": true,
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
       "kostenpflichtig": false,
       "teilnahmegebuehr_eur": null,
       "taschengeld_eur_monat": null,
       "reisekosten_erstattet": null,
       "versicherung": null,
       "sprachkurs": null,
-      "quelle": "esc",
-      "quell_url": "https://youth.europa.eu/solidarity/opportunity/36892_en",
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=117069",
       "weitere_quell_urls": [],
       "quell_id": "36892",
       "erstmals_gesehen": "2026-06-07",
@@ -21101,32 +21194,124 @@
       "geo_label": "Ägypten"
     },
     {
-      "id": "esc:51952",
-      "titel": "Volunteering at Sunnahof Tufers | Solidarity & Diversity in Vorarlberg",
-      "organisation": "Sunnahof Lebenshilfe Vorarlberg GmbH",
-      "aufnahmeorganisation": "Sunnahof Lebenshilfe Vorarlberg GmbH",
+      "id": "tamu-nr-jobs:116961",
+      "titel": "Wetland Soil Scientist, Field Technician",
+      "organisation": "Amnis Opes LLC (Private)",
+      "aufnahmeorganisation": null,
       "entsendeorganisation": null,
-      "land": "Österreich",
-      "region": "Götzis",
-      "kontinent": "Europa",
+      "land": "",
+      "region": null,
+      "kontinent": "",
       "dauer_monate_min": null,
       "dauer_monate_max": null,
-      "zeitraum_von": "2026-09-07",
-      "zeitraum_bis": "2027-08-31",
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Landwirtschaft/Permakultur",
         "Klima/Nachhaltigkeit"
       ],
-      "beschreibung": "Geförderter Freiwilligendienst im Europäischen Solidaritätskorps (ESC) in Götzis, Österreich. PLEASE apply by writing an E-Mail to esc-application@aha.or.at, with your CV and Motivation Letter!* We are looking for a volunteer in the Plant nursery section. Sunnahof is a biodynamic farm and a social organisation. Our principle is “people need people” no matter if you have any disabilities or not. A volunteer at Sunnahof, you will gain invaluable experience for working with people with intellectual disabilities. You will learn about disability issues and topics facing the local community. You will learn how to work along with people with disabilities and how to increase their skills and …",
-      "bewerbungsfrist": "2026-06-30",
+      "beschreibung": "Wetland Soil Scientist, Field Technician bei Amnis Opes LLC (Private). Vergütung: $23 to $25 per hour. Beginn: between 6/20/2026 and 6/30/2026.",
+      "bewerbungsfrist": "2026-06-25",
       "voraussetzungen": {
-        "mindestalter": 18,
-        "hoechstalter": 30,
+        "mindestalter": null,
+        "hoechstalter": null,
         "sprache": null,
         "vorkenntnisse": null
       },
-      "programm": "ESC",
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
+      "kostenpflichtig": false,
+      "teilnahmegebuehr_eur": null,
+      "taschengeld_eur_monat": null,
+      "reisekosten_erstattet": null,
+      "versicherung": null,
+      "sprachkurs": null,
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=116961",
+      "weitere_quell_urls": [],
+      "quell_id": "116961",
+      "erstmals_gesehen": "2026-06-19",
+      "zuletzt_gesehen": "2026-06-19",
+      "zuletzt_geaendert": "2026-06-19",
+      "geo_lat": null,
+      "geo_lon": null,
+      "geo_genauigkeit": "unbekannt",
+      "geo_label": null
+    },
+    {
+      "id": "tamu-nr-jobs:117035",
+      "titel": "Wildlife Biologist - Owl Surveyor",
+      "organisation": "Turnstone Environmental Consultants (Private)",
+      "aufnahmeorganisation": null,
+      "entsendeorganisation": null,
+      "land": "",
+      "region": null,
+      "kontinent": "",
+      "dauer_monate_min": null,
+      "dauer_monate_max": null,
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
+      "flexibler_start": false,
+      "taetigkeitsfeld": [
+        "Artenschutz/Tiere",
+        "Forschung/Feldassistenz"
+      ],
+      "beschreibung": "Wildlife Biologist - Owl Surveyor bei Turnstone Environmental Consultants (Private). Vergütung: $18.50 to $26 per hour. Beginn: after 6/22/2026.",
+      "bewerbungsfrist": "2026-06-26",
+      "voraussetzungen": {
+        "mindestalter": null,
+        "hoechstalter": null,
+        "sprache": null,
+        "vorkenntnisse": null
+      },
+      "programm": "keins",
+      "kost_unterkunft_frei": false,
+      "kostenpflichtig": false,
+      "teilnahmegebuehr_eur": null,
+      "taschengeld_eur_monat": null,
+      "reisekosten_erstattet": null,
+      "versicherung": null,
+      "sprachkurs": null,
+      "quelle": "tamu-nr-jobs",
+      "quell_url": "https://jobs.rwfm.tamu.edu/view-job/?id=117035",
+      "weitere_quell_urls": [],
+      "quell_id": "117035",
+      "erstmals_gesehen": "2026-06-19",
+      "zuletzt_gesehen": "2026-06-19",
+      "zuletzt_geaendert": "2026-06-19",
+      "geo_lat": null,
+      "geo_lon": null,
+      "geo_genauigkeit": "unbekannt",
+      "geo_label": null
+    },
+    {
+      "id": "goodwork:76233",
+      "titel": "Youth Food Council Members",
+      "organisation": "Toronto ON",
+      "aufnahmeorganisation": null,
+      "entsendeorganisation": null,
+      "land": "",
+      "region": null,
+      "kontinent": "",
+      "dauer_monate_min": null,
+      "dauer_monate_max": null,
+      "zeitraum_von": null,
+      "zeitraum_bis": null,
+      "flexibler_start": false,
+      "taetigkeitsfeld": [
+        "Klima/Nachhaltigkeit",
+        "Sonstiges"
+      ],
+      "beschreibung": "GoodWork-Volunteer-Eintrag: volunteer, Toronto Youth Food Policy Council, Toronto ON.",
+      "bewerbungsfrist": null,
+      "voraussetzungen": {
+        "mindestalter": null,
+        "hoechstalter": null,
+        "sprache": null,
+        "vorkenntnisse": null
+      },
+      "programm": "keins",
       "kost_unterkunft_frei": true,
       "kostenpflichtig": false,
       "teilnahmegebuehr_eur": null,
@@ -21134,8 +21319,8 @@
       "reisekosten_erstattet": null,
       "versicherung": null,
       "sprachkurs": null,
-      "quelle": "esc",
-      "quell_url": "https://youth.europa.eu/solidarity/opportunity/51952_en",
+      "quelle": "goodwork",
+      "quell_url": "https://www.goodwork.ca/a/local-food-just-food-sustainable-affordable-and-accessible-food-systems-76233",
       "weitere_quell_urls": [],
       "quell_id": "51952",
       "erstmals_gesehen": "2026-06-07",
@@ -21162,7 +21347,7 @@
       "flexibler_start": false,
       "taetigkeitsfeld": [
         "Naturschutz",
-        "Umweltbildung"
+        "Forschung/Feldassistenz"
       ],
       "beschreibung": "GoodWork-Volunteer-Eintrag: 2 months, vol + program fee (meals & accom), Clear Sky Centre, BC.",
       "bewerbungsfrist": null,
