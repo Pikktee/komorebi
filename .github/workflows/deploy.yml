@@ -1,5 +1,7 @@
-name: Deploy (GitHub Pages & Railway)
+name: Deploy (Railway)
 
+# Baut das Frontend und deployt es zu Railway (Service "frontend").
+# Läuft bei jedem Push auf main, manuell und – via Dispatch – nach dem täglichen Daten-Cron.
 on:
   push:
     branches: [main]
@@ -7,52 +9,16 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: railway-deploy
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: web/package-lock.json
-
-      - name: Installieren
-        working-directory: web
-        run: npm ci
-
-      - name: Build (Base-Pfad = Repo-Name für Project Pages)
-        working-directory: web
-        run: npm run build -- --base=/${{ github.event.repository.name }}/
-
-      - name: SPA-Fallback für Deep-Links
-        run: cp web/dist/index.html web/dist/404.html
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web/dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-
   deploy-railway:
     runs-on: ubuntu-latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -66,15 +32,24 @@ jobs:
         working-directory: web
         run: npm ci
 
-      - name: Build für Railway (Wurzelpfad /)
+      - name: Build (Wurzelpfad /)
         working-directory: web
         run: npm run build
 
       - name: Railway CLI installieren
         run: npm i -g @railway/cli
 
-      - name: Zu Railway deployen
-        run: railway up --service frontend --detach --no-gitignore
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      # Guard: Ohne Token wird sauber übersprungen (gelbe Warnung) statt rot zu scheitern.
+      - name: RAILWAY_TOKEN prüfen
+        id: token
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::warning::RAILWAY_TOKEN fehlt – Deploy wird übersprungen. Im Repo unter Settings → Secrets → Actions hinterlegen."
+            echo "vorhanden=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "vorhanden=true" >> "$GITHUB_OUTPUT"
+          fi
 
+      - name: Zu Railway deployen
+        if: steps.token.outputs.vorhanden == 'true'
+        run: railway up --service frontend --detach --no-gitignore

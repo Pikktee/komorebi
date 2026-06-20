@@ -64,7 +64,9 @@ Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via st
   - `esc.py` = **Europäisches Solidaritätskorps** über die öffentliche JSON/Elasticsearch-
     Such-API des EU-Jugendportals (`/api/rest/eyp/v1/search`, dieselbe Abfrage wie die
     Web-Suche). Liefert *geförderte* Naturschutz-Freiwilligendienste aus ~50 Ländern;
-    `programm="ESC"` ⇒ `normalize` leitet *Kost & Logis frei* ab. Paginiert mit 429-Backoff.
+    `programm="ESC"` ⇒ `normalize` leitet *Kost & Logis frei* ab. Paginiert mit 429-Backoff
+    (6 Versuche, gedeckelt; youth.europa.eu drosselt sporadisch ohne `Retry-After`, geteilte
+    CI-IPs härter als Wohn-IPs – darum geduldiger als die HTML-Quellen).
   - Scraper setzen **`_`-präfixierte Helfer-Felder** (`_job_type`, `_experience`,
     `_location_text`, `_kategorie`) für die Filterstufen. `normalize_record` übernimmt **nur**
     `SCHEMA_FELDER` → die Helfer-Felder fallen automatisch raus (dürfen nie im Output landen).
@@ -102,6 +104,10 @@ Output; der Cron regeneriert sie). `erstmals_gesehen` bleibt über Läufe via st
 - **Befüllen nutzt immer den LLM:** `make daten` und der CI-Cron verwenden striktes `--llm` und
   brechen ohne gültigen Key bewusst ab. Convenience-/CI-Pfade dürfen nicht still auf
   deterministisch zurückfallen.
+- **Schutzschwelle (`build.MINDEST_ANTEIL`, 70 %):** Ein **Live**-Lauf, der unter 70 % des
+  zuletzt geschriebenen Standes fällt, bricht mit **Exit 3** ab statt zu überschreiben –
+  fängt weggebrochene Quellen ab (z. B. ESC an CI-Rate-Limiting). Bewusst kleinere Läufe mit
+  `--ohne-schwelle` erzwingen. Greift nur bei `--live` und vorhandenem Vorstand.
 - **API-Key** nur aus der Umgebung: `OPENROUTER_API_KEY` (inline > Shell-`export` > `.env`).
   `build._lade_env()` lädt `pipeline/.env` oder `.env` im Root automatisch; `.env` ist
   gitignored und gehört nie ins Repo. `'sk-or-…'` mit „…" ist ein Platzhalter und wird abgelehnt.

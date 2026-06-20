@@ -39,8 +39,11 @@ _THEMA_NATUR = "natr"
 
 _SEITE = 50          # Treffer pro API-Aufruf
 _MAX_TREFFER = 600   # Sicherheitsobergrenze (~452 Naturstellen Stand der Prüfung)
-_VERSUCHE = 3        # Wiederholungen bei 429/Netzfehler
+# youth.europa.eu drosselt sporadisch mit 429 (ohne Retry-After-Header), geteilte
+# CI-IPs deutlich härter als Wohn-IPs. Darum geduldiger als bei den HTML-Quellen.
+_VERSUCHE = 6        # Wiederholungen bei 429/Netzfehler
 _BACKOFF_S = 8.0     # Basis-Wartezeit für den Backoff (verdoppelt sich je Versuch)
+_BACKOFF_MAX_S = 45.0  # Obergrenze je Wartephase (sonst läuft der Backoff davon)
 
 
 def _query(size: int, frm: int, heute: str) -> dict:
@@ -91,8 +94,9 @@ def _hole_seite(url: str) -> dict | None:
             if versuch + 1 >= _VERSUCHE or not ist_429:
                 print(f"  [skip] {QUELLE}: {exc}")
                 return None
-            wartezeit = _BACKOFF_S * (2 ** versuch)
-            print(f"  [retry] {QUELLE}: 429 – warte {wartezeit:.0f}s …")
+            wartezeit = min(_BACKOFF_S * (2 ** versuch), _BACKOFF_MAX_S)
+            print(f"  [retry] {QUELLE}: 429 – warte {wartezeit:.0f}s "
+                  f"(Versuch {versuch + 1}/{_VERSUCHE}) …")
             time.sleep(wartezeit)
     return None
 
