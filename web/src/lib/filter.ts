@@ -2,27 +2,42 @@ import type { Stelle } from '../types';
 
 export type SortKey = 'land' | 'frist' | 'dauer' | 'neu' | 'relevanz';
 
+/** Ob die Land-/Kontinent-Auswahl ein- oder ausschließt. */
+export type FilterModus = 'nur' | 'ausser';
+
+/**
+ * Bewerbungsschluss-Vorlauf. `2w`/`1m`/`2m` = Frist liegt mindestens so weit in der
+ * Zukunft; fristlose Stellen bleiben dabei sichtbar. `unbegrenzt` = nur fristlose.
+ */
+export type FristFilter = 'egal' | '2w' | '1m' | '2m' | 'unbegrenzt';
+
 export interface Filter {
   q: string;
   laender: string[];
+  laenderModus: FilterModus; // 'nur' = einschließen, 'ausser' = ausschließen
   felder: string[];
   kontinente: string[];
+  kontinenteModus: FilterModus;
   programme: string[];
   nurFrei: boolean; // nur Stellen mit freier Kost & Unterkunft
   ohneGebuehr: boolean; // kostenpflichtige Programme ausblenden
   dauerMax: number | null; // höchstens so viele Monate Mindestdauer
+  frist: FristFilter; // Bewerbungsschluss-Vorlauf
   sort: SortKey;
 }
 
 export const DEFAULT_FILTER: Filter = {
   q: '',
   laender: [],
+  laenderModus: 'nur',
   felder: [],
   kontinente: [],
+  kontinenteModus: 'nur',
   programme: [],
   nurFrei: false,
   ohneGebuehr: true, // Default laut Konzept: Voluntourism-Gebühren ausgeblendet
   dauerMax: null,
+  frist: 'egal',
   sort: 'relevanz',
 };
 
@@ -53,9 +68,41 @@ function enthaelt(text: string | null | undefined, sucheCleaned: string): boolea
   return cleanString(text).includes(sucheCleaned);
 }
 
+/** Lokales Datum als YYYY-MM-DD (für lexikografischen Vergleich mit ISO-Fristen). */
+function isoDatum(d: Date): string {
+  const j = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const t = String(d.getDate()).padStart(2, '0');
+  return `${j}-${m}-${t}`;
+}
+
+/**
+ * Früheste noch akzeptierte Bewerbungsfrist für eine Vorlauf-Kategorie – oder `null`,
+ * wenn keine Schwelle gilt (`egal`/`unbegrenzt`). Rechnet ab Mitternacht (heute), damit
+ * die Tageszeit das Ergebnis nicht verschiebt. Monatsüberläufe (31. + 1 Monat) rollen
+ * wie in JS üblich in den Folgemonat – für die grobe Vorlauf-Schwelle unerheblich.
+ */
+export function fristSchwelleIso(heute: Date, frist: FristFilter): string | null {
+  const d = new Date(heute.getFullYear(), heute.getMonth(), heute.getDate());
+  switch (frist) {
+    case '2w':
+      d.setDate(d.getDate() + 14);
+      return isoDatum(d);
+    case '1m':
+      d.setMonth(d.getMonth() + 1);
+      return isoDatum(d);
+    case '2m':
+      d.setMonth(d.getMonth() + 2);
+      return isoDatum(d);
+    default:
+      return null;
+  }
+}
+
 /** Wendet alle aktiven Filter an und sortiert das Ergebnis. */
-export function filterStellen(stellen: Stelle[], f: Filter): Stelle[] {
+export function filterStellen(stellen: Stelle[], f: Filter, heute: Date = new Date()): Stelle[] {
   const suche = f.q.trim();
+  const fristSchwelle = fristSchwelleIso(heute, f.frist);
 
   const gefiltert = stellen.filter((s) => {
     if (suche) {
@@ -82,8 +129,14 @@ export function filterStellen(stellen: Stelle[], f: Filter): Stelle[] {
       );
       if (!treffer) return false;
     }
-    if (f.laender.length && !f.laender.includes(s.land)) return false;
-    if (f.kontinente.length && !f.kontinente.includes(s.kontinent)) return false;
+    if (f.laender.length) {
+      const drin = f.laender.includes(s.land);
+      if (f.laenderModus === 'ausser' ? drin : !drin) return false;
+    }
+    if (f.kontinente.length) {
+      const drin = f.kontinente.includes(s.kontinent);
+      if (f.kontinenteModus === 'ausser' ? drin : !drin) return false;
+    }
     if (f.programme.length && !f.programme.includes(s.programm)) return false;
     if (f.felder.length && !schnittmenge(f.felder, s.taetigkeitsfeld)) return false;
     if (f.nurFrei && !s.kost_unterkunft_frei) return false;
@@ -91,6 +144,13 @@ export function filterStellen(stellen: Stelle[], f: Filter): Stelle[] {
     if (f.dauerMax != null) {
       const min = s.dauer_monate_min;
       if (min != null && min > f.dauerMax) return false;
+    }
+    if (f.frist === 'unbegrenzt') {
+      // Nur laufend offene Stellen (kein fester Schluss).
+      if (s.bewerbungsfrist != null) return false;
+    } else if (fristSchwelle) {
+      // Fristlose Stellen bleiben sichtbar; datierte nur mit genug Vorlauf.
+      if (s.bewerbungsfrist != null && s.bewerbungsfrist < fristSchwelle) return false;
     }
     return true;
   });
@@ -160,15 +220,21 @@ export function parseFilter(params: URLSearchParams): Filter {
   const dauerRaw = params.get('dauer');
   const dauerMax = dauerRaw != null && dauerRaw !== '' ? Number(dauerRaw) : null;
   const sort = (params.get('sort') as SortKey) || 'relevanz';
+  const modus = (key: string): FilterModus => (params.get(key) === 'ausser' ? 'ausser' : 'nur');
+  const fristRaw = params.get('frist') as FristFilter;
+  const frist: FristFilter = (['2w', '1m', '2m', 'unbegrenzt'] as FristFilter[]).includes(fristRaw) ? fristRaw : 'egal';
   return {
     q: params.get('q') ?? '',
     laender: liste('land'),
+    laenderModus: modus('landModus'),
     felder: liste('feld'),
     kontinente: liste('kontinent'),
+    kontinenteModus: modus('kontinentModus'),
     programme: liste('programm'),
     nurFrei: params.get('frei') === '1',
     ohneGebuehr: params.get('mitGebuehr') !== '1',
     dauerMax: Number.isFinite(dauerMax as number) ? dauerMax : null,
+    frist,
     sort: (['land', 'frist', 'dauer', 'neu', 'relevanz'] as SortKey[]).includes(sort) ? sort : 'relevanz',
   };
 }
@@ -178,12 +244,15 @@ export function filterToParams(f: Filter): URLSearchParams {
   const p = new URLSearchParams();
   if (f.q.trim()) p.set('q', f.q.trim());
   if (f.laender.length) p.set('land', f.laender.join(','));
+  if (f.laenderModus === 'ausser') p.set('landModus', 'ausser');
   if (f.felder.length) p.set('feld', f.felder.join(','));
   if (f.kontinente.length) p.set('kontinent', f.kontinente.join(','));
+  if (f.kontinenteModus === 'ausser') p.set('kontinentModus', 'ausser');
   if (f.programme.length) p.set('programm', f.programme.join(','));
   if (f.nurFrei) p.set('frei', '1');
   if (!f.ohneGebuehr) p.set('mitGebuehr', '1');
   if (f.dauerMax != null) p.set('dauer', String(f.dauerMax));
+  if (f.frist !== 'egal') p.set('frist', f.frist);
   if (f.sort !== 'relevanz') p.set('sort', f.sort);
   return p;
 }
@@ -197,7 +266,8 @@ export function istAktiv(f: Filter): boolean {
     f.programme.length > 0 ||
     f.nurFrei ||
     !f.ohneGebuehr ||
-    f.dauerMax != null
+    f.dauerMax != null ||
+    f.frist !== 'egal'
   );
 }
 
@@ -211,5 +281,6 @@ export function anzahlAktiverFilter(f: Filter): number {
   if (f.nurFrei) n += 1;
   if (!f.ohneGebuehr) n += 1;
   if (f.dauerMax != null) n += 1;
+  if (f.frist !== 'egal') n += 1;
   return n;
 }

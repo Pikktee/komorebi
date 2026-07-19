@@ -89,6 +89,52 @@ describe('filterStellen', () => {
     expect(r.map((s) => s.id).sort()).toEqual(['b']);
   });
 
+  it('schließt Länder aus (Modus ausser)', () => {
+    const r = filterStellen(daten, { ...DEFAULT_FILTER, laender: ['Estland'], laenderModus: 'ausser' });
+    // Estland (a) raus, c bleibt wegen Gebühr ausgeblendet → b, d
+    expect(r.map((s) => s.id).sort()).toEqual(['b', 'd']);
+  });
+
+  it('schließt Kontinente aus (Modus ausser)', () => {
+    const r = filterStellen(daten, {
+      ...DEFAULT_FILTER,
+      ohneGebuehr: false,
+      kontinente: ['Asien'],
+      kontinenteModus: 'ausser',
+    });
+    // Thailand (c, Asien) fliegt raus, Rest bleibt
+    expect(r.map((s) => s.id).sort()).toEqual(['a', 'b', 'd']);
+  });
+
+  describe('Bewerbungsschluss (Frist)', () => {
+    const heute = new Date(2026, 6, 1); // 1. Juli 2026 → 2w-Schwelle 2026-07-15, 2m-Schwelle 2026-09-01
+    const fristDaten: Stelle[] = [
+      stelle({ id: 'knapp', bewerbungsfrist: '2026-07-10' }), // nur 9 Tage Vorlauf
+      stelle({ id: 'weit', bewerbungsfrist: '2026-09-01' }), // genau 2 Monate Vorlauf
+      stelle({ id: 'offen', bewerbungsfrist: null }), // laufend offen
+    ];
+
+    it('2w blendet zu knappe Fristen aus, fristlose bleiben sichtbar', () => {
+      const r = filterStellen(fristDaten, { ...DEFAULT_FILTER, frist: '2w' }, heute);
+      expect(r.map((s) => s.id).sort()).toEqual(['offen', 'weit']);
+    });
+
+    it('2m akzeptiert die Schwelle inklusive und behält fristlose', () => {
+      const r = filterStellen(fristDaten, { ...DEFAULT_FILTER, frist: '2m' }, heute);
+      expect(r.map((s) => s.id).sort()).toEqual(['offen', 'weit']);
+    });
+
+    it('unbegrenzt zeigt nur fristlose Stellen', () => {
+      const r = filterStellen(fristDaten, { ...DEFAULT_FILTER, frist: 'unbegrenzt' }, heute);
+      expect(r.map((s) => s.id)).toEqual(['offen']);
+    });
+
+    it('egal lässt alle Fristen durch', () => {
+      const r = filterStellen(fristDaten, { ...DEFAULT_FILTER, frist: 'egal' }, heute);
+      expect(r.map((s) => s.id).sort()).toEqual(['knapp', 'offen', 'weit']);
+    });
+  });
+
   it('sortiert nach Land alphabetisch', () => {
     const r = filterStellen(daten, { ...DEFAULT_FILTER, ohneGebuehr: false, sort: 'land' });
     expect(r.map((s) => s.land)).toEqual(['Costa Rica', 'Estland', 'Griechenland', 'Thailand']);
@@ -138,12 +184,15 @@ describe('URL-Serialisierung', () => {
     const f: Filter = {
       q: 'wald',
       laender: ['Estland', 'Schweden'],
+      laenderModus: 'ausser',
       felder: ['Naturschutz'],
       kontinente: ['Europa'],
+      kontinenteModus: 'nur',
       programme: ['ESC'],
       nurFrei: true,
       ohneGebuehr: false,
       dauerMax: 6,
+      frist: '1m',
       sort: 'frist',
     };
     const zurueck = parseFilter(new URLSearchParams(filterToParams(f).toString()));

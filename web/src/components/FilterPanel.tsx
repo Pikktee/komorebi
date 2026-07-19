@@ -1,6 +1,6 @@
-import { Button, Group, MultiSelect, Select, Stack, Switch, Text, TextInput } from '@mantine/core';
+import { Button, Group, MultiSelect, SegmentedControl, Select, Stack, Switch, Text, TextInput } from '@mantine/core';
 import { IconSearch, IconX } from '@tabler/icons-react';
-import type { Filter, SortKey } from '../lib/filter';
+import type { Filter, FilterModus, FristFilter, SortKey } from '../lib/filter';
 import { DEFAULT_FILTER, istAktiv } from '../lib/filter';
 import { KONTINENTE, PROGRAMM_LABEL, TAETIGKEITSFELDER } from '../lib/labels';
 import { InfoTooltip } from './InfoTooltip';
@@ -16,6 +16,14 @@ const DAUER_OPTIONS = [
   { value: '3', label: 'Höchstens 3 Monate' },
   { value: '6', label: 'Höchstens 6 Monate' },
   { value: '12', label: 'Höchstens 12 Monate' },
+];
+
+const FRIST_OPTIONS: { value: FristFilter; label: string }[] = [
+  { value: 'egal', label: 'Egal' },
+  { value: '2w', label: 'Noch mind. 2 Wochen offen' },
+  { value: '1m', label: 'Noch mind. 1 Monat offen' },
+  { value: '2m', label: 'Noch mind. 2 Monate offen' },
+  { value: 'unbegrenzt', label: 'Nur unbegrenzt offene' },
 ];
 
 interface Props {
@@ -38,17 +46,22 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
         radius="md"
       />
 
-      <MultiSelect
-        label={<FilterLabel text="Land" tip="Nur Länder aus dem aktuellen Datensatz werden angezeigt." />}
-        placeholder={filter.laender.length ? undefined : 'Alle Länder'}
-        data={laenderOptions}
-        value={filter.laender}
-        onChange={(v) => set({ laender: v })}
-        searchable
-        clearable
-        radius="md"
-        nothingFoundMessage="Kein Land gefunden"
-      />
+      <div>
+        <FilterLabel text="Land" tip="Nur Länder aus dem aktuellen Datensatz werden angezeigt." mb={6} />
+        {filter.laender.length > 0 && (
+          <ModusUmschalter value={filter.laenderModus} onChange={(m) => set({ laenderModus: m })} />
+        )}
+        <MultiSelect
+          placeholder={filter.laender.length ? undefined : 'Alle Länder'}
+          data={laenderOptions}
+          value={filter.laender}
+          onChange={(v) => set({ laender: v })}
+          searchable
+          clearable
+          radius="md"
+          nothingFoundMessage="Kein Land gefunden"
+        />
+      </div>
 
       <MultiSelect
         label={<FilterLabel text="Tätigkeitsfeld" tip="Die Felder werden aus Quelle, Text und LLM-Prüfung abgeleitet." />}
@@ -60,15 +73,20 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
         radius="md"
       />
 
-      <MultiSelect
-        label={<FilterLabel text="Kontinent" tip="Praktisch, wenn du erst einmal nach Weltregion suchen möchtest." />}
-        placeholder={filter.kontinente.length ? undefined : 'Weltweit'}
-        data={KONTINENTE}
-        value={filter.kontinente}
-        onChange={(v) => set({ kontinente: v })}
-        clearable
-        radius="md"
-      />
+      <div>
+        <FilterLabel text="Kontinent" tip="Praktisch, wenn du erst einmal nach Weltregion suchen möchtest." mb={6} />
+        {filter.kontinente.length > 0 && (
+          <ModusUmschalter value={filter.kontinenteModus} onChange={(m) => set({ kontinenteModus: m })} />
+        )}
+        <MultiSelect
+          placeholder={filter.kontinente.length ? undefined : 'Weltweit'}
+          data={KONTINENTE}
+          value={filter.kontinente}
+          onChange={(v) => set({ kontinente: v })}
+          clearable
+          radius="md"
+        />
+      </div>
 
       <MultiSelect
         label={<FilterLabel text="Förderung" tip="Geförderte Programme übernehmen meist mehr Leistungen, dauern aber oft länger." />}
@@ -85,6 +103,15 @@ export function FilterPanel({ filter, onChange, laenderOptions }: Props) {
         data={DAUER_OPTIONS}
         value={filter.dauerMax == null ? '' : String(filter.dauerMax)}
         onChange={(v) => set({ dauerMax: v ? Number(v) : null })}
+        allowDeselect={false}
+        radius="md"
+      />
+
+      <Select
+        label={<FilterLabel text="Bewerbungsschluss" tip="Zeigt nur Stellen mit genug Vorlauf bis zum Bewerbungsschluss. Stellen ohne festen Schluss (laufend offen) bleiben bei allen Vorlauf-Stufen sichtbar." />}
+        data={FRIST_OPTIONS}
+        value={filter.frist}
+        onChange={(v) => set({ frist: (v as FristFilter) ?? 'egal' })}
         allowDeselect={false}
         radius="md"
       />
@@ -140,6 +167,23 @@ function SortAuswahl({ value, onChange }: { value: SortKey; onChange: (s: SortKe
         radius="md"
       />
     </div>
+  );
+}
+
+function ModusUmschalter({ value, onChange }: { value: FilterModus; onChange: (m: FilterModus) => void }) {
+  return (
+    <SegmentedControl
+      fullWidth
+      size="xs"
+      color="wald"
+      value={value}
+      onChange={(v) => onChange(v as FilterModus)}
+      data={[
+        { value: 'nur', label: 'Nur diese' },
+        { value: 'ausser', label: 'Außer diese' },
+      ]}
+      mb={8}
+    />
   );
 }
 

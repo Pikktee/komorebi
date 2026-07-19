@@ -16,7 +16,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconAdjustmentsHorizontal, IconAlertCircle, IconCalendarStats, IconFilter, IconX, IconList, IconMap } from '@tabler/icons-react';
+import { IconAdjustmentsHorizontal, IconAlertCircle, IconCalendarStats, IconFilter, IconList, IconMap } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStellen } from '../lib/useStellen';
 import { KomorebiMark } from '../components/Logo';
@@ -28,8 +28,9 @@ import {
   parseFilter,
   type Filter,
 } from '../lib/filter';
-import { datumText, PROGRAMM_LABEL } from '../lib/labels';
+import { datumText } from '../lib/labels';
 import { FilterPanel } from '../components/FilterPanel';
+import { AktiveFilterChips } from '../components/AktiveFilterChips';
 import { StelleCard } from '../components/StelleCard';
 import { InfoTooltip } from '../components/InfoTooltip';
 
@@ -109,102 +110,7 @@ export function FindenPage() {
       </Box>
 
       {/* Aktive Filter-Chips */}
-      {aktiv > 0 && (
-        <Group gap="xs" mb="lg" wrap="wrap">
-          {filter.q.trim() && (
-            <Badge
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, q: '' })} />}
-            >
-              Suche: {filter.q}
-            </Badge>
-          )}
-          {filter.laender.map((l) => (
-            <Badge
-              key={l}
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, laender: filter.laender.filter((x) => x !== l) })} />}
-            >
-              {l}
-            </Badge>
-          ))}
-          {filter.felder.map((f) => (
-            <Badge
-              key={f}
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, felder: filter.felder.filter((x) => x !== f) })} />}
-            >
-              Bereich: {f}
-            </Badge>
-          ))}
-          {filter.kontinente.map((k) => (
-            <Badge
-              key={k}
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, kontinente: filter.kontinente.filter((x) => x !== k) })} />}
-            >
-              {k}
-            </Badge>
-          ))}
-          {filter.programme.map((p) => (
-            <Badge
-              key={p}
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, programme: filter.programme.filter((x) => x !== p) })} />}
-            >
-              {PROGRAMM_LABEL[p as keyof typeof PROGRAMM_LABEL] || p}
-            </Badge>
-          ))}
-          {filter.dauerMax != null && (
-            <Badge
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, dauerMax: null })} />}
-            >
-              Dauer: ≤ {filter.dauerMax} Mon.
-            </Badge>
-          )}
-          {filter.nurFrei && (
-            <Badge
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, nurFrei: false })} />}
-            >
-              Kost & Unterkunft frei
-            </Badge>
-          )}
-          {!filter.ohneGebuehr && (
-            <Badge
-              variant="light"
-              color="wald"
-              size="sm"
-              pr={3}
-              rightSection={<IconX size={12} style={{ cursor: 'pointer' }} onClick={() => setFilter({ ...filter, ohneGebuehr: true })} />}
-            >
-              Mit Gebühren
-            </Badge>
-          )}
-        </Group>
-      )}
+      {aktiv > 0 && <AktiveFilterChips filter={filter} onChange={setFilter} />}
 
       <Group align="flex-start" gap="xl" wrap="nowrap">
         <Box
@@ -270,6 +176,11 @@ export function FindenPage() {
                 {filter.dauerMax != null && (
                   <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, dauerMax: null })}>
                     Dauer-Filter entfernen
+                  </Button>
+                )}
+                {filter.frist !== 'egal' && (
+                  <Button size="xs" variant="outline" color="wald" onClick={() => setFilter({ ...filter, frist: 'egal' })}>
+                    Frist-Filter entfernen
                   </Button>
                 )}
                 {(filter.laender.length > 0 || filter.kontinente.length > 0) && (
